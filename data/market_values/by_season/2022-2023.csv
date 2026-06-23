@@ -1,0 +1,99 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2022-2023,1,Bayern Munich,948.95
+Bundesliga,2022-2023,2,Borussia Dortmund,567.55
+Bundesliga,2022-2023,3,RB Leipzig,486.4
+Bundesliga,2022-2023,4,Bayer 04 Leverkusen,452.5
+Bundesliga,2022-2023,5,Eintracht Frankfurt,324.55
+Bundesliga,2022-2023,6,Borussia Mönchengladbach,241.68
+Bundesliga,2022-2023,7,VfL Wolfsburg,238.3
+Bundesliga,2022-2023,8,SC Freiburg,200.95
+Bundesliga,2022-2023,9,TSG 1899 Hoffenheim,178.8
+Bundesliga,2022-2023,10,1.FC Union Berlin,157.95
+Bundesliga,2022-2023,11,VfB Stuttgart,151.05
+Bundesliga,2022-2023,12,1.FSV Mainz 05,135.9
+Bundesliga,2022-2023,13,FC Augsburg,132.23
+Bundesliga,2022-2023,14,1.FC Köln,115.65
+Bundesliga,2022-2023,15,Hertha BSC,94
+Bundesliga,2022-2023,16,SV Werder Bremen,89.5
+Bundesliga,2022-2023,17,FC Schalke 04,87.78
+Bundesliga,2022-2023,18,VfL Bochum,53.7
+La Liga,2022-2023,1,Real Madrid,923.45
+La Liga,2022-2023,2,FC Barcelona,836.8
+La Liga,2022-2023,3,Atlético de Madrid,534.3
+La Liga,2022-2023,4,Real Sociedad,441.7
+La Liga,2022-2023,5,Villarreal CF,363.5
+La Liga,2022-2023,6,Valencia CF,249.78
+La Liga,2022-2023,7,Real Betis Balompié,246.4
+La Liga,2022-2023,8,Sevilla FC,232.58
+La Liga,2022-2023,9,Athletic Bilbao,222.45
+La Liga,2022-2023,10,CA Osasuna,150.05
+La Liga,2022-2023,11,Girona FC,139.9
+La Liga,2022-2023,12,Celta de Vigo,138.8
+La Liga,2022-2023,13,Getafe CF,118.9
+La Liga,2022-2023,14,RCD Espanyol Barcelona,116.5
+La Liga,2022-2023,15,UD Almería,114.2
+La Liga,2022-2023,16,RCD Mallorca,107
+La Liga,2022-2023,17,Rayo Vallecano,103.4
+La Liga,2022-2023,18,Real Valladolid CF,90.75
+La Liga,2022-2023,19,Elche CF,67.5
+La Liga,2022-2023,20,Cádiz CF,65.6
+Ligue 1,2022-2023,1,Paris Saint-Germain,891.1
+Ligue 1,2022-2023,2,Stade Rennais FC,387.75
+Ligue 1,2022-2023,3,AS Monaco,368.3
+Ligue 1,2022-2023,4,Olympique Lyon,350.95
+Ligue 1,2022-2023,5,Olympique Marseille,331.55
+Ligue 1,2022-2023,6,OGC Nice,310.8
+Ligue 1,2022-2023,7,LOSC Lille,247.95
+Ligue 1,2022-2023,8,RC Lens,238.15
+Ligue 1,2022-2023,9,FC Lorient,175.45
+Ligue 1,2022-2023,10,Stade Reims,159.05
+Ligue 1,2022-2023,11,Montpellier HSC,142.9
+Ligue 1,2022-2023,12,RC Strasbourg Alsace,123.55
+Ligue 1,2022-2023,13,FC Nantes,119.28
+Ligue 1,2022-2023,14,FC Toulouse,104.8
+Ligue 1,2022-2023,15,Stade Brestois 29,76.65
+Ligue 1,2022-2023,16,ESTAC Troyes,76.3
+Ligue 1,2022-2023,17,Angers SCO,71.8
+Ligue 1,2022-2023,18,AJ Auxerre,54.8
+Ligue 1,2022-2023,19,Clermont Foot 63,48
+Ligue 1,2022-2023,20,AC Ajaccio,27
+Premier League,2022-2023,1,Manchester City,1150
+Premier League,2022-2023,2,Arsenal FC,1000
+Premier League,2022-2023,3,Chelsea FC,994.95
+Premier League,2022-2023,4,Manchester United,847.75
+Premier League,2022-2023,5,Liverpool FC,811.85
+Premier League,2022-2023,6,Tottenham Hotspur,649.1
+Premier League,2022-2023,7,Newcastle United,541.6
+Premier League,2022-2023,8,Brighton & Hove Albion,529.8
+Premier League,2022-2023,9,Aston Villa,509.55
+Premier League,2022-2023,10,Wolverhampton Wanderers,497.65
+Premier League,2022-2023,11,Leicester City,490.7
+Premier League,2022-2023,12,West Ham United,465.6
+Premier League,2022-2023,13,Southampton FC,419.95
+Premier League,2022-2023,14,Everton FC,413.15
+Premier League,2022-2023,15,Nottingham Forest,376.25
+Premier League,2022-2023,16,Brentford FC,371.2
+Premier League,2022-2023,17,Leeds United,345.15
+Premier League,2022-2023,18,Crystal Palace,323.05
+Premier League,2022-2023,19,Fulham FC,295.1
+Premier League,2022-2023,20,AFC Bournemouth,287.2
+Serie A,2022-2023,1,SSC Napoli,654.08
+Serie A,2022-2023,2,Inter Milan,567.55
+Serie A,2022-2023,3,AC Milan,545.1
+Serie A,2022-2023,4,Juventus FC,483.13
+Serie A,2022-2023,5,AS Roma,361.38
+Serie A,2022-2023,6,Atalanta BC,338.38
+Serie A,2022-2023,7,SS Lazio,266.43
+Serie A,2022-2023,8,ACF Fiorentina,258.8
+Serie A,2022-2023,9,US Sassuolo,232.2
+Serie A,2022-2023,10,Torino FC,197.19
+Serie A,2022-2023,11,Udinese Calcio,188.86
+Serie A,2022-2023,12,Bologna FC 1909,153.63
+Serie A,2022-2023,13,AC Monza,135.7
+Serie A,2022-2023,14,FC Empoli,125.53
+Serie A,2022-2023,15,Hellas Verona,123.89
+Serie A,2022-2023,16,US Salernitana 1919,118.35
+Serie A,2022-2023,17,Spezia Calcio,115.81
+Serie A,2022-2023,18,US Lecce,105.2
+Serie A,2022-2023,19,US Cremonese,83.78
+Serie A,2022-2023,20,UC Sampdoria,82.96

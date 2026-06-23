@@ -1,0 +1,97 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2023-2024,1,Bayern Munich,965.15
+Bundesliga,2023-2024,2,Bayer 04 Leverkusen,658.35
+Bundesliga,2023-2024,3,RB Leipzig,545.4
+Bundesliga,2023-2024,4,Borussia Dortmund,494.8
+Bundesliga,2023-2024,5,VfB Stuttgart,346.63
+Bundesliga,2023-2024,6,Eintracht Frankfurt,326.65
+Bundesliga,2023-2024,7,VfL Wolfsburg,206.45
+Bundesliga,2023-2024,8,SC Freiburg,180.35
+Bundesliga,2023-2024,9,TSG 1899 Hoffenheim,176
+Bundesliga,2023-2024,10,Borussia Mönchengladbach,165.23
+Bundesliga,2023-2024,11,1.FC Union Berlin,160.95
+Bundesliga,2023-2024,12,1.FSV Mainz 05,142.88
+Bundesliga,2023-2024,13,FC Augsburg,140.8
+Bundesliga,2023-2024,14,SV Werder Bremen,134.93
+Bundesliga,2023-2024,15,1.FC Köln,81.45
+Bundesliga,2023-2024,16,1.FC Heidenheim 1846,66.45
+Bundesliga,2023-2024,17,VfL Bochum,64.53
+Bundesliga,2023-2024,18,SV Darmstadt 98,38.7
+La Liga,2023-2024,1,Real Madrid,1140
+La Liga,2023-2024,2,FC Barcelona,916.2
+La Liga,2023-2024,3,Real Sociedad,498.5
+La Liga,2023-2024,4,Atlético de Madrid,458.45
+La Liga,2023-2024,5,Girona FC,297.9
+La Liga,2023-2024,6,Athletic Bilbao,295.65
+La Liga,2023-2024,7,Villarreal CF,252.5
+La Liga,2023-2024,8,Valencia CF,244.73
+La Liga,2023-2024,9,Sevilla FC,228.75
+La Liga,2023-2024,10,Real Betis Balompié,224.88
+La Liga,2023-2024,11,Celta de Vigo,149.3
+La Liga,2023-2024,12,Granada CF,141.1
+La Liga,2023-2024,13,Getafe CF,133
+La Liga,2023-2024,14,Deportivo Alavés,123.7
+La Liga,2023-2024,15,UD Las Palmas,112.4
+La Liga,2023-2024,16,CA Osasuna,105.35
+La Liga,2023-2024,17,UD Almería,99.4
+La Liga,2023-2024,18,RCD Mallorca,87.7
+La Liga,2023-2024,19,Rayo Vallecano,63.95
+La Liga,2023-2024,20,Cádiz CF,60.7
+Ligue 1,2023-2024,1,Paris Saint-Germain,1020
+Ligue 1,2023-2024,2,AS Monaco,398.55
+Ligue 1,2023-2024,3,Stade Rennais FC,375.35
+Ligue 1,2023-2024,4,LOSC Lille,328.9
+Ligue 1,2023-2024,5,Olympique Marseille,311.4
+Ligue 1,2023-2024,6,Olympique Lyon,305.95
+Ligue 1,2023-2024,7,OGC Nice,268.78
+Ligue 1,2023-2024,8,RC Lens,205.6
+Ligue 1,2023-2024,9,RC Strasbourg Alsace,157.7
+Ligue 1,2023-2024,10,Montpellier HSC,145.58
+Ligue 1,2023-2024,11,FC Toulouse,145.2
+Ligue 1,2023-2024,12,Stade Reims,134.55
+Ligue 1,2023-2024,13,FC Lorient,131.85
+Ligue 1,2023-2024,14,FC Nantes,125.9
+Ligue 1,2023-2024,15,Stade Brestois 29,115.15
+Ligue 1,2023-2024,16,Le Havre AC,72.5
+Ligue 1,2023-2024,17,FC Metz,65.4
+Ligue 1,2023-2024,18,Clermont Foot 63,61.35
+Premier League,2023-2024,1,Manchester City,1460
+Premier League,2023-2024,2,Arsenal FC,1200
+Premier League,2023-2024,3,Chelsea FC,1010
+Premier League,2023-2024,4,Liverpool FC,955.65
+Premier League,2023-2024,5,Tottenham Hotspur,838.5
+Premier League,2023-2024,6,Manchester United,808.35
+Premier League,2023-2024,7,Aston Villa,709.65
+Premier League,2023-2024,8,Newcastle United,652.25
+Premier League,2023-2024,9,Brighton & Hove Albion,524.4
+Premier League,2023-2024,10,Nottingham Forest,501.35
+Premier League,2023-2024,11,West Ham United,487.5
+Premier League,2023-2024,12,Crystal Palace,446.58
+Premier League,2023-2024,13,Wolverhampton Wanderers,442.73
+Premier League,2023-2024,14,Brentford FC,428.78
+Premier League,2023-2024,15,AFC Bournemouth,401.75
+Premier League,2023-2024,16,Everton FC,391.75
+Premier League,2023-2024,17,Fulham FC,384.35
+Premier League,2023-2024,18,Burnley FC,273.48
+Premier League,2023-2024,19,Sheffield United,152.35
+Premier League,2023-2024,20,Luton Town,140.9
+Serie A,2023-2024,1,Inter Milan,654.85
+Serie A,2023-2024,2,AC Milan,571.41
+Serie A,2023-2024,3,SSC Napoli,515
+Serie A,2023-2024,4,Juventus FC,504.53
+Serie A,2023-2024,5,Atalanta BC,436.05
+Serie A,2023-2024,6,Bologna FC 1909,349.3
+Serie A,2023-2024,7,AS Roma,340.4
+Serie A,2023-2024,8,ACF Fiorentina,284.1
+Serie A,2023-2024,9,Torino FC,232.73
+Serie A,2023-2024,10,SS Lazio,225.45
+Serie A,2023-2024,11,Genoa CFC,195.4
+Serie A,2023-2024,12,Udinese Calcio,170.06
+Serie A,2023-2024,13,AC Monza,143.43
+Serie A,2023-2024,14,Hellas Verona,140.7
+Serie A,2023-2024,15,US Sassuolo,139.54
+Serie A,2023-2024,16,Frosinone Calcio,108.4
+Serie A,2023-2024,17,US Lecce,107.73
+Serie A,2023-2024,18,FC Empoli,102.33
+Serie A,2023-2024,19,US Salernitana 1919,94.6
+Serie A,2023-2024,20,Cagliari Calcio,92.23

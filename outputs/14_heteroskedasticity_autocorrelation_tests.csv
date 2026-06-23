@@ -1,0 +1,3 @@
+Test,Statistic,Parameter,p_value
+Breusch-Pagan (heteroskedasticity),45.5107,6,3.70463e-8
+Durbin-Watson (autocorrelation),1.18,NA,6.78073e-39

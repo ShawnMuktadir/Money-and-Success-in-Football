@@ -1,0 +1,99 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2021-2022,1,Bayern Munich,790.33
+Bundesliga,2021-2022,2,Borussia Dortmund,558.98
+Bundesliga,2021-2022,3,RB Leipzig,498.95
+Bundesliga,2021-2022,4,Bayer 04 Leverkusen,455.05
+Bundesliga,2021-2022,5,VfL Wolfsburg,269.3
+Bundesliga,2021-2022,6,Borussia Mönchengladbach,236.8
+Bundesliga,2021-2022,7,Eintracht Frankfurt,228.75
+Bundesliga,2021-2022,8,TSG 1899 Hoffenheim,211.43
+Bundesliga,2021-2022,9,SC Freiburg,176.35
+Bundesliga,2021-2022,10,VfB Stuttgart,174.23
+Bundesliga,2021-2022,11,Hertha BSC,155.78
+Bundesliga,2021-2022,12,1.FSV Mainz 05,131.03
+Bundesliga,2021-2022,13,1.FC Union Berlin,115.9
+Bundesliga,2021-2022,14,1.FC Köln,99.28
+Bundesliga,2021-2022,15,FC Augsburg,95.3
+Bundesliga,2021-2022,16,Arminia Bielefeld,65.85
+Bundesliga,2021-2022,17,VfL Bochum,52.25
+Bundesliga,2021-2022,18,SpVgg Greuther Fürth,36.95
+La Liga,2021-2022,1,Real Madrid,770.75
+La Liga,2021-2022,2,FC Barcelona,735.6
+La Liga,2021-2022,3,Atlético de Madrid,661.8
+La Liga,2021-2022,4,Villarreal CF,408.9
+La Liga,2021-2022,5,Sevilla FC,385
+La Liga,2021-2022,6,Real Sociedad,376.95
+La Liga,2021-2022,7,Valencia CF,310.6
+La Liga,2021-2022,8,Real Betis Balompié,259
+La Liga,2021-2022,9,Athletic Bilbao,226.05
+La Liga,2021-2022,10,Getafe CF,208.68
+La Liga,2021-2022,11,RCD Espanyol Barcelona,131.6
+La Liga,2021-2022,12,Celta de Vigo,120
+La Liga,2021-2022,13,CA Osasuna,108.45
+La Liga,2021-2022,14,Granada CF,103.75
+La Liga,2021-2022,15,Levante UD,77.9
+La Liga,2021-2022,16,RCD Mallorca,74.15
+La Liga,2021-2022,17,Elche CF,72.98
+La Liga,2021-2022,18,Cádiz CF,67.8
+La Liga,2021-2022,19,Rayo Vallecano,67.2
+La Liga,2021-2022,20,Deportivo Alavés,65.35
+Ligue 1,2021-2022,1,Paris Saint-Germain,875.15
+Ligue 1,2021-2022,2,Olympique Lyon,397.7
+Ligue 1,2021-2022,3,AS Monaco,396
+Ligue 1,2021-2022,4,LOSC Lille,306.88
+Ligue 1,2021-2022,5,Stade Rennais FC,305.35
+Ligue 1,2021-2022,6,Olympique Marseille,284.7
+Ligue 1,2021-2022,7,OGC Nice,266.05
+Ligue 1,2021-2022,8,RC Lens,154.05
+Ligue 1,2021-2022,9,Stade Reims,149.4
+Ligue 1,2021-2022,10,Montpellier HSC,144.6
+Ligue 1,2021-2022,11,RC Strasbourg Alsace,120.05
+Ligue 1,2021-2022,12,FC Girondins Bordeaux,116.85
+Ligue 1,2021-2022,13,FC Nantes,112.65
+Ligue 1,2021-2022,14,AS Saint-Étienne,105.65
+Ligue 1,2021-2022,15,Stade Brestois 29,103.15
+Ligue 1,2021-2022,16,FC Metz,91.05
+Ligue 1,2021-2022,17,Angers SCO,89.5
+Ligue 1,2021-2022,18,ESTAC Troyes,73.2
+Ligue 1,2021-2022,19,FC Lorient,61.3
+Ligue 1,2021-2022,20,Clermont Foot 63,55.1
+Premier League,2021-2022,1,Manchester City,1000
+Premier League,2021-2022,2,Liverpool FC,918.9
+Premier League,2021-2022,3,Chelsea FC,914.5
+Premier League,2021-2022,4,Manchester United,769.15
+Premier League,2021-2022,5,Tottenham Hotspur,689.35
+Premier League,2021-2022,6,Arsenal FC,613.05
+Premier League,2021-2022,7,Leicester City,526.55
+Premier League,2021-2022,8,Aston Villa,487.75
+Premier League,2021-2022,9,Everton FC,479.05
+Premier League,2021-2022,10,Wolverhampton Wanderers,376.95
+Premier League,2021-2022,11,West Ham United,354.9
+Premier League,2021-2022,12,Brighton & Hove Albion,318
+Premier League,2021-2022,13,Newcastle United,313.9
+Premier League,2021-2022,14,Leeds United,299.45
+Premier League,2021-2022,15,Southampton FC,274.3
+Premier League,2021-2022,16,Brentford FC,273.3
+Premier League,2021-2022,17,Crystal Palace,271.05
+Premier League,2021-2022,18,Norwich City,163.2
+Premier League,2021-2022,19,Watford FC,156.2
+Premier League,2021-2022,20,Burnley FC,137.85
+Serie A,2021-2022,1,Juventus FC,642.5
+Serie A,2021-2022,2,Inter Milan,558.55
+Serie A,2021-2022,3,AC Milan,546.95
+Serie A,2021-2022,4,SSC Napoli,477.23
+Serie A,2021-2022,5,Atalanta BC,398.75
+Serie A,2021-2022,6,AS Roma,381.25
+Serie A,2021-2022,7,ACF Fiorentina,325.8
+Serie A,2021-2022,8,SS Lazio,264.53
+Serie A,2021-2022,9,US Sassuolo,251
+Serie A,2021-2022,10,Torino FC,223.4
+Serie A,2021-2022,11,Bologna FC 1909,186.2
+Serie A,2021-2022,12,Hellas Verona,162.98
+Serie A,2021-2022,13,Udinese Calcio,142.3
+Serie A,2021-2022,14,Cagliari Calcio,134.53
+Serie A,2021-2022,15,UC Sampdoria,128.55
+Serie A,2021-2022,16,FC Empoli,126.5
+Serie A,2021-2022,17,Genoa CFC,121.28
+Serie A,2021-2022,18,Venezia FC,80.98
+Serie A,2021-2022,19,Spezia Calcio,78.5
+Serie A,2021-2022,20,US Salernitana 1919,70.56

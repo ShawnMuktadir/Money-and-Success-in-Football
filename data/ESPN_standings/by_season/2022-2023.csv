@@ -1,0 +1,99 @@
+League,Season,League_Position,Team,Points,W,D,L,GF,GA
+Bundesliga,2022-2023,1,Bayern Munich,71,21,8,5,92,38
+Bundesliga,2022-2023,2,Borussia Dortmund,71,22,5,7,83,44
+Bundesliga,2022-2023,3,RB Leipzig,66,20,6,8,64,41
+Bundesliga,2022-2023,4,1. FC Union Berlin,62,18,8,8,51,38
+Bundesliga,2022-2023,5,SC Freiburg,59,17,8,9,51,44
+Bundesliga,2022-2023,6,Bayer Leverkusen,50,14,8,12,57,49
+Bundesliga,2022-2023,7,Eintracht Frankfurt,50,13,11,10,58,52
+Bundesliga,2022-2023,8,VfL Wolfsburg,49,13,10,11,57,48
+Bundesliga,2022-2023,9,Mainz,46,12,10,12,54,55
+Bundesliga,2022-2023,10,Borussia Mönchengladbach,43,11,10,13,52,55
+Bundesliga,2022-2023,11,FC Cologne,42,10,12,12,49,54
+Bundesliga,2022-2023,12,TSG Hoffenheim,36,10,6,18,48,57
+Bundesliga,2022-2023,13,Werder Bremen,36,10,6,18,51,64
+Bundesliga,2022-2023,14,VfL Bochum,35,10,5,19,40,72
+Bundesliga,2022-2023,15,FC Augsburg,34,9,7,18,42,63
+Bundesliga,2022-2023,16,VfB Stuttgart,33,7,12,15,45,57
+Bundesliga,2022-2023,17,Schalke 04,31,7,10,17,35,71
+Bundesliga,2022-2023,18,Hertha Berlin,29,7,8,19,42,69
+La Liga,2022-2023,1,Barcelona,88,28,4,6,70,20
+La Liga,2022-2023,2,Real Madrid,78,24,6,8,75,36
+La Liga,2022-2023,3,Atlético Madrid,77,23,8,7,70,33
+La Liga,2022-2023,4,Real Sociedad,71,21,8,9,51,35
+La Liga,2022-2023,5,Villarreal,64,19,7,12,59,40
+La Liga,2022-2023,6,Real Betis,60,17,9,12,46,41
+La Liga,2022-2023,7,Osasuna,53,15,8,15,37,42
+La Liga,2022-2023,8,Athletic Club,51,14,9,15,47,43
+La Liga,2022-2023,9,Mallorca,50,14,8,16,37,43
+La Liga,2022-2023,10,Girona,49,13,10,15,58,55
+La Liga,2022-2023,11,Rayo Vallecano,49,13,10,15,45,53
+La Liga,2022-2023,12,Sevilla,49,13,10,15,47,54
+La Liga,2022-2023,13,Celta Vigo,43,11,10,17,43,53
+La Liga,2022-2023,14,Cádiz,42,10,12,16,30,53
+La Liga,2022-2023,15,Getafe,42,10,12,16,34,45
+La Liga,2022-2023,16,Valencia,42,11,9,18,42,45
+La Liga,2022-2023,17,Almería,41,11,8,19,49,65
+La Liga,2022-2023,18,Real Valladolid,40,11,7,20,33,63
+La Liga,2022-2023,19,Espanyol,37,8,13,17,52,69
+La Liga,2022-2023,20,Elche,25,5,10,23,30,67
+Ligue 1,2022-2023,1,Paris Saint-Germain,85,27,4,7,89,40
+Ligue 1,2022-2023,2,Lens,84,25,9,4,68,29
+Ligue 1,2022-2023,3,Marseille,73,22,7,9,67,40
+Ligue 1,2022-2023,4,Stade Rennais,68,21,5,12,69,39
+Ligue 1,2022-2023,5,Lille,67,19,10,9,65,44
+Ligue 1,2022-2023,6,AS Monaco,65,19,8,11,70,58
+Ligue 1,2022-2023,7,Lyon,62,18,8,12,65,47
+Ligue 1,2022-2023,8,Clermont Foot,59,17,8,13,45,49
+Ligue 1,2022-2023,9,Nice,58,15,13,10,48,37
+Ligue 1,2022-2023,10,Lorient,55,15,10,13,52,53
+Ligue 1,2022-2023,11,Stade de Reims,51,12,15,11,45,45
+Ligue 1,2022-2023,12,Montpellier,50,15,5,18,65,62
+Ligue 1,2022-2023,13,Toulouse,48,13,9,16,51,57
+Ligue 1,2022-2023,14,Brest,44,11,11,16,44,54
+Ligue 1,2022-2023,15,Strasbourg,40,9,13,16,51,59
+Ligue 1,2022-2023,16,Nantes,36,7,15,16,37,55
+Ligue 1,2022-2023,17,AJ Auxerre,35,8,11,19,35,63
+Ligue 1,2022-2023,18,AC Ajaccio,26,7,5,26,23,74
+Ligue 1,2022-2023,19,Troyes,24,4,12,22,45,81
+Ligue 1,2022-2023,20,Angers,18,4,6,28,33,81
+Premier League,2022-2023,1,Manchester City,89,28,5,5,94,33
+Premier League,2022-2023,2,Arsenal,84,26,6,6,88,43
+Premier League,2022-2023,3,Manchester United,75,23,6,9,58,43
+Premier League,2022-2023,4,Newcastle United,71,19,14,5,68,33
+Premier League,2022-2023,5,Liverpool,67,19,10,9,75,47
+Premier League,2022-2023,6,Brighton & Hove Albion,62,18,8,12,72,53
+Premier League,2022-2023,7,Aston Villa,61,18,7,13,51,46
+Premier League,2022-2023,8,Tottenham Hotspur,60,18,6,14,70,63
+Premier League,2022-2023,9,Brentford,59,15,14,9,58,46
+Premier League,2022-2023,10,Fulham,52,15,7,16,55,53
+Premier League,2022-2023,11,Crystal Palace,45,11,12,15,40,49
+Premier League,2022-2023,12,Chelsea,44,11,11,16,38,47
+Premier League,2022-2023,13,Wolverhampton Wanderers,41,11,8,19,31,58
+Premier League,2022-2023,14,West Ham United,40,11,7,20,42,55
+Premier League,2022-2023,15,AFC Bournemouth,39,11,6,21,37,71
+Premier League,2022-2023,16,Nottingham Forest,38,9,11,18,38,68
+Premier League,2022-2023,17,Everton,36,8,12,18,34,57
+Premier League,2022-2023,18,Leicester City,34,9,7,22,51,68
+Premier League,2022-2023,19,Leeds United,31,7,10,21,48,78
+Premier League,2022-2023,20,Southampton,25,6,7,25,36,73
+Serie A,2022-2023,1,Napoli,90,28,6,4,77,28
+Serie A,2022-2023,2,Lazio,74,22,8,8,60,30
+Serie A,2022-2023,3,Internazionale,72,23,3,12,71,42
+Serie A,2022-2023,4,AC Milan,70,20,10,8,64,43
+Serie A,2022-2023,5,Atalanta,64,19,7,12,66,48
+Serie A,2022-2023,6,AS Roma,63,18,9,11,50,38
+Serie A,2022-2023,7,Juventus,62,22,6,10,56,33
+Serie A,2022-2023,8,Fiorentina,56,15,11,12,53,43
+Serie A,2022-2023,9,Bologna,54,14,12,12,53,49
+Serie A,2022-2023,10,Torino,53,14,11,13,42,41
+Serie A,2022-2023,11,Monza,52,14,10,14,48,52
+Serie A,2022-2023,12,Udinese,46,11,13,14,47,48
+Serie A,2022-2023,13,Sassuolo,45,12,9,17,47,61
+Serie A,2022-2023,14,Empoli,43,10,13,15,37,49
+Serie A,2022-2023,15,Salernitana,42,9,15,14,48,62
+Serie A,2022-2023,16,Lecce,36,8,12,18,33,46
+Serie A,2022-2023,17,Spezia,31,6,13,19,31,62
+Serie A,2022-2023,18,Hellas Verona,31,7,10,21,31,59
+Serie A,2022-2023,19,Cremonese,27,5,12,21,36,69
+Serie A,2022-2023,20,Sampdoria,19,3,10,25,24,71

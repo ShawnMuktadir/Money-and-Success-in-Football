@@ -1,0 +1,99 @@
+League,Season,League_Position,Team,Points,W,D,L,GF,GA
+Bundesliga,2019-2020,1,Bayern Munich,82,26,4,4,100,32
+Bundesliga,2019-2020,2,Borussia Dortmund,69,21,6,7,84,41
+Bundesliga,2019-2020,3,RB Leipzig,66,18,12,4,81,37
+Bundesliga,2019-2020,4,Borussia Mönchengladbach,65,20,5,9,66,40
+Bundesliga,2019-2020,5,Bayer Leverkusen,63,19,6,9,61,44
+Bundesliga,2019-2020,6,TSG Hoffenheim,52,15,7,12,53,53
+Bundesliga,2019-2020,7,VfL Wolfsburg,49,13,10,11,48,46
+Bundesliga,2019-2020,8,SC Freiburg,48,13,9,12,48,47
+Bundesliga,2019-2020,9,Eintracht Frankfurt,45,13,6,15,59,60
+Bundesliga,2019-2020,10,Hertha Berlin,41,11,8,15,48,59
+Bundesliga,2019-2020,11,1. FC Union Berlin,41,12,5,17,41,58
+Bundesliga,2019-2020,12,Schalke 04,39,9,12,13,38,58
+Bundesliga,2019-2020,13,Mainz,37,11,4,19,44,65
+Bundesliga,2019-2020,14,FC Cologne,36,10,6,18,51,69
+Bundesliga,2019-2020,15,FC Augsburg,36,9,9,16,45,63
+Bundesliga,2019-2020,16,Werder Bremen,31,8,7,19,42,69
+Bundesliga,2019-2020,17,Fortuna Düsseldorf,30,6,12,16,36,67
+Bundesliga,2019-2020,18,SC Paderborn 07,20,4,8,22,37,74
+La Liga,2019-2020,1,Real Madrid,87,26,9,3,70,25
+La Liga,2019-2020,2,Barcelona,82,25,7,6,86,38
+La Liga,2019-2020,3,Atlético Madrid,70,18,16,4,51,27
+La Liga,2019-2020,4,Sevilla,70,19,13,6,54,34
+La Liga,2019-2020,5,Villarreal,60,18,6,14,63,49
+La Liga,2019-2020,6,Real Sociedad,56,16,8,14,56,48
+La Liga,2019-2020,7,Granada,56,16,8,14,52,45
+La Liga,2019-2020,8,Getafe,54,14,12,12,43,37
+La Liga,2019-2020,9,Valencia,53,14,11,13,46,53
+La Liga,2019-2020,10,Osasuna,52,13,13,12,46,54
+La Liga,2019-2020,11,Athletic Club,51,13,12,13,41,38
+La Liga,2019-2020,12,Levante,49,14,7,17,47,53
+La Liga,2019-2020,13,Real Valladolid,42,9,15,14,32,43
+La Liga,2019-2020,14,Eibar,42,11,9,18,39,56
+La Liga,2019-2020,15,Real Betis,41,10,11,17,48,60
+La Liga,2019-2020,16,Alavés,39,10,9,19,34,59
+La Liga,2019-2020,17,Celta Vigo,37,7,16,15,37,49
+La Liga,2019-2020,18,Leganés,36,8,12,18,30,51
+La Liga,2019-2020,19,Mallorca,33,9,6,23,40,65
+La Liga,2019-2020,20,Espanyol,25,5,10,23,27,58
+Ligue 1,2019-2020,1,Paris Saint-Germain,68,22,2,3,75,24
+Ligue 1,2019-2020,2,Marseille,56,16,8,4,41,29
+Ligue 1,2019-2020,3,Stade Rennais,50,15,5,8,38,24
+Ligue 1,2019-2020,4,Lille,49,15,4,9,35,27
+Ligue 1,2019-2020,5,Nice,41,11,8,9,41,38
+Ligue 1,2019-2020,6,Stade de Reims,41,10,11,7,26,21
+Ligue 1,2019-2020,7,Lyon,40,11,7,10,42,27
+Ligue 1,2019-2020,8,Montpellier,40,11,7,10,35,34
+Ligue 1,2019-2020,9,AS Monaco,40,11,7,10,44,44
+Ligue 1,2019-2020,10,Strasbourg,38,11,5,11,32,32
+Ligue 1,2019-2020,11,Angers,39,11,6,11,28,33
+Ligue 1,2019-2020,12,Bordeaux,37,9,10,9,40,34
+Ligue 1,2019-2020,13,Nantes,37,11,4,13,28,31
+Ligue 1,2019-2020,14,Brest,34,8,10,10,34,37
+Ligue 1,2019-2020,15,Metz,34,8,10,10,27,35
+Ligue 1,2019-2020,16,Dijon FCO,30,7,9,12,27,37
+Ligue 1,2019-2020,17,Saint-Étienne,30,8,6,14,29,45
+Ligue 1,2019-2020,18,Nimes,27,7,6,15,29,44
+Ligue 1,2019-2020,19,SC Amiens,23,4,11,13,31,50
+Ligue 1,2019-2020,20,Toulouse,13,3,4,21,22,58
+Premier League,2019-2020,1,Liverpool,99,32,3,3,85,33
+Premier League,2019-2020,2,Manchester City,81,26,3,9,102,35
+Premier League,2019-2020,3,Manchester United,66,18,12,8,66,36
+Premier League,2019-2020,4,Chelsea,66,20,6,12,69,54
+Premier League,2019-2020,5,Leicester City,62,18,8,12,67,41
+Premier League,2019-2020,6,Tottenham Hotspur,59,16,11,11,61,47
+Premier League,2019-2020,7,Wolverhampton Wanderers,59,15,14,9,51,40
+Premier League,2019-2020,8,Arsenal,56,14,14,10,56,48
+Premier League,2019-2020,9,Sheffield United,54,14,12,12,39,39
+Premier League,2019-2020,10,Burnley,54,15,9,14,43,50
+Premier League,2019-2020,11,Southampton,52,15,7,16,51,60
+Premier League,2019-2020,12,Everton,49,13,10,15,44,56
+Premier League,2019-2020,13,Newcastle United,44,11,11,16,38,58
+Premier League,2019-2020,14,Crystal Palace,43,11,10,17,31,50
+Premier League,2019-2020,15,Brighton & Hove Albion,41,9,14,15,39,54
+Premier League,2019-2020,16,West Ham United,39,10,9,19,49,62
+Premier League,2019-2020,17,Aston Villa,35,9,8,21,41,67
+Premier League,2019-2020,18,AFC Bournemouth,34,9,7,22,40,65
+Premier League,2019-2020,19,Watford,34,8,10,20,36,64
+Premier League,2019-2020,20,Norwich City,21,5,6,27,26,75
+Serie A,2019-2020,1,Juventus,83,26,5,7,76,43
+Serie A,2019-2020,2,Internazionale,82,24,10,4,81,36
+Serie A,2019-2020,3,Atalanta,78,23,9,6,98,48
+Serie A,2019-2020,4,Lazio,78,24,6,8,79,42
+Serie A,2019-2020,5,AS Roma,70,21,7,10,77,51
+Serie A,2019-2020,6,AC Milan,66,19,9,10,63,46
+Serie A,2019-2020,7,Napoli,62,18,8,12,61,50
+Serie A,2019-2020,8,Sassuolo,51,14,9,15,69,63
+Serie A,2019-2020,9,Hellas Verona,49,12,13,13,47,51
+Serie A,2019-2020,10,Fiorentina,49,12,13,13,51,48
+Serie A,2019-2020,11,Parma,49,14,7,17,56,57
+Serie A,2019-2020,12,Bologna,47,12,11,15,52,65
+Serie A,2019-2020,13,Udinese,45,12,9,17,37,51
+Serie A,2019-2020,14,Cagliari,45,11,12,15,52,56
+Serie A,2019-2020,15,Sampdoria,42,12,6,20,48,65
+Serie A,2019-2020,16,Torino,40,11,7,20,46,68
+Serie A,2019-2020,17,Genoa,39,10,9,19,47,73
+Serie A,2019-2020,18,Lecce,35,9,8,21,52,85
+Serie A,2019-2020,19,Brescia,25,6,7,25,35,79
+Serie A,2019-2020,20,SPAL,20,5,5,28,27,77

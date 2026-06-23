@@ -1,0 +1,99 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2019-2020,1,Bayern Munich,777.33
+Bundesliga,2019-2020,2,Borussia Dortmund,654.05
+Bundesliga,2019-2020,3,RB Leipzig,570.48
+Bundesliga,2019-2020,4,Bayer 04 Leverkusen,398.95
+Bundesliga,2019-2020,5,Borussia Mönchengladbach,254.7
+Bundesliga,2019-2020,6,TSG 1899 Hoffenheim,226.05
+Bundesliga,2019-2020,7,FC Schalke 04,221.58
+Bundesliga,2019-2020,8,Hertha BSC,217.2
+Bundesliga,2019-2020,9,Eintracht Frankfurt,208.98
+Bundesliga,2019-2020,10,VfL Wolfsburg,207.6
+Bundesliga,2019-2020,11,SV Werder Bremen,135.13
+Bundesliga,2019-2020,12,SC Freiburg,122.65
+Bundesliga,2019-2020,13,1.FSV Mainz 05,121.58
+Bundesliga,2019-2020,14,FC Augsburg,112.95
+Bundesliga,2019-2020,15,1.FC Köln,98.48
+Bundesliga,2019-2020,16,Fortuna Düsseldorf,71.78
+Bundesliga,2019-2020,17,1.FC Union Berlin,41.2
+Bundesliga,2019-2020,18,SC Paderborn 07,28.9
+La Liga,2019-2020,1,FC Barcelona,930.28
+La Liga,2019-2020,2,Real Madrid,913.75
+La Liga,2019-2020,3,Atlético de Madrid,720.15
+La Liga,2019-2020,4,Valencia CF,427.8
+La Liga,2019-2020,5,Real Sociedad,347.55
+La Liga,2019-2020,6,Sevilla FC,294.75
+La Liga,2019-2020,7,Real Betis Balompié,244.35
+La Liga,2019-2020,8,Athletic Bilbao,211.75
+La Liga,2019-2020,9,Villarreal CF,208.68
+La Liga,2019-2020,10,Getafe CF,175.45
+La Liga,2019-2020,11,Celta de Vigo,167
+La Liga,2019-2020,12,RCD Espanyol Barcelona,156.05
+La Liga,2019-2020,13,CD Leganés,109.7
+La Liga,2019-2020,14,Deportivo Alavés,106.75
+La Liga,2019-2020,15,Levante UD,90.5
+La Liga,2019-2020,16,Real Valladolid CF,87.78
+La Liga,2019-2020,17,RCD Mallorca,64.68
+La Liga,2019-2020,18,CA Osasuna,62.78
+La Liga,2019-2020,19,Granada CF,56.58
+La Liga,2019-2020,20,SD Eibar,53.75
+Ligue 1,2019-2020,1,Paris Saint-Germain,874.15
+Ligue 1,2019-2020,2,Olympique Lyon,384.55
+Ligue 1,2019-2020,3,AS Monaco,331.03
+Ligue 1,2019-2020,4,LOSC Lille,247.78
+Ligue 1,2019-2020,5,Olympique Marseille,216.15
+Ligue 1,2019-2020,6,OGC Nice,173.45
+Ligue 1,2019-2020,7,Stade Rennais FC,171.88
+Ligue 1,2019-2020,8,FC Girondins Bordeaux,125.35
+Ligue 1,2019-2020,9,FC Nantes,106.15
+Ligue 1,2019-2020,10,AS Saint-Étienne,104.83
+Ligue 1,2019-2020,11,RC Strasbourg Alsace,91.13
+Ligue 1,2019-2020,12,Angers SCO,89.48
+Ligue 1,2019-2020,13,Montpellier HSC,81.68
+Ligue 1,2019-2020,13,Stade Reims,81.68
+Ligue 1,2019-2020,15,FC Toulouse,71.88
+Ligue 1,2019-2020,16,Amiens SC,61.93
+Ligue 1,2019-2020,17,FC Metz,54.1
+Ligue 1,2019-2020,18,Dijon FCO,50.23
+Ligue 1,2019-2020,19,Nîmes Olympique,49.65
+Ligue 1,2019-2020,20,Stade Brestois 29,47.78
+Premier League,2019-2020,1,Manchester City,1050
+Premier League,2019-2020,2,Liverpool FC,1000
+Premier League,2019-2020,3,Tottenham Hotspur,806.8
+Premier League,2019-2020,4,Chelsea FC,705.85
+Premier League,2019-2020,5,Manchester United,670.45
+Premier League,2019-2020,6,Arsenal FC,607.65
+Premier League,2019-2020,7,Everton FC,420.55
+Premier League,2019-2020,8,Leicester City,411.1
+Premier League,2019-2020,9,Wolverhampton Wanderers,320.33
+Premier League,2019-2020,10,West Ham United,303.6
+Premier League,2019-2020,11,AFC Bournemouth,272.18
+Premier League,2019-2020,12,Newcastle United,252.48
+Premier League,2019-2020,13,Aston Villa,231.7
+Premier League,2019-2020,14,Southampton FC,210.75
+Premier League,2019-2020,15,Brighton & Hove Albion,200.78
+Premier League,2019-2020,16,Watford FC,199.6
+Premier League,2019-2020,17,Crystal Palace,189.33
+Premier League,2019-2020,18,Burnley FC,163.88
+Premier League,2019-2020,19,Norwich City,145.33
+Premier League,2019-2020,20,Sheffield United,138.6
+Serie A,2019-2020,1,Juventus FC,661.88
+Serie A,2019-2020,2,Inter Milan,606.05
+Serie A,2019-2020,3,SSC Napoli,548.28
+Serie A,2019-2020,4,AC Milan,404.33
+Serie A,2019-2020,5,AS Roma,392.73
+Serie A,2019-2020,6,SS Lazio,303.88
+Serie A,2019-2020,7,ACF Fiorentina,302.23
+Serie A,2019-2020,8,Atalanta BC,291.43
+Serie A,2019-2020,9,US Sassuolo,167.98
+Serie A,2019-2020,10,Cagliari Calcio,167.83
+Serie A,2019-2020,11,Torino FC,163.55
+Serie A,2019-2020,12,Genoa CFC,142.38
+Serie A,2019-2020,13,UC Sampdoria,135.28
+Serie A,2019-2020,14,Bologna FC 1909,129.65
+Serie A,2019-2020,15,Parma Calcio 1913,128.75
+Serie A,2019-2020,16,Udinese Calcio,121.08
+Serie A,2019-2020,17,Hellas Verona,112.53
+Serie A,2019-2020,18,Brescia Calcio (- 2025),83.23
+Serie A,2019-2020,19,SPAL,73.63
+Serie A,2019-2020,20,US Lecce,52.33

@@ -1,0 +1,9 @@
+Model,Type,Formula,LogLik,AIC,BIC,N
+D,OLS,Pos ~ Log_Norm_Value + League + Season_Index,-2574.13,5164.26,5203.31,975
+F,Logit,Champion ~ Log_Norm_Value + League,-80.56,173.13,202.42,975
+G,OLS,Pos ~ Financial_Rank * League,-2544.33,5110.66,5164.37,975
+H,OLS,Pos ~ Financial_Rank + Financial_Rank^2,-2531.26,5070.52,5090.05,975
+I,OLS,Pos ~ Financial_Rank * Season_Index,-2546.68,5103.36,5127.78,975
+J,Logit,Top4 ~ Financial_Rank,-201.42,406.84,416.6,975
+J2,Logit,Top4 ~ Log_Norm_Value + League,-203.59,419.18,448.48,975
+K,Ordinal Logit,Position_Tier ~ Financial_Rank + League,-1011.86,2041.72,2085.66,975

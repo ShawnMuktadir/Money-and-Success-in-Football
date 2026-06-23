@@ -1,0 +1,99 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2020-2021,1,Bayern Munich,858.23
+Bundesliga,2020-2021,2,Borussia Dortmund,628.4
+Bundesliga,2020-2021,3,RB Leipzig,574.95
+Bundesliga,2020-2021,4,Bayer 04 Leverkusen,373.25
+Bundesliga,2020-2021,5,Borussia Mönchengladbach,300.75
+Bundesliga,2020-2021,6,Eintracht Frankfurt,269.15
+Bundesliga,2020-2021,7,VfL Wolfsburg,256.83
+Bundesliga,2020-2021,8,Hertha BSC,228.88
+Bundesliga,2020-2021,9,TSG 1899 Hoffenheim,228.15
+Bundesliga,2020-2021,10,VfB Stuttgart,189.25
+Bundesliga,2020-2021,11,1.FSV Mainz 05,163.3
+Bundesliga,2020-2021,12,SC Freiburg,139.1
+Bundesliga,2020-2021,13,FC Schalke 04,123.05
+Bundesliga,2020-2021,14,1.FC Köln,118.2
+Bundesliga,2020-2021,15,SV Werder Bremen,111.98
+Bundesliga,2020-2021,16,FC Augsburg,93.05
+Bundesliga,2020-2021,17,1.FC Union Berlin,82.05
+Bundesliga,2020-2021,18,Arminia Bielefeld,56.73
+La Liga,2020-2021,1,FC Barcelona,813.5
+La Liga,2020-2021,2,Real Madrid,787.3
+La Liga,2020-2021,3,Atlético de Madrid,773.1
+La Liga,2020-2021,4,Sevilla FC,418.25
+La Liga,2020-2021,5,Real Sociedad,406.6
+La Liga,2020-2021,6,Villarreal CF,292.6
+La Liga,2020-2021,7,Valencia CF,278.85
+La Liga,2020-2021,8,Real Betis Balompié,207.7
+La Liga,2020-2021,9,Athletic Bilbao,204.15
+La Liga,2020-2021,10,Getafe CF,170.1
+La Liga,2020-2021,11,Celta de Vigo,155.85
+La Liga,2020-2021,12,Granada CF,122.65
+La Liga,2020-2021,13,Levante UD,113
+La Liga,2020-2021,14,CA Osasuna,96.75
+La Liga,2020-2021,15,SD Eibar,83.4
+La Liga,2020-2021,16,Deportivo Alavés,79.8
+La Liga,2020-2021,17,SD Huesca,64.1
+La Liga,2020-2021,18,Real Valladolid CF,63.35
+La Liga,2020-2021,19,Cádiz CF,47.65
+La Liga,2020-2021,20,Elche CF,45.65
+Ligue 1,2020-2021,1,Paris Saint-Germain,805
+Ligue 1,2020-2021,2,Olympique Lyon,431.35
+Ligue 1,2020-2021,3,AS Monaco,370.35
+Ligue 1,2020-2021,4,LOSC Lille,323.2
+Ligue 1,2020-2021,5,Stade Rennais FC,297.5
+Ligue 1,2020-2021,6,Olympique Marseille,247.95
+Ligue 1,2020-2021,7,OGC Nice,236.1
+Ligue 1,2020-2021,8,AS Saint-Étienne,154.5
+Ligue 1,2020-2021,9,Montpellier HSC,113.85
+Ligue 1,2020-2021,10,Angers SCO,111.65
+Ligue 1,2020-2021,11,RC Strasbourg Alsace,109.65
+Ligue 1,2020-2021,12,FC Girondins Bordeaux,105.7
+Ligue 1,2020-2021,13,Stade Reims,105.18
+Ligue 1,2020-2021,14,RC Lens,104.3
+Ligue 1,2020-2021,15,FC Metz,103.5
+Ligue 1,2020-2021,16,Stade Brestois 29,103.23
+Ligue 1,2020-2021,17,FC Nantes,94.75
+Ligue 1,2020-2021,18,FC Lorient,72.88
+Ligue 1,2020-2021,19,Dijon FCO,65.63
+Ligue 1,2020-2021,20,Nîmes Olympique,60.4
+Premier League,2020-2021,1,Manchester City,1040
+Premier League,2020-2021,2,Liverpool FC,969.65
+Premier League,2020-2021,3,Chelsea FC,889.2
+Premier League,2020-2021,4,Manchester United,770.05
+Premier League,2020-2021,5,Tottenham Hotspur,703.5
+Premier League,2020-2021,6,Arsenal FC,619.25
+Premier League,2020-2021,7,Everton FC,511.2
+Premier League,2020-2021,8,Leicester City,510.6
+Premier League,2020-2021,9,Wolverhampton Wanderers,450.3
+Premier League,2020-2021,10,Aston Villa,430.7
+Premier League,2020-2021,11,West Ham United,336.4
+Premier League,2020-2021,12,Brighton & Hove Albion,290.4
+Premier League,2020-2021,13,Southampton FC,282.8
+Premier League,2020-2021,14,Newcastle United,255.35
+Premier League,2020-2021,15,Fulham FC,239.75
+Premier League,2020-2021,16,Leeds United,238.1
+Premier League,2020-2021,17,Crystal Palace,193.85
+Premier League,2020-2021,18,Sheffield United,149.85
+Premier League,2020-2021,19,West Bromwich Albion,141.15
+Premier League,2020-2021,20,Burnley FC,132.3
+Serie A,2020-2021,1,Inter Milan,663.9
+Serie A,2020-2021,2,Juventus FC,633.3
+Serie A,2020-2021,3,AC Milan,547.78
+Serie A,2020-2021,4,SSC Napoli,530.2
+Serie A,2020-2021,5,Atalanta BC,430
+Serie A,2020-2021,6,AS Roma,395.65
+Serie A,2020-2021,7,SS Lazio,326.33
+Serie A,2020-2021,8,ACF Fiorentina,286.8
+Serie A,2020-2021,9,US Sassuolo,241.74
+Serie A,2020-2021,10,Cagliari Calcio,187.83
+Serie A,2020-2021,11,Torino FC,175.28
+Serie A,2020-2021,12,Udinese Calcio,173
+Serie A,2020-2021,13,Hellas Verona,157.21
+Serie A,2020-2021,14,Bologna FC 1909,153.6
+Serie A,2020-2021,15,Parma Calcio 1913,128.7
+Serie A,2020-2021,16,UC Sampdoria,127.18
+Serie A,2020-2021,17,Genoa CFC,111.93
+Serie A,2020-2021,18,Spezia Calcio,71.68
+Serie A,2020-2021,19,FC Crotone,52.75
+Serie A,2020-2021,20,Benevento Calcio,50.13

@@ -1,0 +1,99 @@
+League,Season,League_Position,Team,Points,W,D,L,GF,GA
+Bundesliga,2017-2018,1,Bayern Munich,84,27,3,4,92,28
+Bundesliga,2017-2018,2,Schalke 04,63,18,9,7,53,37
+Bundesliga,2017-2018,3,TSG Hoffenheim,55,15,10,9,66,48
+Bundesliga,2017-2018,4,Borussia Dortmund,55,15,10,9,64,47
+Bundesliga,2017-2018,5,Bayer Leverkusen,55,15,10,9,58,44
+Bundesliga,2017-2018,6,RB Leipzig,53,15,8,11,57,53
+Bundesliga,2017-2018,7,VfB Stuttgart,51,15,6,13,36,36
+Bundesliga,2017-2018,8,Eintracht Frankfurt,49,14,7,13,45,45
+Bundesliga,2017-2018,9,Borussia Mönchengladbach,47,13,8,13,47,52
+Bundesliga,2017-2018,10,Hertha Berlin,43,10,13,11,43,46
+Bundesliga,2017-2018,11,Werder Bremen,42,10,12,12,37,40
+Bundesliga,2017-2018,12,FC Augsburg,41,10,11,13,43,46
+Bundesliga,2017-2018,13,Hannover 96,39,10,9,15,44,54
+Bundesliga,2017-2018,14,Mainz,36,9,9,16,38,52
+Bundesliga,2017-2018,15,SC Freiburg,36,8,12,14,32,56
+Bundesliga,2017-2018,16,VfL Wolfsburg,33,6,15,13,36,48
+Bundesliga,2017-2018,17,Hamburg SV,31,8,7,19,29,53
+Bundesliga,2017-2018,18,FC Cologne,22,5,7,22,35,70
+La Liga,2017-2018,1,Barcelona,93,28,9,1,99,29
+La Liga,2017-2018,2,Atlético Madrid,79,23,10,5,58,22
+La Liga,2017-2018,3,Real Madrid,76,22,10,6,94,44
+La Liga,2017-2018,4,Valencia,73,22,7,9,65,38
+La Liga,2017-2018,5,Villarreal,61,18,7,13,57,50
+La Liga,2017-2018,6,Real Betis,60,18,6,14,60,61
+La Liga,2017-2018,7,Sevilla,58,17,7,14,49,58
+La Liga,2017-2018,8,Getafe,55,15,10,13,42,33
+La Liga,2017-2018,9,Eibar,51,14,9,15,44,50
+La Liga,2017-2018,10,Girona,51,14,9,15,50,59
+La Liga,2017-2018,11,Espanyol,49,12,13,13,36,42
+La Liga,2017-2018,12,Real Sociedad,49,14,7,17,66,59
+La Liga,2017-2018,13,Celta Vigo,49,13,10,15,59,60
+La Liga,2017-2018,14,Alavés,47,15,2,21,40,50
+La Liga,2017-2018,15,Levante,46,11,13,14,44,58
+La Liga,2017-2018,16,Athletic Club,43,10,13,15,41,49
+La Liga,2017-2018,17,Leganés,43,12,7,19,34,51
+La Liga,2017-2018,18,Deportivo La Coruña,29,6,11,21,38,76
+La Liga,2017-2018,19,Las Palmas,22,5,7,26,24,74
+La Liga,2017-2018,20,Málaga,20,5,5,28,24,61
+Ligue 1,2017-2018,1,Paris Saint-Germain,93,29,6,3,108,29
+Ligue 1,2017-2018,2,AS Monaco,80,24,8,6,85,45
+Ligue 1,2017-2018,3,Lyon,78,23,9,6,87,43
+Ligue 1,2017-2018,4,Marseille,77,22,11,5,80,47
+Ligue 1,2017-2018,5,Stade Rennais,58,16,10,12,50,44
+Ligue 1,2017-2018,6,Bordeaux,55,16,7,15,53,48
+Ligue 1,2017-2018,7,Saint-Étienne,55,15,10,13,47,50
+Ligue 1,2017-2018,8,Nice,54,15,9,14,53,52
+Ligue 1,2017-2018,9,Nantes,52,14,10,14,36,41
+Ligue 1,2017-2018,10,Montpellier,51,11,18,9,36,33
+Ligue 1,2017-2018,11,Dijon FCO,48,13,9,16,55,73
+Ligue 1,2017-2018,12,Guingamp,47,12,11,15,48,59
+Ligue 1,2017-2018,13,SC Amiens,45,12,9,17,37,42
+Ligue 1,2017-2018,14,Angers,41,9,14,15,42,52
+Ligue 1,2017-2018,15,Strasbourg,38,9,11,18,44,67
+Ligue 1,2017-2018,16,Caen,38,10,8,20,27,52
+Ligue 1,2017-2018,17,Lille,38,10,8,20,41,67
+Ligue 1,2017-2018,18,Toulouse,37,9,10,19,38,54
+Ligue 1,2017-2018,19,Troyes,33,9,6,23,32,59
+Ligue 1,2017-2018,20,Metz,26,6,8,24,34,76
+Premier League,2017-2018,1,Manchester City,100,32,4,2,106,27
+Premier League,2017-2018,2,Manchester United,81,25,6,7,68,28
+Premier League,2017-2018,3,Tottenham Hotspur,77,23,8,7,74,36
+Premier League,2017-2018,4,Liverpool,75,21,12,5,84,38
+Premier League,2017-2018,5,Chelsea,70,21,7,10,62,38
+Premier League,2017-2018,6,Arsenal,63,19,6,13,74,51
+Premier League,2017-2018,7,Burnley,54,14,12,12,36,39
+Premier League,2017-2018,8,Everton,49,13,10,15,44,58
+Premier League,2017-2018,9,Leicester City,47,12,11,15,56,60
+Premier League,2017-2018,10,Newcastle United,44,12,8,18,39,47
+Premier League,2017-2018,11,Crystal Palace,44,11,11,16,45,55
+Premier League,2017-2018,12,AFC Bournemouth,44,11,11,16,45,61
+Premier League,2017-2018,13,West Ham United,42,10,12,16,48,68
+Premier League,2017-2018,14,Watford,41,11,8,19,44,64
+Premier League,2017-2018,15,Brighton & Hove Albion,40,9,13,16,34,54
+Premier League,2017-2018,16,Huddersfield Town,37,9,10,19,28,58
+Premier League,2017-2018,17,Southampton,36,7,15,16,37,56
+Premier League,2017-2018,18,Swansea City,33,8,9,21,28,56
+Premier League,2017-2018,19,Stoke City,33,7,12,19,35,68
+Premier League,2017-2018,20,West Bromwich Albion,31,6,13,19,31,56
+Serie A,2017-2018,1,Juventus,95,30,5,3,86,24
+Serie A,2017-2018,2,Napoli,91,28,7,3,77,29
+Serie A,2017-2018,3,AS Roma,77,23,8,7,61,28
+Serie A,2017-2018,4,Internazionale,72,20,12,6,66,30
+Serie A,2017-2018,5,Lazio,72,21,9,8,89,49
+Serie A,2017-2018,6,AC Milan,64,18,10,10,56,42
+Serie A,2017-2018,7,Atalanta,60,16,12,10,57,39
+Serie A,2017-2018,8,Fiorentina,57,16,9,13,54,46
+Serie A,2017-2018,9,Torino,54,13,15,10,54,46
+Serie A,2017-2018,10,Sampdoria,54,16,6,16,56,60
+Serie A,2017-2018,11,Sassuolo,43,11,10,17,29,59
+Serie A,2017-2018,12,Genoa,41,11,8,19,33,43
+Serie A,2017-2018,13,Chievo Verona,40,10,10,18,36,59
+Serie A,2017-2018,14,Udinese,40,12,4,22,48,63
+Serie A,2017-2018,15,Bologna,39,11,6,21,40,52
+Serie A,2017-2018,16,Cagliari,39,11,6,21,33,61
+Serie A,2017-2018,17,SPAL,38,8,14,16,39,59
+Serie A,2017-2018,18,Crotone,35,9,8,21,40,66
+Serie A,2017-2018,19,Hellas Verona,25,7,4,27,30,78
+Serie A,2017-2018,20,Benevento,21,6,3,29,33,84

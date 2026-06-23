@@ -1,0 +1,99 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2016-2017,1,Bayern Munich,562.55
+Bundesliga,2016-2017,2,Borussia Dortmund,390.65
+Bundesliga,2016-2017,3,Bayer 04 Leverkusen,265.03
+Bundesliga,2016-2017,4,FC Schalke 04,217.25
+Bundesliga,2016-2017,5,VfL Wolfsburg,203.08
+Bundesliga,2016-2017,6,RB Leipzig,176.33
+Bundesliga,2016-2017,7,Borussia Mönchengladbach,162.18
+Bundesliga,2016-2017,8,TSG 1899 Hoffenheim,138.63
+Bundesliga,2016-2017,9,1.FC Köln,116.15
+Bundesliga,2016-2017,10,1.FSV Mainz 05,96.73
+Bundesliga,2016-2017,11,Hertha BSC,96.53
+Bundesliga,2016-2017,12,SV Werder Bremen,89.45
+Bundesliga,2016-2017,13,SC Freiburg,86.73
+Bundesliga,2016-2017,14,Hamburger SV,80.48
+Bundesliga,2016-2017,15,Eintracht Frankfurt,72.3
+Bundesliga,2016-2017,16,FC Augsburg,65.85
+Bundesliga,2016-2017,17,FC Ingolstadt 04,38.63
+Bundesliga,2016-2017,18,SV Darmstadt 98,25.98
+La Liga,2016-2017,1,Real Madrid,802.9
+La Liga,2016-2017,2,FC Barcelona,765.3
+La Liga,2016-2017,3,Atlético de Madrid,515.8
+La Liga,2016-2017,4,Sevilla FC,270.1
+La Liga,2016-2017,5,Valencia CF,257.5
+La Liga,2016-2017,6,Villarreal CF,190.7
+La Liga,2016-2017,7,Athletic Bilbao,172.6
+La Liga,2016-2017,8,Real Sociedad,156.45
+La Liga,2016-2017,9,Celta de Vigo,122.4
+La Liga,2016-2017,10,Deportivo de La Coruña,94
+La Liga,2016-2017,11,Deportivo Alavés,85.4
+La Liga,2016-2017,12,Málaga CF,84.3
+La Liga,2016-2017,12,UD Las Palmas,84.3
+La Liga,2016-2017,14,Real Betis Balompié,84.2
+La Liga,2016-2017,15,RCD Espanyol Barcelona,80.8
+La Liga,2016-2017,16,SD Eibar,67.95
+La Liga,2016-2017,17,Granada CF,66.45
+La Liga,2016-2017,18,CD Leganés,53.15
+La Liga,2016-2017,19,Sporting Gijón,46.75
+La Liga,2016-2017,20,CA Osasuna,42.9
+Ligue 1,2016-2017,1,Paris Saint-Germain,519
+Ligue 1,2016-2017,2,AS Monaco,309.55
+Ligue 1,2016-2017,3,Olympique Lyon,211.35
+Ligue 1,2016-2017,4,OGC Nice,132.8
+Ligue 1,2016-2017,5,Olympique Marseille,119.65
+Ligue 1,2016-2017,6,FC Girondins Bordeaux,88.9
+Ligue 1,2016-2017,7,AS Saint-Étienne,85.03
+Ligue 1,2016-2017,8,LOSC Lille,83.9
+Ligue 1,2016-2017,9,Stade Rennais FC,80.9
+Ligue 1,2016-2017,10,FC Toulouse,77.3
+Ligue 1,2016-2017,11,FC Lorient,61.1
+Ligue 1,2016-2017,12,Montpellier HSC,60.95
+Ligue 1,2016-2017,13,FC Nantes,50.9
+Ligue 1,2016-2017,14,Angers SCO,46.08
+Ligue 1,2016-2017,15,EA Guingamp,42.5
+Ligue 1,2016-2017,16,FC Metz,37.55
+Ligue 1,2016-2017,17,SM Caen,36.65
+Ligue 1,2016-2017,18,SC Bastia,36.45
+Ligue 1,2016-2017,19,AS Nancy-Lorraine,33.1
+Ligue 1,2016-2017,20,Dijon FCO,31.2
+Premier League,2016-2017,1,Chelsea FC,686.7
+Premier League,2016-2017,2,Manchester City,576.5
+Premier League,2016-2017,3,Tottenham Hotspur,543.65
+Premier League,2016-2017,4,Arsenal FC,542
+Premier League,2016-2017,5,Manchester United,531.45
+Premier League,2016-2017,6,Liverpool FC,425.65
+Premier League,2016-2017,7,Everton FC,311.25
+Premier League,2016-2017,8,West Ham United,273.05
+Premier League,2016-2017,9,Southampton FC,263.75
+Premier League,2016-2017,10,Crystal Palace,228.43
+Premier League,2016-2017,11,Leicester City,218.65
+Premier League,2016-2017,12,Stoke City,186
+Premier League,2016-2017,13,Watford FC,175.65
+Premier League,2016-2017,14,Swansea City,157.1
+Premier League,2016-2017,15,Hull City,135.85
+Premier League,2016-2017,16,Sunderland AFC,132
+Premier League,2016-2017,17,AFC Bournemouth,131.6
+Premier League,2016-2017,18,Middlesbrough FC,128.8
+Premier League,2016-2017,19,West Bromwich Albion,123.2
+Premier League,2016-2017,20,Burnley FC,107.18
+Serie A,2016-2017,1,Juventus FC,497.18
+Serie A,2016-2017,2,SSC Napoli,387.3
+Serie A,2016-2017,3,AS Roma,354.68
+Serie A,2016-2017,4,Inter Milan,328.3
+Serie A,2016-2017,5,AC Milan,254.33
+Serie A,2016-2017,6,SS Lazio,226.45
+Serie A,2016-2017,7,ACF Fiorentina,217.08
+Serie A,2016-2017,8,Torino FC,162.35
+Serie A,2016-2017,9,Atalanta BC,161.7
+Serie A,2016-2017,10,US Sassuolo,145.25
+Serie A,2016-2017,11,UC Sampdoria,117.58
+Serie A,2016-2017,12,Genoa CFC,108.18
+Serie A,2016-2017,13,Udinese Calcio,101.95
+Serie A,2016-2017,14,Bologna FC 1909,95
+Serie A,2016-2017,15,Cagliari Calcio,61.08
+Serie A,2016-2017,16,FC Empoli,55.45
+Serie A,2016-2017,17,Delfino Pescara 1936,48.1
+Serie A,2016-2017,18,Chievo Verona,45.88
+Serie A,2016-2017,19,US Palermo,41.1
+Serie A,2016-2017,20,FC Crotone,36.7

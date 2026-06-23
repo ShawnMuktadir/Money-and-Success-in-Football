@@ -1,0 +1,7 @@
+Model,Type,Formula,N,R2_McFadden,Adj_R2,AIC
+A,OLS,Pos ~ Financial_Rank,975,0.6602,0.6599,5099.82
+B,OLS,Pos ~ Financial_Rank + League,975,0.6604,0.6586,5107.36
+C,OLS,Pos ~ Log_Normalized_Value,975,0.5326,0.5322,5410.59
+D,OLS,Pos ~ Log_Norm_Value + League + Season_Index,975,0.6407,0.6385,5164.26
+E,Logit,Champion ~ Financial_Rank,975,0.5477,NA,182.41
+F,Logit,Champion ~ Log_Norm_Value + League,975,0.5915,NA,173.13

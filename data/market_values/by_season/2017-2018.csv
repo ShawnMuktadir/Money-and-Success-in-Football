@@ -1,0 +1,99 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2017-2018,1,Bayern Munich,811.85
+Bundesliga,2017-2018,2,Borussia Dortmund,574.2
+Bundesliga,2017-2018,3,RB Leipzig,373.3
+Bundesliga,2017-2018,4,Bayer 04 Leverkusen,357.35
+Bundesliga,2017-2018,5,FC Schalke 04,274.35
+Bundesliga,2017-2018,6,TSG 1899 Hoffenheim,212.75
+Bundesliga,2017-2018,7,Borussia Mönchengladbach,193.25
+Bundesliga,2017-2018,8,VfL Wolfsburg,143.6
+Bundesliga,2017-2018,9,VfB Stuttgart,134.7
+Bundesliga,2017-2018,10,Hertha BSC,131.45
+Bundesliga,2017-2018,11,Eintracht Frankfurt,126.15
+Bundesliga,2017-2018,12,SV Werder Bremen,107.15
+Bundesliga,2017-2018,13,SC Freiburg,100.6
+Bundesliga,2017-2018,14,FC Augsburg,100.45
+Bundesliga,2017-2018,15,1.FSV Mainz 05,98.35
+Bundesliga,2017-2018,16,Hannover 96,92.95
+Bundesliga,2017-2018,17,1.FC Köln,91.73
+Bundesliga,2017-2018,18,Hamburger SV,62.4
+La Liga,2017-2018,1,FC Barcelona,1090
+La Liga,2017-2018,2,Real Madrid,955.35
+La Liga,2017-2018,3,Atlético de Madrid,711.15
+La Liga,2017-2018,4,Valencia CF,398.05
+La Liga,2017-2018,5,Sevilla FC,253.2
+La Liga,2017-2018,6,Athletic Bilbao,249.4
+La Liga,2017-2018,7,Real Sociedad,232.95
+La Liga,2017-2018,8,Villarreal CF,220
+La Liga,2017-2018,9,Celta de Vigo,173.05
+La Liga,2017-2018,10,Real Betis Balompié,132.25
+La Liga,2017-2018,11,RCD Espanyol Barcelona,97.8
+La Liga,2017-2018,12,UD Las Palmas,91.25
+La Liga,2017-2018,13,Girona FC,81.75
+La Liga,2017-2018,14,Deportivo Alavés,74.8
+La Liga,2017-2018,15,Deportivo de La Coruña,66.45
+La Liga,2017-2018,16,Getafe CF,65.6
+La Liga,2017-2018,17,Levante UD,61.85
+La Liga,2017-2018,18,SD Eibar,60.05
+La Liga,2017-2018,19,CD Leganés,58.55
+La Liga,2017-2018,20,Málaga CF,55.2
+Ligue 1,2017-2018,1,Paris Saint-Germain,900.1
+Ligue 1,2017-2018,2,AS Monaco,529.8
+Ligue 1,2017-2018,3,Olympique Lyon,363.8
+Ligue 1,2017-2018,4,Olympique Marseille,236.8
+Ligue 1,2017-2018,5,OGC Nice,204.1
+Ligue 1,2017-2018,6,FC Girondins Bordeaux,155.45
+Ligue 1,2017-2018,7,Stade Rennais FC,131.25
+Ligue 1,2017-2018,8,FC Toulouse,110.45
+Ligue 1,2017-2018,9,AS Saint-Étienne,106.88
+Ligue 1,2017-2018,10,FC Nantes,105.7
+Ligue 1,2017-2018,11,LOSC Lille,96.75
+Ligue 1,2017-2018,12,Montpellier HSC,71.85
+Ligue 1,2017-2018,13,Dijon FCO,70.3
+Ligue 1,2017-2018,14,Amiens SC,69.85
+Ligue 1,2017-2018,15,Angers SCO,69.55
+Ligue 1,2017-2018,16,SM Caen,60.1
+Ligue 1,2017-2018,17,EA Guingamp,51.9
+Ligue 1,2017-2018,18,FC Metz,51.2
+Ligue 1,2017-2018,19,RC Strasbourg Alsace,45.6
+Ligue 1,2017-2018,20,ESTAC Troyes,45.05
+Premier League,2017-2018,1,Manchester City,1010
+Premier League,2017-2018,2,Chelsea FC,884.25
+Premier League,2017-2018,3,Liverpool FC,857.5
+Premier League,2017-2018,4,Manchester United,849.5
+Premier League,2017-2018,5,Tottenham Hotspur,829.6
+Premier League,2017-2018,6,Arsenal FC,694
+Premier League,2017-2018,7,Everton FC,381.25
+Premier League,2017-2018,8,Leicester City,304.25
+Premier League,2017-2018,9,Southampton FC,297
+Premier League,2017-2018,10,West Ham United,268.1
+Premier League,2017-2018,11,Crystal Palace,220.73
+Premier League,2017-2018,12,Newcastle United,208.28
+Premier League,2017-2018,13,Watford FC,196
+Premier League,2017-2018,14,Stoke City,192.45
+Premier League,2017-2018,15,Burnley FC,169.3
+Premier League,2017-2018,16,West Bromwich Albion,165.95
+Premier League,2017-2018,17,Swansea City,165.49
+Premier League,2017-2018,18,Brighton & Hove Albion,148.2
+Premier League,2017-2018,19,AFC Bournemouth,144.5
+Premier League,2017-2018,20,Huddersfield Town,106.05
+Serie A,2017-2018,1,Juventus FC,653.15
+Serie A,2017-2018,2,SSC Napoli,504.25
+Serie A,2017-2018,3,Inter Milan,487.28
+Serie A,2017-2018,4,AS Roma,469.1
+Serie A,2017-2018,5,SS Lazio,408.78
+Serie A,2017-2018,6,AC Milan,407.05
+Serie A,2017-2018,7,ACF Fiorentina,237.33
+Serie A,2017-2018,8,Atalanta BC,207.95
+Serie A,2017-2018,9,UC Sampdoria,190.45
+Serie A,2017-2018,10,Torino FC,175.53
+Serie A,2017-2018,11,Genoa CFC,135.13
+Serie A,2017-2018,12,US Sassuolo,126.78
+Serie A,2017-2018,13,Udinese Calcio,108.03
+Serie A,2017-2018,14,Bologna FC 1909,103.55
+Serie A,2017-2018,15,Cagliari Calcio,98.58
+Serie A,2017-2018,16,SPAL 2013,63.55
+Serie A,2017-2018,17,Benevento Calcio,57.83
+Serie A,2017-2018,18,Hellas Verona,56.5
+Serie A,2017-2018,19,Chievo Verona,55.23
+Serie A,2017-2018,20,FC Crotone,47.88

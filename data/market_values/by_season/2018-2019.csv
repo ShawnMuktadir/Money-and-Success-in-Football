@@ -1,0 +1,99 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2018-2019,1,Bayern Munich,784.88
+Bundesliga,2018-2019,2,Borussia Dortmund,643.25
+Bundesliga,2018-2019,3,RB Leipzig,479
+Bundesliga,2018-2019,4,Bayer 04 Leverkusen,429.4
+Bundesliga,2018-2019,5,TSG 1899 Hoffenheim,336.25
+Bundesliga,2018-2019,6,Eintracht Frankfurt,313.4
+Bundesliga,2018-2019,7,Borussia Mönchengladbach,264.3
+Bundesliga,2018-2019,8,VfL Wolfsburg,229.25
+Bundesliga,2018-2019,9,FC Schalke 04,221.3
+Bundesliga,2018-2019,10,Hertha BSC,207.63
+Bundesliga,2018-2019,11,SV Werder Bremen,168.05
+Bundesliga,2018-2019,12,1.FSV Mainz 05,159.73
+Bundesliga,2018-2019,13,VfB Stuttgart,143.75
+Bundesliga,2018-2019,14,FC Augsburg,139.25
+Bundesliga,2018-2019,15,SC Freiburg,122.1
+Bundesliga,2018-2019,16,Fortuna Düsseldorf,94.95
+Bundesliga,2018-2019,17,Hannover 96,91.43
+Bundesliga,2018-2019,18,1.FC Nuremberg,54.4
+La Liga,2018-2019,1,FC Barcelona,1160
+La Liga,2018-2019,2,Atlético de Madrid,969.7
+La Liga,2018-2019,3,Real Madrid,896.1
+La Liga,2018-2019,4,Valencia CF,499.65
+La Liga,2018-2019,5,Sevilla FC,306.3
+La Liga,2018-2019,6,Real Sociedad,300.95
+La Liga,2018-2019,7,Real Betis Balompié,290.75
+La Liga,2018-2019,8,Athletic Bilbao,234.25
+La Liga,2018-2019,9,Celta de Vigo,234.1
+La Liga,2018-2019,10,Villarreal CF,230.65
+La Liga,2018-2019,11,RCD Espanyol Barcelona,174.7
+La Liga,2018-2019,12,Getafe CF,132.2
+La Liga,2018-2019,13,CD Leganés,112.45
+La Liga,2018-2019,14,Deportivo Alavés,110.8
+La Liga,2018-2019,15,Levante UD,107.85
+La Liga,2018-2019,16,Girona FC,97.25
+La Liga,2018-2019,17,SD Eibar,93.9
+La Liga,2018-2019,18,Rayo Vallecano,86.7
+La Liga,2018-2019,19,Real Valladolid CF,83
+La Liga,2018-2019,20,SD Huesca,61.4
+Ligue 1,2018-2019,1,Paris Saint-Germain,1010
+Ligue 1,2018-2019,2,Olympique Lyon,467.95
+Ligue 1,2018-2019,3,AS Monaco,385.83
+Ligue 1,2018-2019,4,LOSC Lille,267.55
+Ligue 1,2018-2019,5,Olympique Marseille,258.35
+Ligue 1,2018-2019,6,OGC Nice,183.2
+Ligue 1,2018-2019,7,FC Girondins Bordeaux,179
+Ligue 1,2018-2019,8,Stade Rennais FC,168.45
+Ligue 1,2018-2019,9,AS Saint-Étienne,131.25
+Ligue 1,2018-2019,10,FC Nantes,119.5
+Ligue 1,2018-2019,11,FC Toulouse,113.25
+Ligue 1,2018-2019,12,Montpellier HSC,109.85
+Ligue 1,2018-2019,13,RC Strasbourg Alsace,98
+Ligue 1,2018-2019,14,Nîmes Olympique,88.15
+Ligue 1,2018-2019,15,Stade Reims,86.95
+Ligue 1,2018-2019,16,Angers SCO,79.7
+Ligue 1,2018-2019,17,EA Guingamp,70.65
+Ligue 1,2018-2019,18,Amiens SC,70.5
+Ligue 1,2018-2019,19,SM Caen,67.55
+Ligue 1,2018-2019,20,Dijon FCO,65.8
+Premier League,2018-2019,1,Manchester City,1200
+Premier League,2018-2019,2,Liverpool FC,1170
+Premier League,2018-2019,2,Chelsea FC,1170
+Premier League,2018-2019,4,Tottenham Hotspur,898.6
+Premier League,2018-2019,5,Manchester United,797.6
+Premier League,2018-2019,6,Arsenal FC,659.05
+Premier League,2018-2019,7,Everton FC,529.1
+Premier League,2018-2019,8,Leicester City,434.1
+Premier League,2018-2019,9,West Ham United,359
+Premier League,2018-2019,10,AFC Bournemouth,310
+Premier League,2018-2019,11,Southampton FC,305.4
+Premier League,2018-2019,12,Wolverhampton Wanderers,302.9
+Premier League,2018-2019,13,Crystal Palace,289
+Premier League,2018-2019,14,Fulham FC,254.25
+Premier League,2018-2019,15,Newcastle United,244.65
+Premier League,2018-2019,16,Watford FC,239.1
+Premier League,2018-2019,17,Burnley FC,197.25
+Premier League,2018-2019,18,Brighton & Hove Albion,194.35
+Premier League,2018-2019,19,Huddersfield Town,137.45
+Premier League,2018-2019,20,Cardiff City,113
+Serie A,2018-2019,1,Juventus FC,871.05
+Serie A,2018-2019,2,SSC Napoli,646.8
+Serie A,2018-2019,3,Inter Milan,617.93
+Serie A,2018-2019,4,AC Milan,578.48
+Serie A,2018-2019,5,AS Roma,459.05
+Serie A,2018-2019,6,Atalanta BC,367.68
+Serie A,2018-2019,7,ACF Fiorentina,315.33
+Serie A,2018-2019,8,SS Lazio,291.15
+Serie A,2018-2019,9,US Sassuolo,242.05
+Serie A,2018-2019,10,Torino FC,239.23
+Serie A,2018-2019,11,UC Sampdoria,216.75
+Serie A,2018-2019,12,Udinese Calcio,201.2
+Serie A,2018-2019,13,Genoa CFC,191.73
+Serie A,2018-2019,14,Cagliari Calcio,155.38
+Serie A,2018-2019,15,Bologna FC 1909,119.68
+Serie A,2018-2019,16,FC Empoli,105.6
+Serie A,2018-2019,17,SPAL,97.4
+Serie A,2018-2019,18,Parma Calcio 1913,95.75
+Serie A,2018-2019,19,Chievo Verona,54.7
+Serie A,2018-2019,20,Frosinone Calcio,54.53

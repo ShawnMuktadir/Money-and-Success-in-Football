@@ -1,0 +1,26 @@
+model_label,response,term,estimate,std.error,statistic,p.value,conf.low,conf.high,significant_05,significant_01
+A: OLS — Pos ~ FR,League_Position,(Intercept),1.929611,0.219065,8.8084,0,1.500251,2.358971,TRUE,TRUE
+A: OLS — Pos ~ FR,League_Position,Financial_Rank,0.812307,0.018682,43.4797,0,0.77569,0.848924,TRUE,TRUE
+B: OLS — Pos ~ FR + League FE,League_Position,(Intercept),1.790942,0.304173,5.8879,0,1.194774,2.387109,TRUE,TRUE
+B: OLS — Pos ~ FR + League FE,League_Position,Financial_Rank,0.81148,0.018757,43.2619,0,0.774716,0.848244,TRUE,TRUE
+B: OLS — Pos ~ FR + League FE,League_Position,LeagueLa Liga,0.192578,0.340304,0.5659,0.571594,-0.474406,0.859561,FALSE,FALSE
+B: OLS — Pos ~ FR + League FE,League_Position,LeagueLigue 1,0.158034,0.341769,0.4624,0.643898,-0.511821,0.82789,FALSE,FALSE
+B: OLS — Pos ~ FR + League FE,League_Position,LeaguePremier League,0.192578,0.340304,0.5659,0.571594,-0.474406,0.859561,FALSE,FALSE
+B: OLS — Pos ~ FR + League FE,League_Position,LeagueSerie A,0.178285,0.340685,0.5233,0.600876,-0.489445,0.846014,FALSE,FALSE
+C: OLS — Pos ~ Log(MV),League_Position,(Intercept),2.891023,0.253965,11.3836,0,2.393261,3.388784,TRUE,TRUE
+C: OLS — Pos ~ Log(MV),League_Position,Log_Normalized_Value,-5.025755,0.15092,-33.3007,0,-5.321553,-4.729956,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,(Intercept),-0.214902,0.405174,-0.5304,0.595961,-1.009029,0.579225,FALSE,FALSE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,Log_Normalized_Value,-5.965903,0.144096,-41.4021,0,-6.248327,-5.683479,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueLa Liga,-0.201082,0.350874,-0.5731,0.566718,-0.888783,0.486619,FALSE,FALSE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueLigue 1,-1.102658,0.354413,-3.1112,0.001918,-1.797294,-0.408023,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeaguePremier League,4.085696,0.357528,11.4276,0,3.384955,4.786437,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueSerie A,2.787633,0.352839,7.9006,0,2.096082,3.479184,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,Season_Index,0.105919,0.038137,2.7773,0.005587,0.031172,0.180666,TRUE,TRUE
+E: Logit — Champion ~ FR,Champion_binary,(Intercept),1.64163,0.40334,4.0701,4.7e-5,0.851098,2.432162,TRUE,TRUE
+E: Logit — Champion ~ FR,Champion_binary,Financial_Rank,-1.298481,0.189993,-6.8343,0,-1.670861,-0.926101,TRUE,TRUE
+F: Logit full — Champion ~ Log(MV) + League,Champion_binary,(Intercept),0.951861,0.532199,1.7885,0.073689,-0.09123,1.994952,FALSE,FALSE
+F: Logit full — Champion ~ Log(MV) + League,Champion_binary,Log_Normalized_Value,7.150332,1.0523420000000001,6.7947,0,5.087779,9.212884,TRUE,TRUE
+F: Logit full — Champion ~ Log(MV) + League,Champion_binary,LeagueLa Liga,-0.862718,0.660666,-1.3058,0.19161,-2.157599,0.432163,FALSE,FALSE
+F: Logit full — Champion ~ Log(MV) + League,Champion_binary,LeagueLigue 1,1.31556,0.924295,1.4233,0.154646,-0.496024,3.127144,FALSE,FALSE
+F: Logit full — Champion ~ Log(MV) + League,Champion_binary,LeaguePremier League,-1.315534,0.620033,-2.1217,0.033862,-2.530777,-0.100292,TRUE,FALSE
+F: Logit full — Champion ~ Log(MV) + League,Champion_binary,LeagueSerie A,-0.973806,0.626469,-1.5544,0.12008,-2.201662,0.254051,FALSE,FALSE

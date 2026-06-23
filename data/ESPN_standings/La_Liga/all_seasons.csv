@@ -1,0 +1,201 @@
+League,Season,League_Position,Team,Points,W,D,L,GF,GA
+La Liga,2015-2016,1,Barcelona,91,29,4,5,112,29
+La Liga,2015-2016,2,Real Madrid,90,28,6,4,110,34
+La Liga,2015-2016,3,Atlético Madrid,88,28,4,6,63,18
+La Liga,2015-2016,4,Villarreal,64,18,10,10,44,35
+La Liga,2015-2016,5,Athletic Club,62,18,8,12,58,45
+La Liga,2015-2016,6,Celta Vigo,60,17,9,12,51,59
+La Liga,2015-2016,7,Sevilla,52,14,10,14,51,50
+La Liga,2015-2016,8,Málaga,48,12,12,14,38,35
+La Liga,2015-2016,9,Real Sociedad,48,13,9,16,45,48
+La Liga,2015-2016,10,Real Betis,45,11,12,15,34,52
+La Liga,2015-2016,11,Las Palmas,44,12,8,18,45,53
+La Liga,2015-2016,12,Valencia,44,11,11,16,46,48
+La Liga,2015-2016,13,Espanyol,43,12,7,19,40,74
+La Liga,2015-2016,14,Eibar,43,11,10,17,49,61
+La Liga,2015-2016,15,Deportivo La Coruña,42,8,18,12,45,61
+La Liga,2015-2016,16,Granada,39,10,9,19,46,69
+La Liga,2015-2016,17,Sporting Gijón,39,10,9,19,40,62
+La Liga,2015-2016,18,Rayo Vallecano,38,9,11,18,52,73
+La Liga,2015-2016,19,Getafe,36,9,9,20,37,67
+La Liga,2015-2016,20,Levante,32,8,8,22,37,70
+La Liga,2016-2017,1,Real Madrid,93,29,6,3,106,41
+La Liga,2016-2017,2,Barcelona,90,28,6,4,116,37
+La Liga,2016-2017,3,Atlético Madrid,78,23,9,6,70,27
+La Liga,2016-2017,4,Sevilla,72,21,9,8,69,49
+La Liga,2016-2017,5,Villarreal,67,19,10,9,56,33
+La Liga,2016-2017,6,Real Sociedad,64,19,7,12,59,53
+La Liga,2016-2017,7,Athletic Club,63,19,6,13,53,43
+La Liga,2016-2017,8,Espanyol,56,15,11,12,49,50
+La Liga,2016-2017,9,Alavés,55,14,13,11,41,43
+La Liga,2016-2017,10,Eibar,54,15,9,14,56,51
+La Liga,2016-2017,11,Málaga,46,12,10,16,49,55
+La Liga,2016-2017,12,Valencia,46,13,7,18,56,65
+La Liga,2016-2017,13,Celta Vigo,45,13,6,19,53,69
+La Liga,2016-2017,14,Las Palmas,39,10,9,19,53,74
+La Liga,2016-2017,15,Real Betis,39,10,9,19,41,64
+La Liga,2016-2017,16,Deportivo La Coruña,36,8,12,18,43,61
+La Liga,2016-2017,17,Leganés,35,8,11,19,36,55
+La Liga,2016-2017,18,Sporting Gijón,31,7,10,21,42,72
+La Liga,2016-2017,19,Osasuna,22,4,10,24,40,94
+La Liga,2016-2017,20,Granada,20,4,8,26,30,82
+La Liga,2017-2018,1,Barcelona,93,28,9,1,99,29
+La Liga,2017-2018,2,Atlético Madrid,79,23,10,5,58,22
+La Liga,2017-2018,3,Real Madrid,76,22,10,6,94,44
+La Liga,2017-2018,4,Valencia,73,22,7,9,65,38
+La Liga,2017-2018,5,Villarreal,61,18,7,13,57,50
+La Liga,2017-2018,6,Real Betis,60,18,6,14,60,61
+La Liga,2017-2018,7,Sevilla,58,17,7,14,49,58
+La Liga,2017-2018,8,Getafe,55,15,10,13,42,33
+La Liga,2017-2018,9,Eibar,51,14,9,15,44,50
+La Liga,2017-2018,10,Girona,51,14,9,15,50,59
+La Liga,2017-2018,11,Espanyol,49,12,13,13,36,42
+La Liga,2017-2018,12,Real Sociedad,49,14,7,17,66,59
+La Liga,2017-2018,13,Celta Vigo,49,13,10,15,59,60
+La Liga,2017-2018,14,Alavés,47,15,2,21,40,50
+La Liga,2017-2018,15,Levante,46,11,13,14,44,58
+La Liga,2017-2018,16,Athletic Club,43,10,13,15,41,49
+La Liga,2017-2018,17,Leganés,43,12,7,19,34,51
+La Liga,2017-2018,18,Deportivo La Coruña,29,6,11,21,38,76
+La Liga,2017-2018,19,Las Palmas,22,5,7,26,24,74
+La Liga,2017-2018,20,Málaga,20,5,5,28,24,61
+La Liga,2018-2019,1,Barcelona,87,26,9,3,90,36
+La Liga,2018-2019,2,Atlético Madrid,76,22,10,6,55,29
+La Liga,2018-2019,3,Real Madrid,68,21,5,12,63,46
+La Liga,2018-2019,4,Valencia,61,15,16,7,51,35
+La Liga,2018-2019,5,Getafe,59,15,14,9,48,35
+La Liga,2018-2019,6,Sevilla,59,17,8,13,62,47
+La Liga,2018-2019,7,Espanyol,53,14,11,13,48,50
+La Liga,2018-2019,8,Athletic Club,53,13,14,11,41,45
+La Liga,2018-2019,9,Real Sociedad,50,13,11,14,45,46
+La Liga,2018-2019,10,Real Betis,50,14,8,16,44,52
+La Liga,2018-2019,11,Alavés,50,13,11,14,39,50
+La Liga,2018-2019,12,Eibar,47,11,14,13,46,50
+La Liga,2018-2019,13,Leganés,45,11,12,15,37,43
+La Liga,2018-2019,14,Villarreal,44,10,14,14,49,52
+La Liga,2018-2019,15,Levante,44,11,11,16,59,66
+La Liga,2018-2019,16,Real Valladolid,41,10,11,17,32,51
+La Liga,2018-2019,17,Celta Vigo,41,10,11,17,53,62
+La Liga,2018-2019,18,Girona,37,9,10,19,37,53
+La Liga,2018-2019,19,Huesca,33,7,12,19,43,65
+La Liga,2018-2019,20,Rayo Vallecano,32,8,8,22,41,70
+La Liga,2019-2020,1,Real Madrid,87,26,9,3,70,25
+La Liga,2019-2020,2,Barcelona,82,25,7,6,86,38
+La Liga,2019-2020,3,Atlético Madrid,70,18,16,4,51,27
+La Liga,2019-2020,4,Sevilla,70,19,13,6,54,34
+La Liga,2019-2020,5,Villarreal,60,18,6,14,63,49
+La Liga,2019-2020,6,Real Sociedad,56,16,8,14,56,48
+La Liga,2019-2020,7,Granada,56,16,8,14,52,45
+La Liga,2019-2020,8,Getafe,54,14,12,12,43,37
+La Liga,2019-2020,9,Valencia,53,14,11,13,46,53
+La Liga,2019-2020,10,Osasuna,52,13,13,12,46,54
+La Liga,2019-2020,11,Athletic Club,51,13,12,13,41,38
+La Liga,2019-2020,12,Levante,49,14,7,17,47,53
+La Liga,2019-2020,13,Real Valladolid,42,9,15,14,32,43
+La Liga,2019-2020,14,Eibar,42,11,9,18,39,56
+La Liga,2019-2020,15,Real Betis,41,10,11,17,48,60
+La Liga,2019-2020,16,Alavés,39,10,9,19,34,59
+La Liga,2019-2020,17,Celta Vigo,37,7,16,15,37,49
+La Liga,2019-2020,18,Leganés,36,8,12,18,30,51
+La Liga,2019-2020,19,Mallorca,33,9,6,23,40,65
+La Liga,2019-2020,20,Espanyol,25,5,10,23,27,58
+La Liga,2020-2021,1,Atlético Madrid,86,26,8,4,67,25
+La Liga,2020-2021,2,Real Madrid,84,25,9,4,67,28
+La Liga,2020-2021,3,Barcelona,79,24,7,7,85,38
+La Liga,2020-2021,4,Sevilla,77,24,5,9,53,33
+La Liga,2020-2021,5,Real Sociedad,62,17,11,10,59,38
+La Liga,2020-2021,6,Real Betis,61,17,10,11,50,50
+La Liga,2020-2021,7,Villarreal,58,15,13,10,60,44
+La Liga,2020-2021,8,Celta Vigo,53,14,11,13,55,57
+La Liga,2020-2021,9,Granada,46,13,7,18,47,65
+La Liga,2020-2021,10,Athletic Club,46,11,13,14,46,42
+La Liga,2020-2021,11,Osasuna,44,11,11,16,37,48
+La Liga,2020-2021,12,Cádiz,44,11,11,16,36,58
+La Liga,2020-2021,13,Valencia,43,10,13,15,50,53
+La Liga,2020-2021,14,Levante,41,9,14,15,46,57
+La Liga,2020-2021,15,Getafe,38,9,11,18,28,43
+La Liga,2020-2021,16,Alavés,38,9,11,18,36,57
+La Liga,2020-2021,17,Elche,36,8,12,18,34,55
+La Liga,2020-2021,18,Huesca,34,7,13,18,34,53
+La Liga,2020-2021,19,Real Valladolid,31,5,16,17,34,57
+La Liga,2020-2021,20,Eibar,30,6,12,20,29,52
+La Liga,2021-2022,1,Real Madrid,86,26,8,4,80,31
+La Liga,2021-2022,2,Barcelona,73,21,10,7,68,38
+La Liga,2021-2022,3,Atlético Madrid,71,21,8,9,65,43
+La Liga,2021-2022,4,Sevilla,70,18,16,4,53,30
+La Liga,2021-2022,5,Real Betis,65,19,8,11,62,40
+La Liga,2021-2022,6,Real Sociedad,62,17,11,10,40,37
+La Liga,2021-2022,7,Villarreal,59,16,11,11,63,37
+La Liga,2021-2022,8,Athletic Club,55,14,13,11,43,36
+La Liga,2021-2022,9,Valencia,48,11,15,12,48,53
+La Liga,2021-2022,10,Osasuna,47,12,11,15,37,51
+La Liga,2021-2022,11,Celta Vigo,46,12,10,16,43,43
+La Liga,2021-2022,12,Rayo Vallecano,42,11,9,18,39,50
+La Liga,2021-2022,13,Elche,42,11,9,18,40,52
+La Liga,2021-2022,14,Espanyol,42,10,12,16,40,53
+La Liga,2021-2022,15,Getafe,39,8,15,15,33,41
+La Liga,2021-2022,16,Mallorca,39,10,9,19,36,63
+La Liga,2021-2022,17,Cádiz,39,8,15,15,35,51
+La Liga,2021-2022,18,Granada,38,8,14,16,44,61
+La Liga,2021-2022,19,Levante,35,8,11,19,51,76
+La Liga,2021-2022,20,Alavés,31,8,7,23,31,65
+La Liga,2022-2023,1,Barcelona,88,28,4,6,70,20
+La Liga,2022-2023,2,Real Madrid,78,24,6,8,75,36
+La Liga,2022-2023,3,Atlético Madrid,77,23,8,7,70,33
+La Liga,2022-2023,4,Real Sociedad,71,21,8,9,51,35
+La Liga,2022-2023,5,Villarreal,64,19,7,12,59,40
+La Liga,2022-2023,6,Real Betis,60,17,9,12,46,41
+La Liga,2022-2023,7,Osasuna,53,15,8,15,37,42
+La Liga,2022-2023,8,Athletic Club,51,14,9,15,47,43
+La Liga,2022-2023,9,Mallorca,50,14,8,16,37,43
+La Liga,2022-2023,10,Girona,49,13,10,15,58,55
+La Liga,2022-2023,11,Rayo Vallecano,49,13,10,15,45,53
+La Liga,2022-2023,12,Sevilla,49,13,10,15,47,54
+La Liga,2022-2023,13,Celta Vigo,43,11,10,17,43,53
+La Liga,2022-2023,14,Cádiz,42,10,12,16,30,53
+La Liga,2022-2023,15,Getafe,42,10,12,16,34,45
+La Liga,2022-2023,16,Valencia,42,11,9,18,42,45
+La Liga,2022-2023,17,Almería,41,11,8,19,49,65
+La Liga,2022-2023,18,Real Valladolid,40,11,7,20,33,63
+La Liga,2022-2023,19,Espanyol,37,8,13,17,52,69
+La Liga,2022-2023,20,Elche,25,5,10,23,30,67
+La Liga,2023-2024,1,Real Madrid,95,29,8,1,87,26
+La Liga,2023-2024,2,Barcelona,85,26,7,5,79,44
+La Liga,2023-2024,3,Girona,81,25,6,7,85,46
+La Liga,2023-2024,4,Atlético Madrid,76,24,4,10,70,43
+La Liga,2023-2024,5,Athletic Club,68,19,11,8,61,37
+La Liga,2023-2024,6,Real Sociedad,60,16,12,10,51,39
+La Liga,2023-2024,7,Real Betis,57,14,15,9,48,45
+La Liga,2023-2024,8,Villarreal,53,14,11,13,65,65
+La Liga,2023-2024,9,Valencia,49,13,10,15,40,45
+La Liga,2023-2024,10,Alavés,46,12,10,16,36,46
+La Liga,2023-2024,11,Osasuna,45,12,9,17,45,56
+La Liga,2023-2024,12,Getafe,43,10,13,15,42,54
+La Liga,2023-2024,13,Celta Vigo,41,10,11,17,46,57
+La Liga,2023-2024,14,Sevilla,41,10,11,17,48,54
+La Liga,2023-2024,15,Mallorca,40,8,16,14,33,44
+La Liga,2023-2024,16,Las Palmas,40,10,10,18,33,47
+La Liga,2023-2024,17,Rayo Vallecano,38,8,14,16,29,48
+La Liga,2023-2024,18,Cádiz,33,6,15,17,26,55
+La Liga,2023-2024,19,Almería,21,3,12,23,43,75
+La Liga,2023-2024,20,Granada,21,4,9,25,38,79
+La Liga,2024-2025,1,Barcelona,88,28,4,6,102,39
+La Liga,2024-2025,2,Real Madrid,84,26,6,6,78,38
+La Liga,2024-2025,3,Atlético Madrid,76,22,10,6,68,30
+La Liga,2024-2025,4,Athletic Club,70,19,13,6,54,29
+La Liga,2024-2025,5,Villarreal,70,20,10,8,71,51
+La Liga,2024-2025,6,Real Betis,60,16,12,10,57,50
+La Liga,2024-2025,7,Celta Vigo,55,16,7,15,59,57
+La Liga,2024-2025,8,Rayo Vallecano,52,13,13,12,41,45
+La Liga,2024-2025,9,Osasuna,52,12,16,10,48,52
+La Liga,2024-2025,10,Mallorca,48,13,9,16,35,44
+La Liga,2024-2025,11,Real Sociedad,46,13,7,18,35,46
+La Liga,2024-2025,12,Valencia,46,11,13,14,44,54
+La Liga,2024-2025,13,Getafe,42,11,9,18,34,39
+La Liga,2024-2025,14,Espanyol,42,11,9,18,40,51
+La Liga,2024-2025,15,Alavés,42,10,12,16,38,48
+La Liga,2024-2025,16,Girona,41,11,8,19,44,60
+La Liga,2024-2025,17,Sevilla,41,10,11,17,42,55
+La Liga,2024-2025,18,Leganés,40,9,13,16,39,56
+La Liga,2024-2025,19,Las Palmas,32,8,8,22,40,61
+La Liga,2024-2025,20,Real Valladolid,16,4,4,30,26,90

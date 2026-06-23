@@ -1,0 +1,99 @@
+League,Season,League_Position,Team,Points,W,D,L,GF,GA
+Bundesliga,2021-2022,1,Bayern Munich,77,24,5,5,97,37
+Bundesliga,2021-2022,2,Borussia Dortmund,69,22,3,9,85,52
+Bundesliga,2021-2022,3,Bayer Leverkusen,64,19,7,8,80,47
+Bundesliga,2021-2022,4,RB Leipzig,58,17,7,10,72,37
+Bundesliga,2021-2022,5,1. FC Union Berlin,57,16,9,9,50,44
+Bundesliga,2021-2022,6,SC Freiburg,55,15,10,9,58,46
+Bundesliga,2021-2022,7,FC Cologne,52,14,10,10,52,49
+Bundesliga,2021-2022,8,Mainz,46,13,7,14,50,45
+Bundesliga,2021-2022,9,TSG Hoffenheim,46,13,7,14,58,60
+Bundesliga,2021-2022,10,Borussia Mönchengladbach,45,12,9,13,54,61
+Bundesliga,2021-2022,11,Eintracht Frankfurt,42,10,12,12,45,49
+Bundesliga,2021-2022,12,VfL Wolfsburg,42,12,6,16,43,54
+Bundesliga,2021-2022,13,VfL Bochum,42,12,6,16,38,52
+Bundesliga,2021-2022,14,FC Augsburg,38,10,8,16,39,56
+Bundesliga,2021-2022,15,VfB Stuttgart,33,7,12,15,41,59
+Bundesliga,2021-2022,16,Hertha Berlin,33,9,6,19,37,71
+Bundesliga,2021-2022,17,Arminia Bielefeld,28,5,13,16,27,53
+Bundesliga,2021-2022,18,SpVgg Greuther Fürth,18,3,9,22,28,82
+La Liga,2021-2022,1,Real Madrid,86,26,8,4,80,31
+La Liga,2021-2022,2,Barcelona,73,21,10,7,68,38
+La Liga,2021-2022,3,Atlético Madrid,71,21,8,9,65,43
+La Liga,2021-2022,4,Sevilla,70,18,16,4,53,30
+La Liga,2021-2022,5,Real Betis,65,19,8,11,62,40
+La Liga,2021-2022,6,Real Sociedad,62,17,11,10,40,37
+La Liga,2021-2022,7,Villarreal,59,16,11,11,63,37
+La Liga,2021-2022,8,Athletic Club,55,14,13,11,43,36
+La Liga,2021-2022,9,Valencia,48,11,15,12,48,53
+La Liga,2021-2022,10,Osasuna,47,12,11,15,37,51
+La Liga,2021-2022,11,Celta Vigo,46,12,10,16,43,43
+La Liga,2021-2022,12,Rayo Vallecano,42,11,9,18,39,50
+La Liga,2021-2022,13,Elche,42,11,9,18,40,52
+La Liga,2021-2022,14,Espanyol,42,10,12,16,40,53
+La Liga,2021-2022,15,Getafe,39,8,15,15,33,41
+La Liga,2021-2022,16,Mallorca,39,10,9,19,36,63
+La Liga,2021-2022,17,Cádiz,39,8,15,15,35,51
+La Liga,2021-2022,18,Granada,38,8,14,16,44,61
+La Liga,2021-2022,19,Levante,35,8,11,19,51,76
+La Liga,2021-2022,20,Alavés,31,8,7,23,31,65
+Ligue 1,2021-2022,1,Paris Saint-Germain,86,26,8,4,90,36
+Ligue 1,2021-2022,2,Marseille,71,21,8,9,63,38
+Ligue 1,2021-2022,3,AS Monaco,69,20,9,9,65,40
+Ligue 1,2021-2022,4,Stade Rennais,66,20,6,12,82,40
+Ligue 1,2021-2022,5,Nice,66,20,7,11,52,36
+Ligue 1,2021-2022,6,Strasbourg,63,17,12,9,60,43
+Ligue 1,2021-2022,7,Lens,62,17,11,10,62,48
+Ligue 1,2021-2022,8,Lyon,61,17,11,10,66,51
+Ligue 1,2021-2022,9,Nantes,55,15,10,13,55,48
+Ligue 1,2021-2022,10,Lille,55,14,13,11,48,48
+Ligue 1,2021-2022,11,Brest,48,13,9,16,49,57
+Ligue 1,2021-2022,12,Stade de Reims,46,11,13,14,43,44
+Ligue 1,2021-2022,13,Montpellier,43,12,7,19,49,61
+Ligue 1,2021-2022,14,Angers,41,10,11,17,44,55
+Ligue 1,2021-2022,15,Troyes,38,9,11,18,37,53
+Ligue 1,2021-2022,16,Lorient,36,8,12,18,35,63
+Ligue 1,2021-2022,17,Clermont Foot,36,9,9,20,38,69
+Ligue 1,2021-2022,18,Saint-Étienne,32,7,11,20,42,77
+Ligue 1,2021-2022,19,Metz,31,6,13,19,35,69
+Ligue 1,2021-2022,20,Bordeaux,31,6,13,19,52,91
+Premier League,2021-2022,1,Manchester City,93,29,6,3,99,26
+Premier League,2021-2022,2,Liverpool,92,28,8,2,94,26
+Premier League,2021-2022,3,Chelsea,74,21,11,6,76,33
+Premier League,2021-2022,4,Tottenham Hotspur,71,22,5,11,69,40
+Premier League,2021-2022,5,Arsenal,69,22,3,13,61,48
+Premier League,2021-2022,6,Manchester United,58,16,10,12,57,57
+Premier League,2021-2022,7,West Ham United,56,16,8,14,60,51
+Premier League,2021-2022,8,Leicester City,52,14,10,14,62,59
+Premier League,2021-2022,9,Brighton & Hove Albion,51,12,15,11,42,44
+Premier League,2021-2022,10,Wolverhampton Wanderers,51,15,6,17,38,43
+Premier League,2021-2022,11,Newcastle United,49,13,10,15,44,62
+Premier League,2021-2022,12,Crystal Palace,48,11,15,12,50,46
+Premier League,2021-2022,13,Brentford,46,13,7,18,48,56
+Premier League,2021-2022,14,Aston Villa,45,13,6,19,52,54
+Premier League,2021-2022,15,Southampton,40,9,13,16,43,67
+Premier League,2021-2022,16,Everton,39,11,6,21,43,66
+Premier League,2021-2022,17,Leeds United,38,9,11,18,42,79
+Premier League,2021-2022,18,Burnley,35,7,14,17,34,53
+Premier League,2021-2022,19,Watford,23,6,5,27,34,77
+Premier League,2021-2022,20,Norwich City,22,5,7,26,23,84
+Serie A,2021-2022,1,AC Milan,86,26,8,4,69,31
+Serie A,2021-2022,2,Internazionale,84,25,9,4,84,32
+Serie A,2021-2022,3,Napoli,79,24,7,7,74,31
+Serie A,2021-2022,4,Juventus,70,20,10,8,57,37
+Serie A,2021-2022,5,Lazio,64,18,10,10,77,58
+Serie A,2021-2022,6,AS Roma,63,18,9,11,59,43
+Serie A,2021-2022,7,Fiorentina,62,19,5,14,59,51
+Serie A,2021-2022,8,Atalanta,59,16,11,11,65,48
+Serie A,2021-2022,9,Hellas Verona,53,14,11,13,65,59
+Serie A,2021-2022,10,Torino,50,13,11,14,46,41
+Serie A,2021-2022,11,Sassuolo,50,13,11,14,64,66
+Serie A,2021-2022,12,Udinese,47,11,14,13,61,58
+Serie A,2021-2022,13,Bologna,46,12,10,16,44,55
+Serie A,2021-2022,14,Empoli,41,10,11,17,50,70
+Serie A,2021-2022,15,Sampdoria,36,10,6,22,46,63
+Serie A,2021-2022,16,Spezia,36,10,6,22,41,71
+Serie A,2021-2022,17,Salernitana,31,7,10,21,33,78
+Serie A,2021-2022,18,Cagliari,30,6,12,20,34,68
+Serie A,2021-2022,19,Genoa,28,4,16,18,27,60
+Serie A,2021-2022,20,Venezia,27,6,9,23,34,69

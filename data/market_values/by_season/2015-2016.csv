@@ -1,0 +1,99 @@
+League,Season,Financial_Rank,Team,Market_Value_M_EUR
+Bundesliga,2015-2016,1,Bayern Munich,596.05
+Bundesliga,2015-2016,2,Borussia Dortmund,352.95
+Bundesliga,2015-2016,3,VfL Wolfsburg,270.43
+Bundesliga,2015-2016,4,Bayer 04 Leverkusen,241.3
+Bundesliga,2015-2016,5,FC Schalke 04,225.2
+Bundesliga,2015-2016,6,Borussia Mönchengladbach,186.15
+Bundesliga,2015-2016,7,TSG 1899 Hoffenheim,90.2
+Bundesliga,2015-2016,8,1.FSV Mainz 05,85.15
+Bundesliga,2015-2016,9,VfB Stuttgart,81.18
+Bundesliga,2015-2016,10,Hertha BSC,78.93
+Bundesliga,2015-2016,11,Eintracht Frankfurt,76.6
+Bundesliga,2015-2016,12,FC Augsburg,75.83
+Bundesliga,2015-2016,13,1.FC Köln,68.63
+Bundesliga,2015-2016,14,SV Werder Bremen,64.68
+Bundesliga,2015-2016,15,Hamburger SV,63.2
+Bundesliga,2015-2016,16,Hannover 96,60.83
+Bundesliga,2015-2016,17,FC Ingolstadt 04,35.65
+Bundesliga,2015-2016,18,SV Darmstadt 98,25.15
+La Liga,2015-2016,1,FC Barcelona,726
+La Liga,2015-2016,2,Real Madrid,714.3
+La Liga,2015-2016,3,Atlético de Madrid,418.5
+La Liga,2015-2016,4,Valencia CF,254
+La Liga,2015-2016,5,Sevilla FC,230.3
+La Liga,2015-2016,6,Athletic Bilbao,148
+La Liga,2015-2016,7,Villarreal CF,140.6
+La Liga,2015-2016,8,Real Sociedad,119.4
+La Liga,2015-2016,9,Celta de Vigo,91.1
+La Liga,2015-2016,10,Málaga CF,77.95
+La Liga,2015-2016,11,Granada CF,71.5
+La Liga,2015-2016,12,RCD Espanyol Barcelona,62.2
+La Liga,2015-2016,13,Deportivo de La Coruña,61.75
+La Liga,2015-2016,14,SD Eibar,56.6
+La Liga,2015-2016,15,Real Betis Balompié,56.4
+La Liga,2015-2016,16,Sporting Gijón,53.2
+La Liga,2015-2016,17,Levante UD,53.1
+La Liga,2015-2016,18,Rayo Vallecano,49.6
+La Liga,2015-2016,19,Getafe CF,49.1
+La Liga,2015-2016,20,UD Las Palmas,32.2
+Ligue 1,2015-2016,1,Paris Saint-Germain,436.3
+Ligue 1,2015-2016,2,AS Monaco,227.4
+Ligue 1,2015-2016,3,Olympique Lyon,166.3
+Ligue 1,2015-2016,4,Olympique Marseille,129.5
+Ligue 1,2015-2016,5,AS Saint-Étienne,97.2
+Ligue 1,2015-2016,6,Stade Rennais FC,94.15
+Ligue 1,2015-2016,7,FC Girondins Bordeaux,90.7
+Ligue 1,2015-2016,8,OGC Nice,70.95
+Ligue 1,2015-2016,9,LOSC Lille,70.8
+Ligue 1,2015-2016,10,FC Lorient,58.05
+Ligue 1,2015-2016,11,Montpellier HSC,44.4
+Ligue 1,2015-2016,12,Stade Reims,42.95
+Ligue 1,2015-2016,13,FC Toulouse,42.9
+Ligue 1,2015-2016,14,FC Nantes,39.3
+Ligue 1,2015-2016,15,SM Caen,36.8
+Ligue 1,2015-2016,16,EA Guingamp,33.5
+Ligue 1,2015-2016,17,Angers SCO,32.35
+Ligue 1,2015-2016,18,ESTAC Troyes,30.7
+Ligue 1,2015-2016,19,SC Bastia,24.25
+Ligue 1,2015-2016,20,GFC Ajaccio,18.4
+Premier League,2015-2016,1,Chelsea FC,553.5
+Premier League,2015-2016,2,Manchester City,499.35
+Premier League,2015-2016,3,Arsenal FC,457.85
+Premier League,2015-2016,4,Manchester United,439.85
+Premier League,2015-2016,5,Liverpool FC,375.25
+Premier League,2015-2016,6,Tottenham Hotspur,371.85
+Premier League,2015-2016,7,Everton FC,249.85
+Premier League,2015-2016,8,Southampton FC,225.5
+Premier League,2015-2016,9,West Ham United,201.33
+Premier League,2015-2016,10,Newcastle United,198
+Premier League,2015-2016,11,Leicester City,161.1
+Premier League,2015-2016,12,Stoke City,147
+Premier League,2015-2016,13,Swansea City,145.8
+Premier League,2015-2016,14,Watford FC,137
+Premier League,2015-2016,15,Crystal Palace,135.7
+Premier League,2015-2016,16,Aston Villa,117.95
+Premier League,2015-2016,17,Norwich City,116.9
+Premier League,2015-2016,18,West Bromwich Albion,113.1
+Premier League,2015-2016,19,Sunderland AFC,111.25
+Premier League,2015-2016,20,AFC Bournemouth,99.9
+Serie A,2015-2016,1,Juventus FC,440
+Serie A,2015-2016,2,AS Roma,332.9
+Serie A,2015-2016,3,SSC Napoli,321.93
+Serie A,2015-2016,4,Inter Milan,294.28
+Serie A,2015-2016,5,AC Milan,213.83
+Serie A,2015-2016,6,ACF Fiorentina,190.53
+Serie A,2015-2016,7,SS Lazio,175.3
+Serie A,2015-2016,8,UC Sampdoria,126.53
+Serie A,2015-2016,9,Genoa CFC,117.55
+Serie A,2015-2016,10,US Sassuolo,97
+Serie A,2015-2016,11,Udinese Calcio,93
+Serie A,2015-2016,12,Torino FC,89.83
+Serie A,2015-2016,13,Atalanta BC,78.45
+Serie A,2015-2016,14,Bologna FC 1909,75.23
+Serie A,2015-2016,15,FC Empoli,74.6
+Serie A,2015-2016,16,US Palermo,68.68
+Serie A,2015-2016,17,Carpi FC 1909,52.05
+Serie A,2015-2016,18,Chievo Verona,49.78
+Serie A,2015-2016,19,Hellas Verona,47.8
+Serie A,2015-2016,20,Frosinone Calcio,38.3

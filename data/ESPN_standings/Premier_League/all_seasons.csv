@@ -1,0 +1,201 @@
+League,Season,League_Position,Team,Points,W,D,L,GF,GA
+Premier League,2015-2016,1,Leicester City,81,23,12,3,68,36
+Premier League,2015-2016,2,Arsenal,71,20,11,7,65,36
+Premier League,2015-2016,3,Tottenham Hotspur,70,19,13,6,69,35
+Premier League,2015-2016,4,Manchester City,66,19,9,10,71,41
+Premier League,2015-2016,5,Manchester United,66,19,9,10,49,35
+Premier League,2015-2016,6,Southampton,63,18,9,11,59,41
+Premier League,2015-2016,7,West Ham United,62,16,14,8,65,51
+Premier League,2015-2016,8,Liverpool,60,16,12,10,63,50
+Premier League,2015-2016,9,Stoke City,51,14,9,15,41,55
+Premier League,2015-2016,10,Chelsea,50,12,14,12,59,53
+Premier League,2015-2016,11,Everton,47,11,14,13,59,55
+Premier League,2015-2016,12,Swansea City,47,12,11,15,42,52
+Premier League,2015-2016,13,Watford,45,12,9,17,40,50
+Premier League,2015-2016,14,West Bromwich Albion,43,10,13,15,34,48
+Premier League,2015-2016,15,Crystal Palace,42,11,9,18,39,51
+Premier League,2015-2016,16,AFC Bournemouth,42,11,9,18,45,67
+Premier League,2015-2016,17,Sunderland,39,9,12,17,48,62
+Premier League,2015-2016,18,Newcastle United,37,9,10,19,44,65
+Premier League,2015-2016,19,Norwich City,34,9,7,22,39,67
+Premier League,2015-2016,20,Aston Villa,17,3,8,27,27,76
+Premier League,2016-2017,1,Chelsea,93,30,3,5,85,33
+Premier League,2016-2017,2,Tottenham Hotspur,86,26,8,4,86,26
+Premier League,2016-2017,3,Manchester City,78,23,9,6,80,39
+Premier League,2016-2017,4,Liverpool,76,22,10,6,78,42
+Premier League,2016-2017,5,Arsenal,75,23,6,9,77,44
+Premier League,2016-2017,6,Manchester United,69,18,15,5,54,29
+Premier League,2016-2017,7,Everton,61,17,10,11,62,44
+Premier League,2016-2017,8,Southampton,46,12,10,16,41,48
+Premier League,2016-2017,9,AFC Bournemouth,46,12,10,16,55,67
+Premier League,2016-2017,10,West Bromwich Albion,45,12,9,17,43,51
+Premier League,2016-2017,11,West Ham United,45,12,9,17,47,64
+Premier League,2016-2017,12,Leicester City,44,12,8,18,48,63
+Premier League,2016-2017,13,Stoke City,44,11,11,16,41,56
+Premier League,2016-2017,14,Crystal Palace,41,12,5,21,50,63
+Premier League,2016-2017,15,Swansea City,41,12,5,21,45,70
+Premier League,2016-2017,16,Burnley,40,11,7,20,39,55
+Premier League,2016-2017,17,Watford,40,11,7,20,40,68
+Premier League,2016-2017,18,Hull City,34,9,7,22,37,80
+Premier League,2016-2017,19,Middlesbrough,28,5,13,20,27,53
+Premier League,2016-2017,20,Sunderland,24,6,6,26,29,69
+Premier League,2017-2018,1,Manchester City,100,32,4,2,106,27
+Premier League,2017-2018,2,Manchester United,81,25,6,7,68,28
+Premier League,2017-2018,3,Tottenham Hotspur,77,23,8,7,74,36
+Premier League,2017-2018,4,Liverpool,75,21,12,5,84,38
+Premier League,2017-2018,5,Chelsea,70,21,7,10,62,38
+Premier League,2017-2018,6,Arsenal,63,19,6,13,74,51
+Premier League,2017-2018,7,Burnley,54,14,12,12,36,39
+Premier League,2017-2018,8,Everton,49,13,10,15,44,58
+Premier League,2017-2018,9,Leicester City,47,12,11,15,56,60
+Premier League,2017-2018,10,Newcastle United,44,12,8,18,39,47
+Premier League,2017-2018,11,Crystal Palace,44,11,11,16,45,55
+Premier League,2017-2018,12,AFC Bournemouth,44,11,11,16,45,61
+Premier League,2017-2018,13,West Ham United,42,10,12,16,48,68
+Premier League,2017-2018,14,Watford,41,11,8,19,44,64
+Premier League,2017-2018,15,Brighton & Hove Albion,40,9,13,16,34,54
+Premier League,2017-2018,16,Huddersfield Town,37,9,10,19,28,58
+Premier League,2017-2018,17,Southampton,36,7,15,16,37,56
+Premier League,2017-2018,18,Swansea City,33,8,9,21,28,56
+Premier League,2017-2018,19,Stoke City,33,7,12,19,35,68
+Premier League,2017-2018,20,West Bromwich Albion,31,6,13,19,31,56
+Premier League,2018-2019,1,Manchester City,98,32,2,4,95,23
+Premier League,2018-2019,2,Liverpool,97,30,7,1,89,22
+Premier League,2018-2019,3,Chelsea,72,21,9,8,63,39
+Premier League,2018-2019,4,Tottenham Hotspur,71,23,2,13,67,39
+Premier League,2018-2019,5,Arsenal,70,21,7,10,73,51
+Premier League,2018-2019,6,Manchester United,66,19,9,10,65,54
+Premier League,2018-2019,7,Wolverhampton Wanderers,57,16,9,13,47,46
+Premier League,2018-2019,8,Everton,54,15,9,14,54,46
+Premier League,2018-2019,9,Leicester City,52,15,7,16,51,48
+Premier League,2018-2019,10,West Ham United,52,15,7,16,52,55
+Premier League,2018-2019,11,Watford,50,14,8,16,52,59
+Premier League,2018-2019,12,Crystal Palace,49,14,7,17,51,53
+Premier League,2018-2019,13,Newcastle United,45,12,9,17,42,48
+Premier League,2018-2019,14,AFC Bournemouth,45,13,6,19,56,70
+Premier League,2018-2019,15,Burnley,40,11,7,20,45,68
+Premier League,2018-2019,16,Southampton,39,9,12,17,45,65
+Premier League,2018-2019,17,Brighton & Hove Albion,36,9,9,20,35,60
+Premier League,2018-2019,18,Cardiff City,34,10,4,24,34,69
+Premier League,2018-2019,19,Fulham,26,7,5,26,34,81
+Premier League,2018-2019,20,Huddersfield Town,16,3,7,28,22,76
+Premier League,2019-2020,1,Liverpool,99,32,3,3,85,33
+Premier League,2019-2020,2,Manchester City,81,26,3,9,102,35
+Premier League,2019-2020,3,Manchester United,66,18,12,8,66,36
+Premier League,2019-2020,4,Chelsea,66,20,6,12,69,54
+Premier League,2019-2020,5,Leicester City,62,18,8,12,67,41
+Premier League,2019-2020,6,Tottenham Hotspur,59,16,11,11,61,47
+Premier League,2019-2020,7,Wolverhampton Wanderers,59,15,14,9,51,40
+Premier League,2019-2020,8,Arsenal,56,14,14,10,56,48
+Premier League,2019-2020,9,Sheffield United,54,14,12,12,39,39
+Premier League,2019-2020,10,Burnley,54,15,9,14,43,50
+Premier League,2019-2020,11,Southampton,52,15,7,16,51,60
+Premier League,2019-2020,12,Everton,49,13,10,15,44,56
+Premier League,2019-2020,13,Newcastle United,44,11,11,16,38,58
+Premier League,2019-2020,14,Crystal Palace,43,11,10,17,31,50
+Premier League,2019-2020,15,Brighton & Hove Albion,41,9,14,15,39,54
+Premier League,2019-2020,16,West Ham United,39,10,9,19,49,62
+Premier League,2019-2020,17,Aston Villa,35,9,8,21,41,67
+Premier League,2019-2020,18,AFC Bournemouth,34,9,7,22,40,65
+Premier League,2019-2020,19,Watford,34,8,10,20,36,64
+Premier League,2019-2020,20,Norwich City,21,5,6,27,26,75
+Premier League,2020-2021,1,Manchester City,86,27,5,6,83,32
+Premier League,2020-2021,2,Manchester United,74,21,11,6,73,44
+Premier League,2020-2021,3,Liverpool,69,20,9,9,68,42
+Premier League,2020-2021,4,Chelsea,67,19,10,9,58,36
+Premier League,2020-2021,5,Leicester City,66,20,6,12,68,50
+Premier League,2020-2021,6,West Ham United,65,19,8,11,62,47
+Premier League,2020-2021,7,Tottenham Hotspur,62,18,8,12,68,45
+Premier League,2020-2021,8,Arsenal,61,18,7,13,55,39
+Premier League,2020-2021,9,Leeds United,59,18,5,15,62,54
+Premier League,2020-2021,10,Everton,59,17,8,13,47,48
+Premier League,2020-2021,11,Aston Villa,55,16,7,15,55,46
+Premier League,2020-2021,12,Newcastle United,45,12,9,17,46,62
+Premier League,2020-2021,13,Wolverhampton Wanderers,45,12,9,17,36,52
+Premier League,2020-2021,14,Crystal Palace,44,12,8,18,41,66
+Premier League,2020-2021,15,Southampton,43,12,7,19,47,68
+Premier League,2020-2021,16,Brighton & Hove Albion,41,9,14,15,40,46
+Premier League,2020-2021,17,Burnley,39,10,9,19,33,55
+Premier League,2020-2021,18,Fulham,28,5,13,20,27,53
+Premier League,2020-2021,19,West Bromwich Albion,26,5,11,22,35,76
+Premier League,2020-2021,20,Sheffield United,23,7,2,29,20,63
+Premier League,2021-2022,1,Manchester City,93,29,6,3,99,26
+Premier League,2021-2022,2,Liverpool,92,28,8,2,94,26
+Premier League,2021-2022,3,Chelsea,74,21,11,6,76,33
+Premier League,2021-2022,4,Tottenham Hotspur,71,22,5,11,69,40
+Premier League,2021-2022,5,Arsenal,69,22,3,13,61,48
+Premier League,2021-2022,6,Manchester United,58,16,10,12,57,57
+Premier League,2021-2022,7,West Ham United,56,16,8,14,60,51
+Premier League,2021-2022,8,Leicester City,52,14,10,14,62,59
+Premier League,2021-2022,9,Brighton & Hove Albion,51,12,15,11,42,44
+Premier League,2021-2022,10,Wolverhampton Wanderers,51,15,6,17,38,43
+Premier League,2021-2022,11,Newcastle United,49,13,10,15,44,62
+Premier League,2021-2022,12,Crystal Palace,48,11,15,12,50,46
+Premier League,2021-2022,13,Brentford,46,13,7,18,48,56
+Premier League,2021-2022,14,Aston Villa,45,13,6,19,52,54
+Premier League,2021-2022,15,Southampton,40,9,13,16,43,67
+Premier League,2021-2022,16,Everton,39,11,6,21,43,66
+Premier League,2021-2022,17,Leeds United,38,9,11,18,42,79
+Premier League,2021-2022,18,Burnley,35,7,14,17,34,53
+Premier League,2021-2022,19,Watford,23,6,5,27,34,77
+Premier League,2021-2022,20,Norwich City,22,5,7,26,23,84
+Premier League,2022-2023,1,Manchester City,89,28,5,5,94,33
+Premier League,2022-2023,2,Arsenal,84,26,6,6,88,43
+Premier League,2022-2023,3,Manchester United,75,23,6,9,58,43
+Premier League,2022-2023,4,Newcastle United,71,19,14,5,68,33
+Premier League,2022-2023,5,Liverpool,67,19,10,9,75,47
+Premier League,2022-2023,6,Brighton & Hove Albion,62,18,8,12,72,53
+Premier League,2022-2023,7,Aston Villa,61,18,7,13,51,46
+Premier League,2022-2023,8,Tottenham Hotspur,60,18,6,14,70,63
+Premier League,2022-2023,9,Brentford,59,15,14,9,58,46
+Premier League,2022-2023,10,Fulham,52,15,7,16,55,53
+Premier League,2022-2023,11,Crystal Palace,45,11,12,15,40,49
+Premier League,2022-2023,12,Chelsea,44,11,11,16,38,47
+Premier League,2022-2023,13,Wolverhampton Wanderers,41,11,8,19,31,58
+Premier League,2022-2023,14,West Ham United,40,11,7,20,42,55
+Premier League,2022-2023,15,AFC Bournemouth,39,11,6,21,37,71
+Premier League,2022-2023,16,Nottingham Forest,38,9,11,18,38,68
+Premier League,2022-2023,17,Everton,36,8,12,18,34,57
+Premier League,2022-2023,18,Leicester City,34,9,7,22,51,68
+Premier League,2022-2023,19,Leeds United,31,7,10,21,48,78
+Premier League,2022-2023,20,Southampton,25,6,7,25,36,73
+Premier League,2023-2024,1,Manchester City,91,28,7,3,96,34
+Premier League,2023-2024,2,Arsenal,89,28,5,5,91,29
+Premier League,2023-2024,3,Liverpool,82,24,10,4,86,41
+Premier League,2023-2024,4,Aston Villa,68,20,8,10,76,61
+Premier League,2023-2024,5,Tottenham Hotspur,66,20,6,12,74,61
+Premier League,2023-2024,6,Chelsea,63,18,9,11,77,63
+Premier League,2023-2024,7,Newcastle United,60,18,6,14,85,62
+Premier League,2023-2024,8,Manchester United,60,18,6,14,57,58
+Premier League,2023-2024,9,West Ham United,52,14,10,14,60,74
+Premier League,2023-2024,10,Crystal Palace,49,13,10,15,57,58
+Premier League,2023-2024,11,Brighton & Hove Albion,48,12,12,14,55,62
+Premier League,2023-2024,12,AFC Bournemouth,48,13,9,16,54,67
+Premier League,2023-2024,13,Fulham,47,13,8,17,55,61
+Premier League,2023-2024,14,Wolverhampton Wanderers,46,13,7,18,50,65
+Premier League,2023-2024,15,Everton,40,13,9,16,40,51
+Premier League,2023-2024,16,Brentford,39,10,9,19,56,65
+Premier League,2023-2024,17,Nottingham Forest,32,9,9,20,49,67
+Premier League,2023-2024,18,Luton Town,26,6,8,24,52,85
+Premier League,2023-2024,19,Burnley,24,5,9,24,41,78
+Premier League,2023-2024,20,Sheffield United,16,3,7,28,35,104
+Premier League,2024-2025,1,Liverpool,84,25,9,4,86,41
+Premier League,2024-2025,2,Arsenal,74,20,14,4,69,34
+Premier League,2024-2025,3,Manchester City,71,21,8,9,72,44
+Premier League,2024-2025,4,Chelsea,69,20,9,9,64,43
+Premier League,2024-2025,5,Newcastle United,66,20,6,12,68,47
+Premier League,2024-2025,6,Aston Villa,66,19,9,10,58,51
+Premier League,2024-2025,7,Nottingham Forest,65,19,8,11,58,46
+Premier League,2024-2025,8,Brighton & Hove Albion,61,16,13,9,66,59
+Premier League,2024-2025,9,AFC Bournemouth,56,15,11,12,58,46
+Premier League,2024-2025,10,Brentford,56,16,8,14,66,57
+Premier League,2024-2025,11,Fulham,54,15,9,14,54,54
+Premier League,2024-2025,12,Crystal Palace,53,13,14,11,51,51
+Premier League,2024-2025,13,Everton,48,11,15,12,42,44
+Premier League,2024-2025,14,West Ham United,43,11,10,17,46,62
+Premier League,2024-2025,15,Manchester United,42,11,9,18,44,54
+Premier League,2024-2025,16,Wolverhampton Wanderers,42,12,6,20,54,69
+Premier League,2024-2025,17,Tottenham Hotspur,38,11,5,22,64,65
+Premier League,2024-2025,18,Leicester City,25,6,7,25,33,80
+Premier League,2024-2025,19,Ipswich Town,22,4,10,24,36,82
+Premier League,2024-2025,20,Southampton,12,2,6,30,26,86

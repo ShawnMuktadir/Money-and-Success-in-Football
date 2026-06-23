@@ -1,0 +1,99 @@
+League,Season,League_Position,Team,Points,W,D,L,GF,GA
+Bundesliga,2015-2016,1,Bayern Munich,88,28,4,2,80,17
+Bundesliga,2015-2016,2,Borussia Dortmund,78,24,6,4,82,34
+Bundesliga,2015-2016,3,Bayer Leverkusen,60,18,6,10,56,40
+Bundesliga,2015-2016,4,Borussia Mönchengladbach,55,17,4,13,67,50
+Bundesliga,2015-2016,5,Schalke 04,52,15,7,12,51,49
+Bundesliga,2015-2016,6,Mainz,50,14,8,12,46,42
+Bundesliga,2015-2016,7,Hertha Berlin,50,14,8,12,42,42
+Bundesliga,2015-2016,8,VfL Wolfsburg,45,12,9,13,47,49
+Bundesliga,2015-2016,9,FC Cologne,43,10,13,11,38,42
+Bundesliga,2015-2016,10,Hamburg SV,41,11,8,15,40,46
+Bundesliga,2015-2016,11,FC Ingolstadt 04,40,10,10,14,33,42
+Bundesliga,2015-2016,12,FC Augsburg,38,9,11,14,42,52
+Bundesliga,2015-2016,13,Werder Bremen,38,10,8,16,50,65
+Bundesliga,2015-2016,14,SV Darmstadt 98,38,9,11,14,38,53
+Bundesliga,2015-2016,15,TSG Hoffenheim,37,9,10,15,39,54
+Bundesliga,2015-2016,16,Eintracht Frankfurt,36,9,9,16,34,52
+Bundesliga,2015-2016,17,VfB Stuttgart,33,9,6,19,50,75
+Bundesliga,2015-2016,18,Hannover 96,25,7,4,23,31,62
+La Liga,2015-2016,1,Barcelona,91,29,4,5,112,29
+La Liga,2015-2016,2,Real Madrid,90,28,6,4,110,34
+La Liga,2015-2016,3,Atlético Madrid,88,28,4,6,63,18
+La Liga,2015-2016,4,Villarreal,64,18,10,10,44,35
+La Liga,2015-2016,5,Athletic Club,62,18,8,12,58,45
+La Liga,2015-2016,6,Celta Vigo,60,17,9,12,51,59
+La Liga,2015-2016,7,Sevilla,52,14,10,14,51,50
+La Liga,2015-2016,8,Málaga,48,12,12,14,38,35
+La Liga,2015-2016,9,Real Sociedad,48,13,9,16,45,48
+La Liga,2015-2016,10,Real Betis,45,11,12,15,34,52
+La Liga,2015-2016,11,Las Palmas,44,12,8,18,45,53
+La Liga,2015-2016,12,Valencia,44,11,11,16,46,48
+La Liga,2015-2016,13,Espanyol,43,12,7,19,40,74
+La Liga,2015-2016,14,Eibar,43,11,10,17,49,61
+La Liga,2015-2016,15,Deportivo La Coruña,42,8,18,12,45,61
+La Liga,2015-2016,16,Granada,39,10,9,19,46,69
+La Liga,2015-2016,17,Sporting Gijón,39,10,9,19,40,62
+La Liga,2015-2016,18,Rayo Vallecano,38,9,11,18,52,73
+La Liga,2015-2016,19,Getafe,36,9,9,20,37,67
+La Liga,2015-2016,20,Levante,32,8,8,22,37,70
+Ligue 1,2015-2016,1,Paris Saint-Germain,96,30,6,2,102,19
+Ligue 1,2015-2016,2,Lyon,65,19,8,11,67,43
+Ligue 1,2015-2016,3,AS Monaco,65,17,14,7,57,50
+Ligue 1,2015-2016,4,Nice,63,18,9,11,58,41
+Ligue 1,2015-2016,5,Lille,60,15,15,8,39,27
+Ligue 1,2015-2016,6,Saint-Étienne,58,17,7,14,42,37
+Ligue 1,2015-2016,7,Caen,54,16,6,16,39,52
+Ligue 1,2015-2016,8,Stade Rennais,52,13,13,12,52,54
+Ligue 1,2015-2016,9,Angers,50,13,11,14,40,38
+Ligue 1,2015-2016,10,Bastia,50,14,8,16,36,42
+Ligue 1,2015-2016,11,Bordeaux,50,12,14,12,50,57
+Ligue 1,2015-2016,12,Montpellier,49,14,7,17,49,47
+Ligue 1,2015-2016,13,Marseille,48,10,18,10,48,42
+Ligue 1,2015-2016,14,Nantes,48,12,12,14,33,44
+Ligue 1,2015-2016,15,Lorient,46,11,13,14,47,58
+Ligue 1,2015-2016,16,Guingamp,44,11,11,16,47,56
+Ligue 1,2015-2016,17,Toulouse,40,9,13,16,45,55
+Ligue 1,2015-2016,18,Stade de Reims,39,10,9,19,44,57
+Ligue 1,2015-2016,19,GFC Ajaccio,37,8,13,17,37,58
+Ligue 1,2015-2016,20,Troyes,18,3,9,26,28,83
+Premier League,2015-2016,1,Leicester City,81,23,12,3,68,36
+Premier League,2015-2016,2,Arsenal,71,20,11,7,65,36
+Premier League,2015-2016,3,Tottenham Hotspur,70,19,13,6,69,35
+Premier League,2015-2016,4,Manchester City,66,19,9,10,71,41
+Premier League,2015-2016,5,Manchester United,66,19,9,10,49,35
+Premier League,2015-2016,6,Southampton,63,18,9,11,59,41
+Premier League,2015-2016,7,West Ham United,62,16,14,8,65,51
+Premier League,2015-2016,8,Liverpool,60,16,12,10,63,50
+Premier League,2015-2016,9,Stoke City,51,14,9,15,41,55
+Premier League,2015-2016,10,Chelsea,50,12,14,12,59,53
+Premier League,2015-2016,11,Everton,47,11,14,13,59,55
+Premier League,2015-2016,12,Swansea City,47,12,11,15,42,52
+Premier League,2015-2016,13,Watford,45,12,9,17,40,50
+Premier League,2015-2016,14,West Bromwich Albion,43,10,13,15,34,48
+Premier League,2015-2016,15,Crystal Palace,42,11,9,18,39,51
+Premier League,2015-2016,16,AFC Bournemouth,42,11,9,18,45,67
+Premier League,2015-2016,17,Sunderland,39,9,12,17,48,62
+Premier League,2015-2016,18,Newcastle United,37,9,10,19,44,65
+Premier League,2015-2016,19,Norwich City,34,9,7,22,39,67
+Premier League,2015-2016,20,Aston Villa,17,3,8,27,27,76
+Serie A,2015-2016,1,Juventus,91,29,4,5,75,20
+Serie A,2015-2016,2,Napoli,82,25,7,6,80,32
+Serie A,2015-2016,3,AS Roma,80,23,11,4,83,41
+Serie A,2015-2016,4,Internazionale,67,20,7,11,50,38
+Serie A,2015-2016,5,Fiorentina,64,18,10,10,60,42
+Serie A,2015-2016,6,Sassuolo,61,16,13,9,49,40
+Serie A,2015-2016,7,AC Milan,57,15,12,11,49,43
+Serie A,2015-2016,8,Lazio,54,15,9,14,52,52
+Serie A,2015-2016,9,Chievo Verona,50,13,11,14,43,45
+Serie A,2015-2016,10,Empoli,46,12,10,16,40,49
+Serie A,2015-2016,11,Genoa,46,13,7,18,45,48
+Serie A,2015-2016,12,Torino,45,12,9,17,52,55
+Serie A,2015-2016,13,Atalanta,45,11,12,15,41,47
+Serie A,2015-2016,14,Bologna,42,11,9,18,33,45
+Serie A,2015-2016,15,Sampdoria,40,10,10,18,48,61
+Serie A,2015-2016,16,Palermo,39,10,9,19,38,65
+Serie A,2015-2016,17,Udinese,39,10,9,19,35,60
+Serie A,2015-2016,18,Carpi,38,9,11,18,37,57
+Serie A,2015-2016,19,Frosinone,31,8,7,23,35,76
+Serie A,2015-2016,20,Hellas Verona,28,5,13,20,34,63
