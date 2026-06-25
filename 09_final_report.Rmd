@@ -1,0 +1,1530 @@
+---
+title: "Money and Success in Football"
+author: "Md. Muktadir"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+    latex_engine: xelatex
+    number_sections: true
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    toc_depth: 3
+    theme: flatly
+    highlight: tango
+    code_folding: show
+    fig_width: 10
+    fig_height: 6
+    df_print: paged
+    number_sections: true
+subtitle: |
+  Does Financial Strength Predict League Position?
+  *Sports Economics Seminar — Summer Semester 2026*
+---
+
+```{css, echo=FALSE}
+/* ── Project colour palette ───────────────────────────────── */
+:root {
+  --navy:   #1A2A4A;
+  --gold:   #F5A623;
+  --red:    #C0392B;
+  --green:  #196F3D;
+  --steel:  #2C3E73;
+  --slate:  #566573;
+}
+
+/* ── Callout boxes ────────────────────────────────────────── */
+.callout-finding {
+  background: #FEF9E7;
+  border-left: 5px solid #F5A623;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-alert {
+  background: #FDEDEC;
+  border-left: 5px solid #C0392B;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-stat {
+  background: #EBF5FB;
+  border-left: 5px solid #2C3E73;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-success {
+  background: #EAFAF1;
+  border-left: 5px solid #196F3D;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+
+/* ── Table styling ────────────────────────────────────────── */
+table.table thead tr th {
+  background-color: #1A2A4A;
+  color: white;
+}
+.best-row { font-weight: bold; background: #FEF9E7 !important; }
+
+/* ── Misc ─────────────────────────────────────────────────── */
+h1, h2, h3 { color: #1A2A4A; }
+.caption    { color: #566573; font-style: italic; font-size: 0.88em; }
+```
+
+```{r knitr-setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo      = TRUE,
+  message   = FALSE,
+  warning   = FALSE,
+  fig.align = "center",
+  fig.width = if (knitr::is_latex_output()) 7   else 10,
+  fig.height= if (knitr::is_latex_output()) 4.5 else 6,
+  dpi       = 150,
+  comment   = "#>"
+)
+options(knitr.kable.NA = "", scipen = 6, digits = 4)
+```
+
+```{r global-load, include=FALSE}
+# ── Source project utilities ──────────────────────────────────
+source("utils/packages.R")
+source("utils/constants.R")
+source("utils/helpers.R")
+load_packages(c("dplyr", "readr", "ggplot2", "broom",
+                "tidyr", "scales", "purrr", "knitr", "forcats"))
+
+ensure_installed <- function(pkgs) {
+  miss <- pkgs[!vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)]
+  if (length(miss))
+    install.packages(miss, repos = "https://cloud.r-project.org", quiet = TRUE)
+  invisible(lapply(pkgs, library, character.only = TRUE))
+}
+ensure_installed(c("kableExtra", "ggrepel"))
+
+# kableExtra wrapper: HTML gets Bootstrap styling; PDF avoids tabu bug via full_width=TRUE
+kbs <- function(tbl, fw = FALSE, pos = "center",
+                bo = c("striped","hover","condensed","responsive"), ...) {
+  if (knitr::is_latex_output()) {
+    kable_styling(tbl, full_width = FALSE,
+                  latex_options = c("repeat_header", "striped"), ...)
+  } else {
+    kable_styling(tbl, bootstrap_options = bo,
+                  full_width = fw, position = pos, ...)
+  }
+}
+
+# ── Project colour palette ────────────────────────────────────
+league_colours <- c(
+  "Bundesliga"     = "#E41A1C",
+  "La Liga"        = "#FF7F00",
+  "Ligue 1"        = "#4DAF4A",
+  "Premier League" = "#984EA3",
+  "Serie A"        = "#377EB8"
+)
+league_order <- names(league_colours)
+
+# ── Load master dataset ───────────────────────────────────────
+df <- read_csv("data/merged/master_dataset.csv", show_col_types = FALSE) |>
+  filter(!is.na(League_Position), !is.na(Financial_Rank),
+         !is.na(Market_Value_M_EUR), !is.na(Log_Normalized_Value)) |>
+  mutate(
+    League      = factor(as.character(League), levels = league_order),
+    Champion_bin = as.integer(
+      tolower(as.character(Champion)) %in% c("yes", "true", "1")
+    )
+  )
+
+# ── Fit key models ────────────────────────────────────────────
+modA <- lm(League_Position ~ Financial_Rank, data = df)
+modB <- lm(League_Position ~ Financial_Rank + League, data = df)
+modC <- lm(League_Position ~ Log_Normalized_Value, data = df)
+modD <- lm(League_Position ~ Log_Normalized_Value + League + Season_Index, data = df)
+modH <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2), data = df)
+modE <- glm(Champion_bin ~ Financial_Rank, data = df, family = binomial())
+
+# ── Augment Model H ───────────────────────────────────────────
+aug_H <- augment(modH, data = df) |>
+  rename(Fitted_H = .fitted, Residual_H = .resid,
+         CooksD = .cooksd, Hat = .hat)
+
+resid_sd <- sd(aug_H$Residual_H, na.rm = TRUE)
+
+aug_H <- aug_H |>
+  mutate(
+    Outlier_Flag = case_when(
+      Residual_H < -1.5 * resid_sd ~ "Overperformer",
+      Residual_H >  1.5 * resid_sd ~ "Underperformer",
+      TRUE                          ~ "Normal"
+    )
+  )
+
+# ── Pre-compute inline stats ──────────────────────────────────
+n_obs      <- nrow(df)
+r_pearson  <- round(cor(df$Financial_Rank, df$League_Position,
+                        use = "complete.obs"), 3)
+r2_H       <- round(summary(modH)$r.squared, 3)
+adj_r2_H   <- round(summary(modH)$adj.r.squared, 3)
+aic_H      <- round(AIC(modH), 1)
+n_champ    <- sum(df$Champion_bin, na.rm = TRUE)
+fr1_champs <- sum(df$Champion_bin == 1 & df$Financial_Rank == 1, na.rm = TRUE)
+pct_fr1    <- round(100 * fr1_champs / n_champ)
+fr_gt3_n   <- sum(df$Champion_bin == 1 & df$Financial_Rank > 3, na.rm = TRUE)
+n_overp    <- sum(aug_H$Outlier_Flag == "Overperformer", na.rm = TRUE)
+n_underp   <- sum(aug_H$Outlier_Flag == "Underperformer", na.rm = TRUE)
+prob_fr1   <- round(100 * predict(modE,
+                                  newdata = data.frame(Financial_Rank = 1),
+                                  type = "response"), 1)
+
+leicester_row <- aug_H |>
+  filter(grepl("Leicester", Team, ignore.case = TRUE),
+         grepl("2015", Season))
+leicester_resid <- if (nrow(leicester_row) == 1) round(leicester_row$Residual_H, 1) else NA_real_
+
+cooks_thresh <- round(4 / n_obs, 4)
+n_influential <- sum(aug_H$CooksD > 4 / n_obs, na.rm = TRUE)
+```
+
+---
+
+# Executive Summary
+
+::: {.callout-stat}
+**Scale of the study:** `r format(n_obs, big.mark=",")` team-seasons across 5 major European leagues
+(Bundesliga, La Liga, Ligue 1, Premier League, Serie A) covering 10 seasons
+(2015–16 to 2024–25). All leagues and seasons included in the analysis.
+:::
+
+::: {.callout-finding}
+**Core finding:** The Pearson correlation between Financial Rank and final league
+position is **r = `r r_pearson`** (Spearman ρ = 0.814, both *p* < 0.001). The
+best-fitting OLS model — Model H (quadratic in Financial Rank) — explains
+**R² = `r r2_H`** of the variation in final standings (AIC = `r aic_H`). Money is
+the single strongest predictor of league success in European football.
+:::
+
+::: {.callout-success}
+**Champions by financial rank:** `r pct_fr1`% of the `r n_champ` league titles in
+the study were won by the squad with the **highest market value** in their league
+that season (FR = 1). Only `r fr_gt3_n` champions came from outside the financial
+top three — and only one (Leicester City 2015–16) exceeded the ±1.5 SD outlier
+threshold.
+:::
+
+::: {.callout-alert}
+**The one true exception:** Leicester City 2015–16 (Financial Rank = 11, Premier
+League) has a Model H residual of **`r leicester_resid` positions** — the largest
+single overperformance in the entire dataset. The model predicted 11th place; they
+won the title.
+:::
+
+---
+
+# Introduction
+
+## Research Context
+
+The five major European football leagues collectively generate over €18 billion
+in annual revenue, with squad transfer spending exceeding €12 billion in recent
+seasons. A long-standing debate in sports economics asks: **does financial
+investment in squad quality causally determine sporting success, or can
+well-organised, under-funded clubs systematically compete?**
+
+This question matters beyond football. It has implications for competitive
+balance policy (UEFA Financial Fair Play), fan engagement, and the broader
+relationship between resource endowments and tournament outcomes.
+
+## Research Questions
+
+This study addresses three interrelated questions using ten years of data from
+five top-tier European leagues:
+
+1. **Direction and magnitude:** Is there a statistically significant relationship
+   between a squad's financial rank within its league and its final position?
+2. **Model form:** Does a linear or quadratic specification better capture the
+   relationship? Do the effects differ across leagues or time?
+3. **Exceptions:** Which clubs defy the financial hierarchy, and how statistically
+   unusual are they?
+
+## Contribution
+
+Prior work has established a positive link between payroll/market value and
+performance (Szymanski & Kuypers, 1999; Hall, Szymanski & Zimbalist, 2002;
+Frick, 2007). This study contributes a **within-league rank normalisation**
+that removes between-league scale differences, enabling a pooled analysis
+across leagues with very different absolute spending levels. It also introduces
+a systematic residual-based framework to identify and quantify genuine
+statistical outliers.
+
+---
+
+# Data & Variables
+
+## Dataset Overview
+
+```{r desc-stats-table}
+desc_raw <- read_csv("outputs/01_descriptive_statistics.csv",
+                     show_col_types = FALSE)
+
+desc_raw |>
+  select(Group, N, Mean_Position, SD_Position,
+         Mean_MV_M_EUR, SD_MV_M_EUR,
+         Corr_FR_Pos, Spearman_FR_Pos) |>
+  mutate(across(where(is.numeric), ~ round(., 2))) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Group", "N", "Mean Pos.", "SD Pos.",
+                  "Mean MV (M€)", "SD MV (M€)",
+                  "Pearson r", "Spearman ρ"),
+    caption   = "Table 1. Descriptive statistics by league and combined."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#EBF5FB") |>
+  column_spec(7:8, bold = TRUE, color = "#196F3D")
+```
+
+All `r format(n_obs, big.mark=",")` observations are complete (no missing values
+on Financial Rank, League Position, or Market Value). The dataset covers
+`r nrow(desc_raw) - 1` leagues × 10 seasons each.
+
+## Variable Definitions
+
+```{r var-table, echo=FALSE}
+var_df <- tibble(
+  Variable = c(
+    "League_Position", "Financial_Rank (FR)",
+    "Market_Value_M_EUR", "Normalized_Value",
+    "Log_Normalized_Value", "Champion_bin",
+    "Season_Index"
+  ),
+  Type = c("Integer", "Integer", "Numeric", "Numeric", "Numeric",
+           "Binary (0/1)", "Integer"),
+  Range = c("1–18/20", "1–18/20", "10–3300+", "0–1", "−∞–0",
+            "0 or 1", "1–10"),
+  Description = c(
+    "Final league standing; 1 = champion, higher = worse",
+    "Squad rank by market value within league-season; 1 = richest",
+    "Total squad market value in millions of euros (Transfermarkt)",
+    "Market value normalised within league-season (min-max or share)",
+    "Natural log of Normalized_Value; linearises the skewed MV distribution",
+    "1 if the team won the league title that season, 0 otherwise",
+    "Numeric season counter: 1 = 2015–16, 10 = 2024–25"
+  )
+)
+
+var_df |>
+  kbl(longtable = knitr::is_latex_output(),caption = "Table 2. Variable definitions.") |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  column_spec(1, bold = TRUE, monospace = TRUE) |>
+  column_spec(4, width = if (knitr::is_latex_output()) "6cm" else "40%")
+```
+
+> **Key design choice — Financial Rank vs. raw market value:** Using FR instead
+> of the raw market value removes between-league scale differences. A squad with
+> €300M value is the *richest* in Ligue 1 but *fifth-richest* in the Premier
+> League. FR normalises these differences, allowing pooled analysis.
+
+## Distributions
+
+```{r fr-distribution, fig.cap="Figure 1. Distribution of Financial Rank across all leagues (2015–16 to 2024–25). Each rank value should appear approximately equally often within a league-season."}
+ggplot(df, aes(x = Financial_Rank, fill = League)) +
+  geom_histogram(binwidth = 1, color = "white", alpha = 0.85) +
+  facet_wrap(~ League, scales = "free_y", ncol = 3) +
+  scale_fill_manual(values = league_colours, guide = "none") +
+  scale_x_continuous(breaks = seq(1, 20, 3)) +
+  labs(
+    x       = "Financial Rank (1 = richest squad)",
+    y       = "Count",
+    title   = "Distribution of Financial Rank by League",
+    subtitle= sprintf("N = %s team-seasons; values near-uniform within each league",
+                      format(n_obs, big.mark = ","))
+  ) +
+  theme_bw(base_size = 12) +
+  theme(plot.title = element_text(face = "bold", color = "#1A2A4A"))
+```
+
+```{r mv-distribution, fig.cap="Figure 2. Market value distributions are right-skewed within each league; log-transformation brings values closer to symmetric."}
+df |>
+  select(League, Market_Value_M_EUR, Log_Normalized_Value) |>
+  pivot_longer(cols = c(Market_Value_M_EUR, Log_Normalized_Value),
+               names_to = "Measure", values_to = "Value") |>
+  mutate(
+    Measure = recode(Measure,
+      "Market_Value_M_EUR"   = "Raw Market Value (M€)",
+      "Log_Normalized_Value" = "Log(Normalized Value)"
+    )
+  ) |>
+  ggplot(aes(x = Value, fill = League)) +
+  geom_histogram(bins = 30, color = "white", alpha = 0.8) +
+  facet_grid(Measure ~ League, scales = "free") +
+  scale_fill_manual(values = league_colours, guide = "none") +
+  labs(
+    x     = "Value",
+    y     = "Count",
+    title = "Market Value Distributions: Raw vs. Log-Normalised"
+  ) +
+  theme_bw(base_size = 11) +
+  theme(plot.title = element_text(face = "bold", color = "#1A2A4A"),
+        strip.background = element_rect(fill = "#1A2A4A"),
+        strip.text = element_text(color = "white"))
+```
+
+---
+
+# Exploratory Analysis
+
+## Financial Rank vs. League Position
+
+```{r scatter-main, fig.height=7, fig.cap="Figure 3. Financial Rank vs. Final League Position for all 975 team-seasons. The quadratic Model H fit (dark line) with 95% confidence band is overlaid. Each colour represents a league."}
+# Prediction ribbon for Model H
+fr_seq    <- seq(1, max(df$Financial_Rank, na.rm = TRUE), length.out = 200)
+pred_main <- predict(
+  modH,
+  newdata  = data.frame(Financial_Rank = fr_seq),
+  interval = "confidence", level = 0.95
+) |>
+  as.data.frame() |>
+  mutate(Financial_Rank = fr_seq)
+
+ggplot(df, aes(x = Financial_Rank, y = League_Position)) +
+  geom_ribbon(
+    data = pred_main,
+    aes(x = Financial_Rank, ymin = lwr, ymax = upr),
+    fill = "#1A2A4A", alpha = 0.12, inherit.aes = FALSE
+  ) +
+  geom_jitter(
+    aes(color = League),
+    alpha = 0.35, size = 1.8, width = 0.2, height = 0.2
+  ) +
+  geom_line(
+    data = pred_main,
+    aes(x = Financial_Rank, y = fit),
+    color = "#1A2A4A", linewidth = 1.4, inherit.aes = FALSE
+  ) +
+  scale_y_reverse(
+    breaks = c(1, 5, 10, 15, 20),
+    labels = c("1st\n(Champion)", "5th", "10th", "15th", "20th")
+  ) +
+  scale_x_continuous(breaks = seq(1, 20, 2)) +
+  scale_color_manual(values = league_colours) +
+  labs(
+    x       = "Financial Rank (1 = richest squad)",
+    y       = "Final League Position",
+    color   = "League",
+    title   = "Financial Rank Predicts Final League Position",
+    subtitle = sprintf(
+      "N = %s team-seasons | Pearson r = %s | Model H R² = %s (quadratic fit shown)",
+      format(n_obs, big.mark = ","), r_pearson, r2_H
+    )
+  ) +
+  theme_bw(base_size = 13) +
+  theme(
+    plot.title    = element_text(face = "bold", color = "#1A2A4A"),
+    plot.subtitle = element_text(color = "#566573"),
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank()
+  )
+```
+
+The relationship is clear and consistent across all five leagues: wealthier squads
+(lower Financial Rank) finish higher. The slight curvature in the fitted line
+indicates **diminishing returns** — the positional advantage of being slightly
+richer is larger at the top of the distribution than at the bottom.
+
+## Correlation by League
+
+```{r corr-by-league, fig.cap="Figure 4. Pearson correlation between Financial Rank and League Position, by league. All are significant at p < 0.001."}
+league_corr <- read_csv("outputs/10_league_regression_breakdown.csv",
+                        show_col_types = FALSE) |>
+  mutate(League = factor(League, levels = league_order))
+
+ggplot(league_corr,
+       aes(x = fct_reorder(League, Pearson_FR_Pos), y = Pearson_FR_Pos,
+           fill = League)) +
+  geom_col(alpha = 0.85, width = 0.65) +
+  geom_text(aes(label = sprintf("r = %.3f", Pearson_FR_Pos)),
+            hjust = -0.15, fontface = "bold", size = 4) +
+  geom_hline(yintercept = r_pearson, linetype = "dashed",
+             color = "#1A2A4A", alpha = 0.6) +
+  annotate("text", x = 0.6, y = r_pearson + 0.005,
+           label = sprintf("Combined: r = %.3f", r_pearson),
+           hjust = 0, size = 3.5, color = "#1A2A4A") +
+  coord_flip(xlim = c(0.5, 5.5), ylim = c(0, 1.05)) +
+  scale_fill_manual(values = league_colours, guide = "none") +
+  labs(
+    x       = NULL,
+    y       = "Pearson r (Financial Rank vs. League Position)",
+    title   = "FR–Position Correlation Is Strongest in Serie A",
+    subtitle= "All correlations significant at p < 0.001"
+  ) +
+  theme_bw(base_size = 13) +
+  theme(plot.title = element_text(face = "bold", color = "#1A2A4A"))
+```
+
+```{r corr-table-display}
+league_corr |>
+  select(League, N, Pearson_FR_Pos, Spearman_FR_Pos, R2_FR, Coef_FR) |>
+  mutate(across(where(is.numeric), ~ round(., 3))) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("League", "N", "Pearson r", "Spearman ρ",
+                  "R² (FR)", "β(FR)"),
+    caption   = "Table 3. League-level correlation and simple regression results."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(which(league_corr$League == "Serie A"), bold = TRUE,
+           background = "#FEF9E7")
+```
+
+::: {.callout-finding}
+Serie A shows the strongest relationship (r = 0.889, R² = 0.791), suggesting
+that in Italian football the financial hierarchy is particularly rigid. The
+Premier League (r = 0.801) follows closely, consistent with its reputation for
+large-payroll clubs dominating.
+:::
+
+## Scatter by League
+
+```{r scatter-faceted, fig.height=7, fig.cap="Figure 5. FR vs. Position faceted by league. Linear fits shown per league. The relationship is consistent in slope and significance across all five."}
+ggplot(df, aes(x = Financial_Rank, y = League_Position, color = League)) +
+  geom_jitter(alpha = 0.35, size = 1.4, width = 0.2, height = 0.2) +
+  geom_smooth(method = "lm", formula = y ~ x,
+              color = "#1A2A4A", fill = "#F5A623",
+              se = TRUE, linewidth = 1.1, alpha = 0.2) +
+  facet_wrap(~ League, ncol = 3, scales = "fixed") +
+  scale_y_reverse(breaks = c(1, 5, 10, 15, 20)) +
+  scale_x_continuous(breaks = seq(1, 20, 4)) +
+  scale_color_manual(values = league_colours, guide = "none") +
+  labs(
+    x       = "Financial Rank (1 = richest)",
+    y       = "Final League Position",
+    title   = "FR–Position Relationship Is Consistent Across All Leagues"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    plot.title      = element_text(face = "bold", color = "#1A2A4A"),
+    strip.background = element_rect(fill = "#1A2A4A"),
+    strip.text       = element_text(color = "white", face = "bold")
+  )
+```
+
+---
+
+# OLS Regression Analysis
+
+## Model Building Strategy
+
+We estimate a series of nested OLS models, progressively adding complexity:
+
+| Step | Question | Model |
+|------|----------|-------|
+| Baseline | Does FR alone predict position? | A: `Pos ~ FR` |
+| League FE | Do league-level intercepts improve fit? | B: `Pos ~ FR + League` |
+| Alternative predictor | Is log(MV) better than FR? | C: `Pos ~ Log(MV)` |
+| Full alternative | Log(MV) + controls | D: `Pos ~ Log(MV) + League + Season` |
+| Non-linearity | Does a quadratic term help? | **H: `Pos ~ FR + FR²`** |
+
+Model selection is based on AIC (lower = better) and adjusted R². Nested model
+comparisons use F-tests.
+
+## Model Comparison
+
+```{r model-comparison-table}
+# Compute fit statistics for all OLS models using broom::glance()
+modG <- lm(League_Position ~ Financial_Rank * League, data = df)
+
+ols_fits <- list(A = modA, B = modB, C = modC, D = modD, G = modG, H = modH) |>
+  map_dfr(glance, .id = "Model") |>
+  transmute(
+    Model,
+    Formula = c("FR", "FR + League FE", "Log(MV)",
+                "Log(MV) + League + Season",
+                "FR × League (interaction)", "FR + FR² ★"),
+    R2      = round(r.squared, 4),
+    Adj_R2  = round(adj.r.squared, 4),
+    AIC     = round(AIC, 1),
+    BIC     = round(BIC, 1)
+  )
+
+# Add logit McFadden R² from pre-computed CSV
+logit_row <- read_csv("outputs/09_model_fit_summary.csv", show_col_types=FALSE) |>
+  filter(Model == "E") |>
+  transmute(Model, Formula = "Champion ~ FR (Logit)",
+            R2 = round(R2_McFadden, 4), Adj_R2 = NA_real_,
+            AIC = round(AIC, 1), BIC = NA_real_)
+
+bind_rows(ols_fits, logit_row) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Model", "Formula", "R²", "Adj. R²", "AIC", "BIC"),
+    caption   = "Table 4. Model comparison. ★ = preferred specification (lowest AIC among OLS models).",
+    align     = "llrrrr"
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(which(bind_rows(ols_fits, logit_row)$Model == "H"),
+           bold = TRUE, background = "#FEF9E7") |>
+  footnote(
+    general = "OLS response: League_Position (1 = champion). R² for Model E is McFadden pseudo-R².",
+    general_title = "Note:"
+  )
+```
+
+::: {.callout-finding}
+**Model H wins.** Adding the quadratic term FR² reduces AIC from 5099.8 (Model A)
+to **`r aic_H`**, a reduction of `r round(5099.8 - aic_H, 1)` points. The
+quadratic is confirmed by a nested F-test: *F*(1, 972) = 31.71, *p* < 0.001.
+Adding League fixed effects (Model B) or interaction terms (Model G) provides
+negligible improvement over the simple quadratic — the FR effect is
+**league-invariant**.
+:::
+
+## Model H: Estimated Coefficients
+
+```{r model-h-coefs}
+# Read pre-computed coefficients (matches the fresh-fitted modH exactly)
+coef_H_raw <- read_csv("outputs/20_quadratic_model_results.csv",
+                       show_col_types = FALSE)
+
+coef_H_raw |>
+  mutate(
+    term = recode(term,
+      "(Intercept)"          = "Intercept (α)",
+      "Financial_Rank"       = "Financial Rank (β₁)",
+      "I(Financial_Rank^2)"  = "Financial Rank² (β₂)"
+    ),
+    across(c(estimate, std.error, statistic, conf.low, conf.high),
+           ~ round(., 4)),
+    p.value   = formatC(p.value, format = "e", digits = 2),
+    CI_95     = sprintf("[%.4f, %.4f]", conf.low, conf.high)
+  ) |>
+  select(term, estimate, std.error, statistic, p.value, CI_95) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Term", "Estimate", "Std. Error", "t-value",
+                  "p-value", "95% CI"),
+    caption   = "Table 5. Model H coefficient estimates. Response: League Position (1 = champion)."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  column_spec(4:5, bold = TRUE)
+```
+
+**Interpreting the coefficients:**
+
+- **β₁ = 1.231:** Each one-rank increase in Financial Rank is associated with, on
+  average, a **1.23-position worse finish**, holding the quadratic term constant.
+  At FR = 1, the marginal effect of moving from 1st to 2nd richest is approximately
+  1.23 − 2 × 0.020 × 1 = **1.19 positions** worse.
+- **β₂ = −0.020:** The negative quadratic coefficient indicates **diminishing
+  returns at the bottom** — the positional penalty for each additional rank step
+  shrinks as FR increases. At FR = 15, the marginal effect is
+  1.23 − 2 × 0.020 × 15 = **0.63 positions**.
+- **R² = `r r2_H`:** Financial Rank (linear + quadratic) explains
+  **`r round(100*r2_H, 1)`%** of the variation in final league position.
+
+## Quadratic Fit Curve
+
+```{r quadratic-curve, fig.cap="Figure 6. Model H predicted league position as a function of Financial Rank, with 95% confidence interval. y-axis reversed: lower = better."}
+pred_curve <- data.frame(Financial_Rank = fr_seq) |>
+  bind_cols(
+    predict(modH,
+            newdata  = data.frame(Financial_Rank = fr_seq),
+            interval = "confidence", level = 0.95) |>
+      as.data.frame()
+  )
+
+ggplot(pred_curve, aes(x = Financial_Rank, y = fit)) +
+  geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "#2C3E73", alpha = 0.18) +
+  geom_line(color = "#1A2A4A", linewidth = 1.7) +
+  geom_point(
+    data = data.frame(
+      Financial_Rank = c(1, 5, 10, 15, 20),
+      fit = predict(modH,
+                    newdata = data.frame(Financial_Rank = c(1, 5, 10, 15, 20)))
+    ),
+    color = "#F5A623", size = 4, shape = 18
+  ) +
+  geom_text(
+    data = data.frame(
+      Financial_Rank = c(1, 5, 10, 15, 20),
+      fit = predict(modH,
+                    newdata = data.frame(Financial_Rank = c(1, 5, 10, 15, 20))),
+      lbl = sprintf("FR=%d\n-> %s", c(1, 5, 10, 15, 20),
+                    round(predict(modH,
+                                  newdata = data.frame(
+                                    Financial_Rank = c(1, 5, 10, 15, 20)
+                                  )), 1))
+    ),
+    aes(label = lbl), hjust = -0.15, size = 3.2, color = "#1A2A4A"
+  ) +
+  scale_y_reverse(
+    breaks = seq(2, 20, 2),
+    labels = c("2nd", "4th", "6th", "8th", "10th",
+               "12th", "14th", "16th", "18th", "20th")
+  ) +
+  scale_x_continuous(breaks = seq(1, 20, 2),
+                     labels = paste0("FR ", seq(1, 20, 2))) +
+  labs(
+    x       = "Financial Rank (1 = richest)",
+    y       = "Predicted Final Position",
+    title   = "Model H: Diminishing Returns at the Bottom of the Table",
+    subtitle= sprintf(
+      "Predicted position = %.3f + %.3f×FR − %.3f×FR² | R² = %.3f | AIC = %.1f",
+      coef(modH)[1], coef(modH)[2], abs(coef(modH)[3]), r2_H, aic_H
+    )
+  ) +
+  theme_bw(base_size = 13) +
+  theme(
+    plot.title    = element_text(face = "bold", color = "#1A2A4A"),
+    plot.subtitle = element_text(size = 10, color = "#566573"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## League-Level Explanatory Power
+
+```{r league-r2-bars, fig.cap="Figure 7. R² for Financial Rank predictor by league. Financial Rank alone explains 61–79% of final standings variation."}
+league_corr |>
+  select(League, R2_FR, R2_LogMV) |>
+  pivot_longer(cols = c(R2_FR, R2_LogMV),
+               names_to = "Predictor", values_to = "R2") |>
+  mutate(
+    Predictor = recode(Predictor,
+      "R2_FR"    = "Financial Rank (FR)",
+      "R2_LogMV" = "Log(Market Value)"
+    ),
+    League = fct_reorder(League, R2, max)
+  ) |>
+  ggplot(aes(x = League, y = R2, fill = Predictor)) +
+  geom_col(position = position_dodge(0.75), width = 0.65, alpha = 0.87) +
+  geom_text(
+    aes(label = sprintf("%.0f%%", R2 * 100)),
+    position = position_dodge(0.75),
+    vjust = -0.4, size = 3.5, fontface = "bold"
+  ) +
+  scale_fill_manual(values = c(
+    "Financial Rank (FR)" = "#2C3E73",
+    "Log(Market Value)"   = "#196F3D"
+  )) +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(
+    x       = NULL,
+    y       = "R² (variance explained)",
+    fill    = "Predictor",
+    title   = "Money Explains 61–79% of Final League Position",
+    subtitle= "Financial Rank consistently outperforms Log(Market Value)"
+  ) +
+  theme_bw(base_size = 13) +
+  theme(
+    plot.title    = element_text(face = "bold", color = "#1A2A4A"),
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank()
+  )
+```
+
+---
+
+# Champion Probability
+
+## Logistic Regression Model
+
+Model E estimates the probability that a team wins the league title as a function
+of its Financial Rank using binary logistic regression.
+
+$$\log\!\left(\frac{P(\text{Champion})}{1 - P(\text{Champion})}\right) = \alpha + \beta_{\text{FR}} \cdot \text{FR}$$
+
+```{r logit-model-summary}
+logit_coefs <- tidy(modE, conf.int = TRUE, exponentiate = FALSE) |>
+  mutate(
+    OR    = round(exp(estimate), 4),
+    across(c(estimate, std.error, statistic, conf.low, conf.high), ~ round(., 4)),
+    p.value = formatC(p.value, format = "e", digits = 2),
+    term    = recode(term,
+      "(Intercept)"    = "Intercept (α)",
+      "Financial_Rank" = "Financial Rank (β)"
+    )
+  )
+
+mcf_null   <- glm(Champion_bin ~ 1, data = df, family = binomial())
+mcf_r2     <- round(1 - as.numeric(logLik(modE)) / as.numeric(logLik(mcf_null)), 3)
+
+logit_coefs |>
+  select(term, estimate, std.error, statistic, p.value, OR) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Term", "Log-Odds", "Std. Error", "z-value",
+                  "p-value", "Odds Ratio"),
+    caption = sprintf(
+      "Table 6. Logistic Model E coefficients. McFadden R² = %.3f, AIC = %.1f.",
+      mcf_r2, AIC(modE)
+    )
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+**Interpretation of β = `r round(coef(modE)[2], 3)`:** Each one-step increase in
+Financial Rank multiplies the *odds* of winning the title by
+e^(`r round(coef(modE)[2], 3)`) = **`r round(exp(coef(modE)[2]), 3)`** — a
+**`r round((1 - exp(coef(modE)[2]))*100, 1)`% reduction in the championship odds**
+per rank step.
+
+## Champion Probability Curve
+
+```{r champion-prob-curve, fig.cap="Figure 8. Predicted probability of winning the league title as a function of Financial Rank (Logistic Model E). The y-axis is probability (0 to 100%)."}
+fr_range <- seq(1, max(df$Financial_Rank, na.rm = TRUE), length.out = 300)
+prob_df  <- data.frame(Financial_Rank = fr_range) |>
+  mutate(Prob = predict(modE, newdata = data.frame(Financial_Rank = fr_range),
+                        type = "response"))
+
+key_probs <- data.frame(Financial_Rank = c(1, 2, 3, 5, 10, 11)) |>
+  mutate(Prob = predict(modE, newdata = data.frame(
+    Financial_Rank = c(1, 2, 3, 5, 10, 11)
+  ), type = "response"))
+
+ggplot(prob_df, aes(x = Financial_Rank, y = Prob)) +
+  geom_area(fill = "#C0392B", alpha = 0.12) +
+  geom_line(color = "#C0392B", linewidth = 1.6) +
+  geom_point(data = key_probs, aes(x = Financial_Rank, y = Prob),
+             color = "#1A2A4A", size = 3.5, shape = 21, fill = "#F5A623") +
+  geom_text(
+    data = key_probs,
+    aes(label = sprintf("FR=%d\n%.1f%%", Financial_Rank, Prob * 100)),
+    vjust = -0.6, size = 3.2, color = "#1A2A4A", fontface = "bold"
+  ) +
+  scale_y_continuous(labels = percent_format(accuracy = 1),
+                     breaks = seq(0, 0.7, 0.1)) +
+  scale_x_continuous(breaks = 1:20) +
+  labs(
+    x       = "Financial Rank (1 = richest)",
+    y       = "P(Winning the Title)",
+    title   = sprintf("P(Champion | FR=1) = %.1f%% vs P(Champion | FR=11) < 0.01%%",
+                      prob_fr1),
+    subtitle= sprintf("Model E: β = %.3f (SE %.3f), p < 0.001, McFadden R² = %.3f",
+                      coef(modE)[2], summary(modE)$coef[2,2], mcf_r2)
+  ) +
+  theme_bw(base_size = 13) +
+  theme(
+    plot.title    = element_text(face = "bold", color = "#1A2A4A"),
+    plot.subtitle = element_text(color = "#566573", size = 10),
+    panel.grid.minor = element_blank()
+  )
+```
+
+```{r prob-table}
+data.frame(Financial_Rank = c(1, 2, 3, 4, 5, 8, 11)) |>
+  mutate(
+    Probability = predict(modE,
+                          newdata = data.frame(Financial_Rank = c(1,2,3,4,5,8,11)),
+                          type = "response"),
+    Probability_pct = paste0(round(Probability * 100, 2), "%")
+  ) |>
+  select(Financial_Rank, Probability_pct) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Financial Rank", "P(Champion)"),
+    caption   = "Table 7. Predicted championship probabilities at key FR values (Model E)."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#FEF9E7")
+```
+
+::: {.callout-stat}
+**FR=1 is not a guarantee:** Even the richest squad has only a ~`r prob_fr1`%
+championship probability, reflecting the inherent randomness in football outcomes
+(injuries, fixture congestion, etc.). The model captures the *structural* advantage
+of financial strength, not individual season determinism.
+:::
+
+---
+
+# Residual Analysis & Diagnostics
+
+## Residuals vs. Fitted Values
+
+```{r resid-setup}
+# Identify story clubs for labelling
+label_clubs <- aug_H |>
+  filter(
+    (Outlier_Flag != "Normal") |
+    (grepl("Leicester|Leverkusen|Napoli|Lille|Liverpool", Team) &
+     Champion_bin == 1)
+  ) |>
+  arrange(Residual_H)
+```
+
+```{r resid-plot, fig.height=7, fig.cap="Figure 9. Residuals vs. Fitted Values for Model H. Dashed lines = ±1.5 SD threshold. Negative residual means the team finished better than predicted."}
+ggplot(aug_H, aes(x = Fitted_H, y = Residual_H)) +
+  geom_hline(yintercept = 0, linetype = "solid",  color = "grey60", linewidth = 0.8) +
+  geom_hline(yintercept = -1.5 * resid_sd, linetype = "dashed",
+             color = "#1A2A4A", alpha = 0.7) +
+  geom_hline(yintercept =  1.5 * resid_sd, linetype = "dashed",
+             color = "#C0392B", alpha = 0.7) +
+  geom_point(
+    aes(color = Outlier_Flag), alpha = 0.55, size = 2
+  ) +
+  ggrepel::geom_text_repel(
+    data  = label_clubs,
+    aes(label = paste0(Team, "\n(", substr(Season, 3, 7), ")")),
+    size  = 3, max.overlaps = 20, seed = 42,
+    box.padding = 0.5, color = "#1A2A4A"
+  ) +
+  annotate("text", x = 2, y = -1.5 * resid_sd - 0.5,
+           label = sprintf("Overperformer threshold: −%.2f", 1.5 * resid_sd),
+           hjust = 0, size = 3.2, color = "#1A2A4A") +
+  annotate("text", x = 2, y =  1.5 * resid_sd + 0.5,
+           label = sprintf("Underperformer threshold: +%.2f", 1.5 * resid_sd),
+           hjust = 0, size = 3.2, color = "#C0392B") +
+  scale_color_manual(
+    values = c("Overperformer" = "#1A2A4A",
+               "Normal"        = "grey70",
+               "Underperformer"= "#C0392B"),
+    labels = c("Overperformer"  = sprintf("Overperformer (n=%d)", n_overp),
+               "Normal"         = sprintf("Normal (n=%d)",
+                                          n_obs - n_overp - n_underp),
+               "Underperformer" = sprintf("Underperformer (n=%d)", n_underp))
+  ) +
+  labs(
+    x       = "Fitted Values (Predicted Position)",
+    y       = "Residual (Actual − Predicted)",
+    color   = NULL,
+    title   = "Model H Residuals: Most Clubs Are Well-Predicted",
+    subtitle= sprintf(
+      "SD(residuals) = %.2f  |  ±1.5 SD threshold  |  N = %d",
+      resid_sd, n_obs
+    )
+  ) +
+  theme_bw(base_size = 13) +
+  theme(
+    plot.title    = element_text(face = "bold", color = "#1A2A4A"),
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank()
+  )
+```
+
+> **Reading the residuals:** A *negative* residual means the team finished *better*
+> than predicted by their financial rank. A *positive* residual means they
+> underperformed relative to their resources. Leicester City's residual of
+> **`r leicester_resid`** — a team predicted to finish 11th, winning the league —
+> is by far the most extreme in the dataset.
+
+## Cook's Distance
+
+Cook's Distance measures the influence of each observation on the regression
+coefficients. Values above the threshold 4/*N* = `r cooks_thresh` warrant closer
+inspection.
+
+```{r cooks-distance-plot, fig.height=6, fig.cap="Figure 10. Cook's Distance for all 975 observations. The dashed red line is the threshold 4/N = 0.0041. Labelled points exceed the threshold."}
+high_cooks <- aug_H |>
+  mutate(idx = row_number()) |>
+  filter(CooksD > 4 / n_obs)
+
+ggplot(aug_H |> mutate(idx = row_number()),
+       aes(x = idx, y = CooksD)) +
+  geom_segment(aes(xend = idx, yend = 0, color = CooksD > 4/n_obs),
+               alpha = 0.6) +
+  geom_point(aes(color = CooksD > 4 / n_obs), size = 1.8) +
+  geom_hline(yintercept = 4 / n_obs, linetype = "dashed",
+             color = "#C0392B", linewidth = 1) +
+  ggrepel::geom_text_repel(
+    data  = high_cooks |> arrange(desc(CooksD)) |> head(12),
+    aes(x = idx,
+        label = paste0(Team, "\n", substr(Season, 3, 7))),
+    size  = 2.8, max.overlaps = 15, seed = 99, color = "#1A2A4A",
+    box.padding = 0.4
+  ) +
+  scale_color_manual(
+    values = c("FALSE" = "steelblue", "TRUE" = "#C0392B"),
+    labels = c("FALSE" = "Below threshold",
+               "TRUE"  = sprintf("Above 4/N = %.4f", 4/n_obs))
+  ) +
+  labs(
+    x       = "Observation Index",
+    y       = "Cook's Distance",
+    color   = NULL,
+    title   = "Cook's Distance Identifies Influential Observations",
+    subtitle= sprintf(
+      "Threshold = 4/N = %.4f  |  %d observations above threshold",
+      cooks_thresh, n_influential
+    )
+  ) +
+  theme_bw(base_size = 13) +
+  theme(
+    plot.title    = element_text(face = "bold", color = "#1A2A4A"),
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank()
+  )
+```
+
+```{r cooks-table}
+aug_H |>
+  filter(CooksD > 4 / n_obs) |>
+  arrange(desc(CooksD)) |>
+  select(Team, League, Season, League_Position, Financial_Rank,
+         Fitted_H, Residual_H, CooksD) |>
+  mutate(across(c(Fitted_H, Residual_H, CooksD), ~ round(., 3))) |>
+  head(15) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Team", "League", "Season", "Actual Pos.",
+                  "FR", "Predicted Pos.", "Residual", "Cook's D"),
+    caption   = sprintf("Table 8. Top influential observations (Cook's D > %.4f).",
+                        cooks_thresh)
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#FDEDEC")
+```
+
+## Outlier Summary
+
+```{r outlier-summary-table}
+aug_H |>
+  filter(Outlier_Flag != "Normal") |>
+  arrange(Residual_H) |>
+  select(Team, League, Season, League_Position, Financial_Rank,
+         Fitted_H, Residual_H, Outlier_Flag) |>
+  mutate(across(c(Fitted_H, Residual_H), ~ round(., 2))) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Team", "League", "Season", "Actual",
+                  "FR", "Predicted", "Residual", "Category"),
+    caption   = sprintf(
+      "Table 9. Statistical outliers (|Residual| > 1.5 SD = %.2f): %d overperformers, %d underperformers.",
+      1.5 * resid_sd, n_overp, n_underp
+    )
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(which(
+    aug_H |> filter(Outlier_Flag != "Normal") |>
+      arrange(Residual_H) |> pull(Outlier_Flag) == "Overperformer"
+  ), background = "#EBF5FB") |>
+  row_spec(which(
+    aug_H |> filter(Outlier_Flag != "Normal") |>
+      arrange(Residual_H) |> pull(Outlier_Flag) == "Underperformer"
+  ), background = "#FDEDEC")
+```
+
+---
+
+# The Exceptions
+
+## Champions from Outside the Financial Top Three
+
+```{r surprise-champs-table}
+surprise_raw <- read_csv("outputs/07_champions_surprise_detail.csv",
+                         show_col_types = FALSE)
+
+surprise_aug <- aug_H |>
+  filter(Champion_bin == 1, Financial_Rank > 3) |>
+  select(League, Season, Team, Financial_Rank, Market_Value_M_EUR,
+         Fitted_H, Residual_H) |>
+  mutate(across(c(Fitted_H, Residual_H), ~ round(., 1)))
+
+surprise_aug |>
+  arrange(Residual_H) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("League", "Season", "Club", "FR",
+                  "Squad Value (M€)", "Model Prediction", "Residual"),
+    caption   = sprintf(
+      "Table 10. The %d champions who won from outside the financial top 3 (FR > 3).",
+      fr_gt3_n
+    )
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(which(surprise_aug |> arrange(Residual_H) |> pull(Team) == "Leicester City"),
+           bold = TRUE, background = "#FDEDEC") |>
+  column_spec(4, bold = TRUE, color = "#C0392B")
+```
+
+::: {.callout-alert}
+Only **`r fr_gt3_n` of `r n_champ` champions** (≈ `r round(100*fr_gt3_n/n_champ)`%)
+came from outside the financial top 3. Of these, only **Leicester City** (FR = 11)
+exceeded the ±1.5 SD statistical outlier threshold. The other three surprise
+champions (Napoli FR=5, Lille FR=4, Liverpool FR=4) are within one standard
+deviation of expectation — financially competitive clubs who happened to win.
+:::
+
+## All 50 Champions: Residual Dotplot
+
+```{r champions-dotplot, fig.height=10, fig.cap="Figure 11. All 50 league champions ranked by Model H residual. Negative residual = better than predicted. Orange diamonds indicate surprise winners (FR > 3). Blue shading marks the statistical outlier zone (residual < −1.5 SD)."}
+champ_csv <- read_csv("outputs/31_all_champions_with_residuals.csv",
+                      show_col_types = FALSE) |>
+  mutate(
+    Label   = paste0(Team, " (", substr(Season, 1, 7), ", ",
+                     substr(League, 1, 3), ")"),
+    Surprise = Financial_Rank > 3,
+    LeagueF  = factor(as.character(League), levels = league_order)
+  ) |>
+  arrange(Residual_H)
+
+ggplot(champ_csv, aes(x = Residual_H,
+                      y = reorder(Label, -Residual_H))) +
+  annotate("rect",
+           xmin = -Inf, xmax = -1.5 * resid_sd,
+           ymin = -Inf, ymax = Inf,
+           fill = "#1A2A4A", alpha = 0.06) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey60") +
+  geom_vline(xintercept = -1.5 * resid_sd, linetype = "dotted",
+             color = "#1A2A4A", alpha = 0.6) +
+  geom_segment(aes(x = 0, xend = Residual_H,
+                   yend = reorder(Label, -Residual_H),
+                   color = LeagueF), alpha = 0.6) +
+  geom_point(aes(color = LeagueF,
+                 shape = Surprise, size = Surprise)) +
+  ggrepel::geom_text_repel(
+    data = champ_csv |> filter(Surprise),
+    aes(label = sprintf("FR=%d", Financial_Rank)),
+    size = 3, nudge_x = -0.5, color = "#C0392B", fontface = "bold",
+    direction = "y", seed = 7
+  ) +
+  scale_color_manual(values = league_colours) +
+  scale_shape_manual(values = c("FALSE" = 16, "TRUE" = 18),
+                     labels = c("FALSE" = "FR ≤ 3", "TRUE" = "FR > 3 (surprise)"),
+                     name = "Champion type") +
+  scale_size_manual(values = c("FALSE" = 2.5, "TRUE" = 5), guide = "none") +
+  labs(
+    x       = "Residual: Actual − Predicted Position (negative = beat the model)",
+    y       = NULL,
+    color   = "League",
+    title   = "All 50 Champions Beat Their Financial Prediction",
+    subtitle= sprintf(
+      "Every champion has a negative residual. Blue zone: statistical outlier (< −%.2f)",
+      1.5 * resid_sd
+    )
+  ) +
+  theme_bw(base_size = 10) +
+  theme(
+    plot.title    = element_text(face = "bold", color = "#1A2A4A"),
+    legend.position  = "bottom",
+    axis.text.y   = element_text(size = 7),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Champion FR Distribution
+
+```{r fr-distribution-champions, fig.cap="Figure 12. Distribution of Financial Rank among all 50 league champions."}
+champ_csv |>
+  mutate(
+    FR_Group = case_when(
+      Financial_Rank == 1        ~ "FR 1 (richest)",
+      Financial_Rank == 2        ~ "FR 2",
+      Financial_Rank == 3        ~ "FR 3",
+      Financial_Rank %in% 4:5    ~ "FR 4–5",
+      TRUE                        ~ "FR 6+"
+    ),
+    FR_Group = factor(FR_Group,
+                      levels = c("FR 1 (richest)","FR 2","FR 3","FR 4–5","FR 6+"))
+  ) |>
+  count(FR_Group) |>
+  mutate(
+    Pct     = n / sum(n),
+    Surprise = FR_Group %in% c("FR 4–5", "FR 6+")
+  ) |>
+  ggplot(aes(x = FR_Group, y = n, fill = Surprise)) +
+  geom_col(width = 0.65, alpha = 0.87) +
+  geom_text(aes(label = sprintf("%d\n(%.0f%%)", n, Pct * 100)),
+            vjust = -0.3, fontface = "bold", size = 4) +
+  scale_fill_manual(values = c("FALSE" = "#2C3E73", "TRUE" = "#C0392B"),
+                    labels = c("FALSE" = "Expected zone (FR ≤ 3)",
+                               "TRUE"  = "Surprise zone (FR > 3)")) +
+  scale_y_continuous(limits = c(0, 45)) +
+  labs(
+    x       = "Financial Rank Group",
+    y       = "Number of Titles",
+    fill    = NULL,
+    title   = sprintf("%d%% of Titles Were Won by the League's Richest Club",
+                      pct_fr1),
+    subtitle= "10 seasons × 5 leagues = 50 champions total"
+  ) +
+  theme_bw(base_size = 13) +
+  theme(
+    plot.title    = element_text(face = "bold", color = "#1A2A4A"),
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Leicester City 2015–16: A Closer Look
+
+```{r leicester-analysis, fig.cap="Figure 13. Leicester City's 2015–16 season in the context of all Premier League team-seasons. The red star marks Leicester's actual position."}
+pl_data <- aug_H |>
+  filter(as.character(League) == "Premier League") |>
+  mutate(
+    is_leicester = grepl("Leicester", Team) & grepl("2015", Season),
+    pt_label     = ifelse(is_leicester,
+                         "Leicester City\n2015–16\n(FR=11, Pos=1)",
+                         NA_character_)
+  )
+
+ggplot(pl_data, aes(x = Financial_Rank, y = League_Position)) +
+  geom_jitter(aes(color = is_leicester, alpha = is_leicester, size = is_leicester),
+              width = 0.15, height = 0.15) +
+  geom_smooth(data = pl_data |> filter(!is_leicester),
+              method = "lm", formula = y ~ x + I(x^2),
+              color = "#1A2A4A", fill = "#1A2A4A", alpha = 0.1,
+              se = TRUE, linewidth = 1.2) +
+  ggrepel::geom_text_repel(
+    data = pl_data |> filter(is_leicester),
+    aes(label = pt_label),
+    size = 4, fontface = "bold", color = "#C0392B",
+    nudge_x = -2, nudge_y = -2, box.padding = 0.8, seed = 123
+  ) +
+  scale_y_reverse(breaks = c(1, 5, 10, 15, 20)) +
+  scale_color_manual(values = c("FALSE" = "steelblue", "TRUE" = "#C0392B"),
+                     guide = "none") +
+  scale_alpha_manual(values = c("FALSE" = 0.4, "TRUE" = 1), guide = "none") +
+  scale_size_manual(values = c("FALSE" = 2, "TRUE" = 6), guide = "none") +
+  labs(
+    x       = "Financial Rank",
+    y       = "Final League Position",
+    title   = "Leicester City 2015–16: A Premier League Outlier",
+    subtitle= sprintf("Red = Leicester (FR=11, actual=1, predicted=%.1f, residual=%.1f)",
+                      leicester_row$Fitted_H[1], leicester_row$Residual_H[1])
+  ) +
+  theme_bw(base_size = 13) +
+  theme(plot.title = element_text(face = "bold", color = "#1A2A4A"))
+```
+
+```{r leicester-context}
+tibble(
+  Metric = c(
+    "Financial Rank (Premier League, 2015–16)",
+    "Squad Market Value",
+    "League Average Market Value",
+    "Model H: Predicted Position",
+    "Actual Final Position",
+    "Residual",
+    "Residuals SD (all 975 obs.)",
+    "Residual in SD units",
+    "Cook's Distance",
+    "Cook's D Threshold (4/N)"
+  ),
+  Value = c(
+    "11th (out of 20)",
+    sprintf("€%sM", format(round(leicester_row$Market_Value_M_EUR[1], 0), big.mark=",")),
+    sprintf("€%sM (Premier League avg.)", format(round(
+      mean(df$Market_Value_M_EUR[df$League == "Premier League" &
+                                   df$Season == "2015-2016"], na.rm=TRUE), 0
+    ), big.mark=",")),
+    sprintf("%.1f", leicester_row$Fitted_H[1]),
+    "1st (Champions)",
+    sprintf("%.1f positions", leicester_row$Residual_H[1]),
+    sprintf("%.2f", resid_sd),
+    sprintf("%.1f SD", leicester_row$Residual_H[1] / resid_sd),
+    sprintf("%.4f", leicester_row$CooksD[1]),
+    sprintf("%.4f", 4 / n_obs)
+  )
+) |>
+  kbl(longtable = knitr::is_latex_output(),caption = "Table 11. Leicester City 2015–16 vs. model expectations.") |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(c(4,5,6,8), bold = TRUE, background = "#FEF9E7")
+```
+
+::: {.callout-alert}
+Leicester's residual of **`r leicester_resid` positions** corresponds to
+**`r round(leicester_resid / resid_sd, 1)` standard deviations** — the largest
+single observation shock in the dataset. Its Cook's Distance of
+`r round(leicester_row$CooksD[1], 4)` is the highest in the study, confirming it
+as a genuine statistical leverage point, not a data artefact. Removing Leicester
+does *not* weaken the core finding — it actually increases the R² of Model H
+marginally.
+:::
+
+---
+
+# Robustness Checks
+
+## Nested F-Tests
+
+```{r nested-f-tests}
+nested_raw <- read_csv("outputs/18_nested_model_significance_tests.csv",
+                       show_col_types = FALSE)
+
+nested_raw |>
+  mutate(
+    p_display = case_when(
+      p_value < 0.001 ~ "< 0.001 ***",
+      p_value < 0.01  ~ sprintf("%.4f **", p_value),
+      p_value < 0.05  ~ sprintf("%.4f *",  p_value),
+      TRUE            ~ sprintf("%.4f",    p_value)
+    ),
+    Verdict = case_when(
+      p_value < 0.001 & grepl("Quadratic", Comparison) ~
+        "Quadratic term confirmed",
+      p_value > 0.05  & grepl("Interaction.*League", Comparison) ~
+        "Effect is league-uniform",
+      p_value > 0.05  & grepl("Time", Comparison) ~
+        "Effect is time-stable",
+      p_value < 0.05  ~  "Significant",
+      TRUE            ~ "Not significant"
+    )
+  ) |>
+  select(Comparison, Df, F_statistic, p_display, Verdict) |>
+  mutate(F_statistic = round(F_statistic, 3)) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Comparison", "df", "F-statistic", "p-value", "Verdict"),
+    caption   = "Table 12. Nested F-test results for Model H specification checks."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#FEF9E7") |>
+  column_spec(5, bold = TRUE)
+```
+
+::: {.callout-success}
+All three specification tests support Model H: (1) the quadratic term is highly
+significant, (2) the effect does not vary by league, and (3) there is no
+significant time trend from 2015 to 2025. The model is parsimonious and stable.
+:::
+
+## Heteroskedasticity
+
+```{r heterosk-test}
+diag_raw <- read_csv("outputs/14_heteroskedasticity_autocorrelation_tests.csv",
+                     show_col_types = FALSE)
+
+diag_raw |>
+  mutate(
+    p_display = case_when(
+      p_value < 0.001 ~ "< 0.001 ***",
+      p_value < 0.01  ~ sprintf("%.4f **", p_value),
+      TRUE            ~ sprintf("%.4f", p_value)
+    ),
+    Implication = c(
+      "Residual variance is not constant — robust SEs needed",
+      "Observations within a team correlated across seasons"
+    )
+  ) |>
+  select(Test, Statistic, p_display, Implication) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Test", "Statistic", "p-value", "Implication"),
+    caption   = "Table 13. Model D diagnostic tests (heteroskedasticity and autocorrelation)."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1:2, background = "#FDEDEC")
+```
+
+The Breusch–Pagan test confirms heteroskedasticity (*p* < 0.001). This means OLS
+standard errors are inefficient. All inference in this report uses the
+model-estimated SEs as indicative, but results with HC1 heteroskedasticity-robust
+standard errors are examined below.
+
+```{r robust-se-comparison}
+robust_raw <- read_csv("outputs/15_modelD_robust_se.csv", show_col_types = FALSE) |>
+  mutate(
+    SE_change = round((std.error - std.error_OLS) / std.error_OLS * 100, 1),
+    term = gsub("League", "League: ", term)
+  ) |>
+  select(term, estimate, std.error_OLS, std.error, SE_change) |>
+  mutate(across(c(estimate, std.error_OLS, std.error), ~ round(., 4)))
+
+robust_raw |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Term", "Estimate", "OLS SE", "HC1 Robust SE", "% Change"),
+    caption   = "Table 14. Model D: OLS vs. HC1 robust standard errors. Log(MV) remains significant under both."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(2, bold = TRUE, background = "#FEF9E7") |>
+  column_spec(5, color = ifelse(abs(robust_raw$SE_change) > 10, "#C0392B", "#196F3D"),
+              bold = TRUE)
+```
+
+The SE changes are modest (Log(MV): `r robust_raw$SE_change[robust_raw$term == "Log_Normalized_Value"]`%). The coefficient on Log(MV) remains highly significant under robust SEs (*z* = 48.5, *p* < 0.001), confirming the core finding is **not sensitive to heteroskedasticity**.
+
+## Time Stability
+
+```{r time-stability}
+time_raw <- read_csv("outputs/22_time_trend_results.csv", show_col_types = FALSE) |>
+  filter(grepl("Season_Index|Interaction", term)) |>
+  mutate(across(c(estimate, std.error, statistic), ~ round(., 4)),
+         p_display = sprintf("%.4f", p.value))
+
+time_raw |>
+  select(term, estimate, std.error, statistic, p_display) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Term", "Estimate", "SE", "t-value", "p-value"),
+    caption   = "Table 15. Model I: time-trend coefficients (FR x Season Index interaction)."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+The interaction coefficient FR × Season_Index = `r time_raw$estimate[grepl("Interaction|Financial_Rank:Season", time_raw$term)][1]`
+(*p* = `r time_raw$p_display[grepl("Interaction|Financial_Rank:Season", time_raw$term)][1]`). **The financial-position
+relationship has not strengthened or weakened over the decade studied** —
+it was as strong in 2024–25 as in 2015–16.
+
+---
+
+# Conclusions
+
+## Key Findings
+
+::: {.callout-finding}
+**Finding 1 — Money strongly predicts league position.**
+Pearson *r* = 0.813, Spearman ρ = 0.814 (both *N* = 975, *p* < 0.001). A
+quadratic model of Financial Rank (Model H) explains **R² = `r r2_H`** of
+variation in final standings — the strongest single predictor tested. Financial
+Rank outperforms raw market value, logged market value, or any specification
+with league/season fixed effects.
+:::
+
+::: {.callout-finding}
+**Finding 2 — The effect is non-linear: diminishing returns at the bottom.**
+The quadratic term FR² is highly significant (*F* = 31.71, *p* < 0.001). The
+marginal positional cost of being one rank poorer is largest near the top
+(~1.19 positions at FR 1→2) and shrinks toward the bottom (~0.63 positions at
+FR 15→16). Spending more matters most when you are already near the top.
+:::
+
+::: {.callout-finding}
+**Finding 3 — The effect is league-invariant and time-stable.**
+The FR × League interaction is not significant (*F* = 1.17, *p* = 0.32), and
+the FR × Season time trend is not significant (*F* = 0.44, *p* = 0.51). The
+mechanism operates identically in all five leagues and has not changed from
+2015–16 to 2024–25.
+:::
+
+::: {.callout-alert}
+**Finding 4 — Exceptions exist but are statistically rare.**
+Only `r fr_gt3_n` of `r n_champ` champions came from outside the financial top 3.
+One — **Leicester City 2015–16** — is a genuine statistical outlier
+(residual = `r leicester_resid` positions, `r round(leicester_resid/resid_sd, 1)` SD,
+highest Cook's D in the dataset). The other three (Napoli, Lille, Liverpool at
+FR 4–5) are within normal range, suggesting they were financially competitive but
+not wealthy clubs.
+:::
+
+## Limitations & Future Research
+
+```{r limitations-table, echo=FALSE}
+tibble(
+  Limitation = c(
+    "Market value as quality proxy",
+    "No managerial quality variable",
+    "No injury / squad availability data",
+    "Panel structure ignored",
+    "Scope: top divisions only"
+  ),
+  Issue = c(
+    "Transfermarkt valuations may lag actual squad quality by weeks to months",
+    "Exceptional coaches (Ranieri at Leicester) are not captured in the model",
+    "Injury crises can dramatically alter a squad's effective quality",
+    "Teams appear multiple times; correlated errors across seasons are unmodelled",
+    "Results may not generalise to lower divisions or smaller leagues"
+  ),
+  Potential_Fix = c(
+    "Use salary expenditure or wage bill as an alternative measure",
+    "Add manager tenure or a Glassdoor-style coaching quality metric",
+    "Incorporate injury-adjusted squad value (e.g., Opta injury data)",
+    "Fixed-effects panel model or clustered standard errors at team level",
+    "Replicate in Eredivisie, Scottish Premiership, or Championship"
+  )
+) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Limitation", "Issue", "Potential Fix"),
+    caption   = "Table 16. Study limitations and suggested future extensions."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  column_spec(1, bold = TRUE, width = if (knitr::is_latex_output()) "3cm" else "20%") |>
+  column_spec(2:3, width = if (knitr::is_latex_output()) "6cm" else "40%")
+```
+
+---
+
+# Technical Appendix
+
+## Full Coefficient Table (All Models)
+
+```{r full-coef-table}
+coef_all <- read_csv("outputs/08_regression_results.csv", show_col_types = FALSE)
+
+coef_all |>
+  filter(grepl("^[ABCDE]", model_label)) |>
+  select(model_label, term, estimate, std.error, statistic, p.value) |>
+  mutate(
+    across(c(estimate, std.error, statistic), ~ round(., 4)),
+    p_display = case_when(
+      p.value < 0.001 ~ "< 0.001 ***",
+      p.value < 0.01  ~ sprintf("%.4f **", p.value),
+      p.value < 0.05  ~ sprintf("%.4f *",  p.value),
+      TRUE            ~ sprintf("%.4f",    p.value)
+    ),
+    model_label = sub(":.*", "", model_label)
+  ) |>
+  select(-p.value) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Model", "Term", "Estimate", "Std. Error",
+                  "t / z", "p-value"),
+    caption   = "Table A1. Full regression coefficient table (Models A–F)."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  collapse_rows(columns = 1, valign = "top")
+```
+
+## Model H Quadratic Coefficients
+
+```{r appendix-modelh}
+coef_H_raw |>
+  mutate(
+    term  = recode(term,
+      "(Intercept)"         = "Intercept",
+      "Financial_Rank"      = "Financial Rank (β₁)",
+      "I(Financial_Rank^2)" = "FR² (β₂)"
+    ),
+    across(c(estimate, std.error, statistic, conf.low, conf.high), ~ round(., 5)),
+    p.value = formatC(p.value, format = "e", digits = 3)
+  ) |>
+  select(term, estimate, std.error, statistic, p.value, conf.low, conf.high) |>
+  kbl(longtable = knitr::is_latex_output(),
+    col.names = c("Term", "Estimate", "SE", "t-value", "p-value",
+                  "CI lower", "CI upper"),
+    caption   = "Table A2. Model H (Pos ~ FR + FR²) full coefficient table."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+## Session Information
+
+```{r session-info, echo=FALSE}
+si <- sessionInfo()
+tibble(
+  Item  = c("R version", "Platform", "Date knitted",
+            "Key packages"),
+  Value = c(
+    paste(si$R.version$major, si$R.version$minor, sep = "."),
+    si$running,
+    format(Sys.Date(), "%Y-%m-%d"),
+    paste(c("dplyr", "ggplot2", "broom", "kableExtra", "ggrepel"),
+          collapse = ", ")
+  )
+) |>
+  kbl(longtable = knitr::is_latex_output(),col.names = c("", "")) |>
+  kbs(bo = c("striped","condensed"), pos = "left") |>
+  column_spec(1, bold = TRUE, width = if (knitr::is_latex_output()) "4cm" else "25%")
+```
+
+---
+
+*Report generated with R Markdown. Data sources: ESPN FC (standings),
+Transfermarkt (squad market values). Analysis scripts:
+`05_analysis_and_regression.R`, `05b_extended_regression.R`,
+`06_residuals_and_outliers.R`. All code available in the project repository.*
