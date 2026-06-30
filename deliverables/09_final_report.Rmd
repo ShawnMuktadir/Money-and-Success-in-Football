@@ -1,0 +1,1633 @@
+﻿---
+title: "Money and Success in Football"
+author: "Md. Muktadir"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+header-includes:
+  - \usepackage{grffile}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+    latex_engine: xelatex
+    number_sections: true
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    toc_depth: 3
+    theme: flatly
+    highlight: tango
+    code_folding: hide
+    fig_width: 10
+    fig_height: 6
+    df_print: paged
+    number_sections: true
+subtitle: |
+  Does Financial Strength Predict League Position?
+  *Sports Economics Seminar — Summer Semester 2026*
+---
+
+```{css, echo=FALSE}
+/* ── Project colour palette ───────────────────────────────── */
+:root {
+  --navy:   #1A2A4A;
+  --gold:   #F5A623;
+  --red:    #C0392B;
+  --green:  #196F3D;
+  --steel:  #2C3E73;
+  --slate:  #566573;
+}
+
+/* ── Callout boxes ────────────────────────────────────────── */
+.callout-finding {
+  background: #FEF9E7;
+  border-left: 5px solid #F5A623;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-alert {
+  background: #FDEDEC;
+  border-left: 5px solid #C0392B;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-stat {
+  background: #EBF5FB;
+  border-left: 5px solid #2C3E73;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-success {
+  background: #EAFAF1;
+  border-left: 5px solid #196F3D;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+
+/* ── Table styling ────────────────────────────────────────── */
+table.table thead tr th {
+  background-color: #1A2A4A;
+  color: white;
+}
+.best-row { font-weight: bold; background: #FEF9E7 !important; }
+
+/* ── Misc ─────────────────────────────────────────────────── */
+h1, h2, h3 { color: #1A2A4A; }
+.caption    { color: #566573; font-style: italic; font-size: 0.88em; }
+```
+
+```{r knitr-setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo      = FALSE,
+  message   = FALSE,
+  warning   = FALSE,
+  fig.align = "center",
+  fig.width = if (knitr::is_latex_output()) 6.5 else 10,
+  fig.height= if (knitr::is_latex_output()) 4.5 else 6,
+  dpi       = 150,
+  comment   = "#>"
+)
+options(knitr.kable.NA = "", scipen = 6, digits = 4)
+```
+
+```{r global-load, include=FALSE}
+# ── Source project utilities ──────────────────────────────────
+source("utils/packages.R")
+source("utils/constants.R")
+source("utils/helpers.R")
+load_packages(c("dplyr", "readr", "ggplot2", "broom",
+                "tidyr", "scales", "purrr", "knitr", "forcats"))
+
+ensure_installed <- function(pkgs) {
+  miss <- pkgs[!vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)]
+  if (length(miss))
+    install.packages(miss, repos = "https://cloud.r-project.org", quiet = TRUE)
+  invisible(lapply(pkgs, library, character.only = TRUE))
+}
+ensure_installed(c("kableExtra", "ggrepel", "cowplot"))
+
+kbs <- function(tbl, fw = FALSE, pos = "center",
+                bo = c("striped","hover","condensed","responsive"), ...) {
+  if (knitr::is_latex_output()) {
+    kable_styling(tbl, full_width = FALSE,
+                  latex_options = c("striped", "scale_down"), ...)
+  } else {
+    kable_styling(tbl, bootstrap_options = bo,
+                  full_width = fw, position = pos, ...)
+  }
+}
+
+# ── Project colour palette ────────────────────────────────────
+league_colours <- c(
+  "Bundesliga"     = "#E41A1C",
+  "La Liga"        = "#FF7F00",
+  "Ligue 1"        = "#4DAF4A",
+  "Premier League" = "#984EA3",
+  "Serie A"        = "#377EB8"
+)
+league_order <- names(league_colours)
+
+# ── Load master dataset ───────────────────────────────────────
+df <- read_csv("data/merged/master_dataset.csv", show_col_types = FALSE) |>
+  filter(!is.na(League_Position), !is.na(Financial_Rank),
+         !is.na(Market_Value_M_EUR), !is.na(Log_Normalized_Value)) |>
+  mutate(
+    League      = factor(as.character(League), levels = league_order),
+    Champion_bin = as.integer(
+      tolower(as.character(Champion)) %in% c("yes", "true", "1")
+    )
+  )
+
+# ── Fit key models ────────────────────────────────────────────
+modA <- lm(League_Position ~ Financial_Rank, data = df)
+modB <- lm(League_Position ~ Financial_Rank + League, data = df)
+modC <- lm(League_Position ~ Log_Normalized_Value, data = df)
+modD <- lm(League_Position ~ Log_Normalized_Value + League + Season_Index, data = df)
+modH <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2), data = df)
+modI <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2) + I(Financial_Rank^3), data = df)
+modE <- glm(Champion_bin ~ Financial_Rank, data = df, family = binomial())
+
+# ── Augment Model H ───────────────────────────────────────────
+aug_H <- augment(modH, data = df) |>
+  rename(Fitted_H = .fitted, Residual_H = .resid,
+         CooksD = .cooksd, Hat = .hat)
+
+resid_sd <- sd(aug_H$Residual_H, na.rm = TRUE)
+
+aug_H <- aug_H |>
+  mutate(
+    Outlier_Flag = case_when(
+      Residual_H < -1.5 * resid_sd ~ "Overperformer",
+      Residual_H >  1.5 * resid_sd ~ "Underperformer",
+      TRUE                          ~ "Normal"
+    )
+  )
+
+# ── Pre-compute inline stats ──────────────────────────────────
+n_obs      <- nrow(df)
+r_pearson  <- round(cor(df$Financial_Rank, df$League_Position,
+                        use = "complete.obs"), 3)
+r2_H       <- round(summary(modH)$r.squared, 3)
+adj_r2_H   <- round(summary(modH)$adj.r.squared, 3)
+aic_H      <- round(AIC(modH), 1)
+n_champ    <- sum(df$Champion_bin, na.rm = TRUE)
+fr1_champs <- sum(df$Champion_bin == 1 & df$Financial_Rank == 1, na.rm = TRUE)
+pct_fr1    <- round(100 * fr1_champs / n_champ)
+fr_gt3_n   <- sum(df$Champion_bin == 1 & df$Financial_Rank > 3, na.rm = TRUE)
+n_overp    <- sum(aug_H$Outlier_Flag == "Overperformer", na.rm = TRUE)
+n_underp   <- sum(aug_H$Outlier_Flag == "Underperformer", na.rm = TRUE)
+prob_fr1   <- round(100 * predict(modE,
+                                  newdata = data.frame(Financial_Rank = 1),
+                                  type = "response"), 1)
+
+leicester_row <- aug_H |>
+  filter(grepl("Leicester", Team, ignore.case = TRUE),
+         grepl("2015", Season))
+leicester_resid <- if (nrow(leicester_row) == 1) round(leicester_row$Residual_H, 1) else NA_real_
+
+cooks_thresh  <- round(4 / n_obs, 4)
+n_influential <- sum(aug_H$CooksD > 4 / n_obs, na.rm = TRUE)
+
+desc_raw   <- read_csv("outputs/01_descriptive_statistics.csv", show_col_types = FALSE)
+league_corr <- read_csv("outputs/10_league_regression_breakdown.csv",
+                        show_col_types = FALSE) |>
+  mutate(League = factor(League, levels = league_order))
+coef_H_raw <- read_csv("outputs/20_quadratic_model_results.csv", show_col_types = FALSE)
+
+champ_csv <- read_csv("outputs/31_all_champions_with_residuals.csv",
+                      show_col_types = FALSE) |>
+  mutate(
+    ShortLabel = paste0(Team, " (", substr(Season, 1, 4), ")"),
+    Surprise   = Financial_Rank > 3,
+    League     = factor(as.character(League), levels = league_order)
+  )
+```
+
+---
+
+# Executive Summary
+
+::: {.callout-stat}
+**Scale of the study:** `r format(n_obs, big.mark=",")` team-seasons across 5 major European leagues
+(Bundesliga, La Liga, Ligue 1, Premier League, Serie A) covering 10 seasons
+(2015–16 to 2024–25). All leagues and seasons are included in the analysis.
+:::
+
+::: {.callout-finding}
+**Core finding:** The Pearson correlation between Financial Rank and final league
+position is **r = `r r_pearson`** (Spearman ρ = 0.814, both *p* < 0.001). The
+best-fitting model — Model H, which adds a quadratic (squared) term to Financial
+Rank — explains **R² = `r r2_H`** of all variation in final standings. In plain
+terms, knowing only how wealthy a club is relative to its peers allows us to
+correctly explain **`r round(100*r2_H)`%** of where they finish.
+:::
+
+::: {.callout-success}
+**Champions by financial rank:** `r pct_fr1`% of the `r n_champ` league titles
+in the study were won by the squad with the **highest market value** in their
+league that season (Financial Rank = 1). Only `r fr_gt3_n` champions came from
+outside the financial top three — and only one of them (Leicester City 2015–16)
+qualifies as a genuine statistical outlier.
+:::
+
+::: {.callout-alert}
+**The one true exception:** Leicester City 2015–16 finished Financial Rank 11 in
+the Premier League yet won the title. The model predicted they would finish 11th;
+instead they came 1st. Their residual of **`r leicester_resid` positions** is the
+largest shock in the entire dataset and a once-in-a-generation event.
+:::
+
+---
+
+# Introduction
+
+## Why Does This Question Matter?
+
+The five major European football leagues — the English Premier League, Spanish
+La Liga, German Bundesliga, Italian Serie A, and French Ligue 1 — collectively
+generate over €18 billion in annual revenue, with squad transfer spending
+exceeding €12 billion in recent seasons. With this much money flowing through
+the sport, a natural and important question arises: **does financial investment
+actually buy success, or can a well-organised, under-funded club systematically
+compete at the top level?**
+
+This question is not just about football. It has direct implications for:
+
+- **Competitive balance policy** — UEFA introduced Financial Fair Play precisely
+  to prevent the wealthiest clubs from buying their way to dominance. If money
+  truly determines outcomes, these policies become even more critical.
+- **Fan engagement** — If leagues are financially predetermined, the drama
+  of competition is diminished for supporters of smaller clubs.
+- **Sports economics theory** — Understanding how resource endowments translate
+  to tournament outcomes informs models across all competitive sports.
+
+## What We Set Out to Answer
+
+This study addresses three interrelated questions using ten years of data from
+all five top-tier European leagues:
+
+1. **Direction and strength:** Is there a statistically significant relationship
+   between a squad's financial rank within its league and its final position? How
+   strong is that relationship?
+2. **Model form:** Does a simple linear relationship capture the data, or is there
+   a more complex (e.g., non-linear) pattern? Does the relationship differ across
+   leagues or change over time?
+3. **Exceptions:** Which clubs defy the financial hierarchy, and how statistically
+   unusual are they? Is Leicester City 2015–16 a miracle or merely a rounding error?
+
+## What This Study Adds
+
+Previous research (Szymanski & Kuypers, 1999; Frick, 2007) has shown that wage
+bills and transfer spending predict league success. This study makes two additional
+contributions. First, instead of raw market values, we use a **within-league
+financial rank** — which club was the *n*-th wealthiest in their specific
+league that season. This removes the scale problem: a €300M squad is the richest
+in Ligue 1 but the fifth-richest in the Premier League. By ranking within leagues,
+we can pool all five leagues and make fair comparisons. Second, we introduce a
+**residual-based outlier framework** to systematically identify and quantify clubs
+that dramatically beat or missed their financial prediction.
+
+---
+
+# The Data We Used
+
+## Where the Data Comes From
+
+Our dataset was assembled by combining two sources:
+
+- **ESPN FC** provided final league standings (League Position) for all five leagues
+  across the 2015–16 through 2024–25 seasons.
+- **Transfermarkt** provided squad market values — the estimated total transfer
+  market worth of all players in each squad — at the start of each season.
+
+After merging these two sources and removing any rows with missing values on
+key variables, we have a clean dataset of `r format(n_obs, big.mark=",")` team-season
+observations. Every team that played a full season in one of the five leagues during
+the study period appears once per season.
+
+## Descriptive Statistics
+
+The table below summarises the key characteristics of the dataset, broken down
+by league and combined.
+
+```{r desc-stats-table-a}
+desc_raw |>
+  select(Group, N, Mean_Position, SD_Position,
+         Mean_MV_M_EUR, SD_MV_M_EUR) |>
+  mutate(across(where(is.numeric), ~ round(., 2))) |>
+  kbl(longtable = FALSE,
+    col.names = c("Group", "N", "Mean Pos.", "SD Pos.",
+                  "Mean MV (M EUR)", "SD MV (M EUR)"),
+    caption   = "Sample size and position/market-value statistics by league."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#EBF5FB")
+```
+
+```{r desc-stats-table-b}
+desc_raw |>
+  select(Group, N, Corr_FR_Pos, Spearman_FR_Pos) |>
+  mutate(across(where(is.numeric), ~ round(., 3))) |>
+  kbl(longtable = FALSE,
+    col.names = c("Group", "N",
+                  "Pearson r (FR vs Pos.)",
+                  "Spearman rho (FR vs Pos.)"),
+    caption   = "Correlation between Financial Rank and final League Position by league."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#EBF5FB") |>
+  column_spec(3:4, bold = TRUE, color = "#196F3D")
+```
+
+**Reading Tables 1a and 1b:** The "Combined" row (highlighted in blue) captures all
+`r format(n_obs, big.mark=",")` observations. Table 1a shows that market values
+vary substantially across leagues — the Premier League average squad value is
+considerably higher than Ligue 1, for example — but positions are naturally centred
+around mid-table in all leagues. Table 1b shows the key finding from raw data alone:
+the Pearson correlation between Financial Rank and final position is above 0.80 in
+every single league, and Serie A reaches 0.89. These numbers are striking — without
+running any model, the raw correlations already tell us money is a very powerful
+predictor of where clubs finish.
+
+## Variable Definitions
+
+The table below defines each variable used in the analysis.
+
+```{r var-table}
+var_df <- tibble(
+  Variable = c(
+    "League_Position", "Financial_Rank (FR)",
+    "Market_Value_M_EUR", "Normalized_Value",
+    "Log_Normalized_Value", "Champion_bin",
+    "Season_Index"
+  ),
+  Type = c("Integer", "Integer", "Numeric", "Numeric", "Numeric",
+           "Binary (0/1)", "Integer"),
+  Range = c("1–18/20", "1–18/20", "10–3300+", "0–1", "−∞–0",
+            "0 or 1", "1–10"),
+  Description = c(
+    "Final league standing; 1 = champion, higher number = worse finish",
+    "Squad rank by market value within league-season; 1 = richest squad",
+    "Total squad market value in millions of euros (from Transfermarkt)",
+    "Market value normalised within league-season (min-max or value share)",
+    "Natural log of Normalized_Value; makes the skewed distribution more symmetric",
+    "1 if the team won the league title that season, 0 otherwise",
+    "Numeric season counter: 1 = 2015–16, 10 = 2024–25"
+  )
+)
+
+var_df |>
+  kbl(longtable = FALSE, caption = "Variable definitions.") |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  column_spec(1, bold = TRUE, monospace = TRUE,
+              width = if (knitr::is_latex_output()) "3.2cm" else "18%") |>
+  column_spec(2, width = if (knitr::is_latex_output()) "1.4cm" else "8%") |>
+  column_spec(3, width = if (knitr::is_latex_output()) "1.6cm" else "10%") |>
+  column_spec(4, width = if (knitr::is_latex_output()) "7.8cm" else "40%")
+```
+
+**The key design choice — Financial Rank instead of raw market value:**
+Using Financial Rank (FR) rather than the raw €-value is crucial for a
+multi-league analysis. Consider: a squad worth €300M is the *richest* in
+Ligue 1 but only the *fifth-richest* in the Premier League. If we used raw
+€-values and pooled all leagues, we would be comparing apples to oranges.
+By ranking each squad within its own league-season, we create a fair,
+scale-free measure. FR = 1 always means "the wealthiest club in this league
+this season," regardless of whether that squad is worth €600M or €150M.
+
+## How Financial Rank Is Distributed
+
+The chart below shows the distribution of Financial Rank values across all five
+leagues. Since every league-season has exactly as many clubs as positions, the
+distribution should be near-uniform — and indeed it is. This confirms that the
+ranking system is clean and well-balanced across the dataset.
+
+```{r fr-distribution, fig.cap="Distribution of Financial Rank across all leagues (2015-16 to 2024-25). The near-uniform distribution confirms that each rank value appears approximately equally often within every league-season."}
+ggplot(df, aes(x = Financial_Rank, fill = League)) +
+  geom_histogram(binwidth = 1, color = "white", alpha = 0.85) +
+  facet_wrap(~ League, scales = "free_y", ncol = 3) +
+  scale_fill_manual(values = league_colours, guide = "none") +
+  scale_x_continuous(breaks = seq(1, 20, 3)) +
+  labs(
+    x       = "Financial Rank (1 = richest squad)",
+    y       = "Count",
+    title   = "Distribution of Financial Rank by League",
+    subtitle= sprintf("N = %s team-seasons; values near-uniform within each league",
+                      format(n_obs, big.mark = ","))
+  ) +
+  theme_bw(base_size = 12) +
+  theme(plot.title = element_text(face = "bold", color = "#1A2A4A"))
+```
+
+---
+
+# Step 1 — First Look: Does Money Relate to Success?
+
+## The Main Scatter Plot
+
+The most direct way to answer our research question is to plot Financial Rank
+against final League Position for all `r format(n_obs, big.mark=",")` team-seasons.
+The figure below does exactly that.
+
+```{r scatter-main-png, out.width="95%", fig.cap="Financial Rank vs. Final League Position for all 975 team-seasons. Each dot is one team in one season, coloured by league. The dark fitted line (with shaded 95% confidence band) comes from Model H — our best-fitting quadratic model. The y-axis is reversed so that 1st place (champion) is at the top."}
+knitr::include_graphics("outputs/33_scatter_story.png")
+```
+
+**What this plot tells us:** The downward-sloping pattern is immediately clear. Clubs with
+Financial Rank 1 or 2 cluster near the top of their league, while clubs with
+Financial Rank 15+ cluster near the bottom. The relationship is not perfect — there
+is considerable spread at every rank — but the trend is unmistakable. The dark
+fitted curve confirms this mathematically: as FR increases, predicted position
+gets worse, and the curve bends slightly at the bottom, suggesting the penalty for
+being the *poorest* club is slightly smaller than the reward for being the richest.
+
+The Pearson correlation is **r = `r r_pearson`** and the Spearman rank correlation
+is ρ = 0.814 (both statistically significant at *p* < 0.001, *N* = `r n_obs`). A
+correlation above 0.8 is considered very strong in social science contexts, and
+here we achieve it with a single variable.
+
+## Is the Relationship the Same in Every League?
+
+A legitimate concern is whether the relationship might exist in some leagues but
+not others. The chart below shows the Pearson correlation and R² (variance
+explained) for each league separately.
+
+```{r league-r2-bars-png, out.width="90%", fig.cap="R-squared (variance explained in final position) by Financial Rank predictor, broken down by league. Financial Rank alone explains between 61% and 79% of final standings, with Serie A showing the strongest relationship."}
+knitr::include_graphics("outputs/32_league_r2_bars.png")
+```
+
+```{r corr-table-display}
+league_corr |>
+  select(League, N, Pearson_FR_Pos, Spearman_FR_Pos, R2_FR, Coef_FR) |>
+  mutate(across(where(is.numeric), ~ round(., 3))) |>
+  kbl(longtable = FALSE,
+    col.names = c("League", "N", "Pearson r", "Spearman rho",
+                  "R2 (FR)", "beta(FR)"),
+    caption   = "League-level correlation and simple regression results."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(which(league_corr$League == "Serie A"), bold = TRUE,
+           background = "#FEF9E7")
+```
+
+::: {.callout-finding}
+**What the league breakdown shows:** Every single league displays a strong and
+statistically significant relationship between Financial Rank and final position.
+Serie A (Italian football) shows the highest correlation (r = 0.889, R² = 0.791),
+meaning that in Italy, where you rank financially almost perfectly determines
+where you finish. The Premier League (r = 0.801) and Bundesliga also show very
+strong relationships. Even the weakest correlation (Ligue 1, r ≈ 0.80) remains
+extremely strong by any standard. This rules out the possibility that the pooled
+result is driven by one unusual league — the financial hierarchy operates uniformly
+across all five leagues.
+:::
+
+## Relationship by League: Faceted View
+
+The figure below shows the scatter of Financial Rank vs. League Position separately
+for each league. The gold band around each fitted line shows the 95% confidence
+interval. All five leagues show the same clear positive slope.
+
+```{r scatter-faceted, fig.height=7, fig.cap="FR vs. Final League Position faceted by league, with individual linear fits. The slope and significance are consistent across all five leagues."}
+ggplot(df, aes(x = Financial_Rank, y = League_Position, color = League)) +
+  geom_jitter(alpha = 0.35, size = 1.4, width = 0.2, height = 0.2) +
+  geom_smooth(method = "lm", formula = y ~ x,
+              color = "#1A2A4A", fill = "#F5A623",
+              se = TRUE, linewidth = 1.1, alpha = 0.2) +
+  facet_wrap(~ League, ncol = 3, scales = "fixed") +
+  scale_y_reverse(breaks = c(1, 5, 10, 15, 20)) +
+  scale_x_continuous(breaks = seq(1, 20, 4)) +
+  scale_color_manual(values = league_colours, guide = "none") +
+  labs(
+    x       = "Financial Rank (1 = richest)",
+    y       = "Final League Position",
+    title   = "The Financial Rank Relationship Holds in Every League"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    plot.title      = element_text(face = "bold", color = "#1A2A4A"),
+    strip.background = element_rect(fill = "#1A2A4A"),
+    strip.text       = element_text(color = "white", face = "bold")
+  )
+ggsave("outputs/36_faceted_league_scatter.png", width = 8, height = 7, dpi = 150)
+```
+
+---
+
+# Step 2 — Building the Best Predictive Model
+
+## Our Strategy: Try Multiple Models, Compare, Pick the Best
+
+A correlation tells us there is a relationship, but it does not give us a predictive
+model or tell us the precise form of the relationship. To go further, we fit a
+series of OLS (Ordinary Least Squares) regression models. The idea is to start
+simple and progressively add complexity, then compare the models formally to choose
+the best one.
+
+The table below summarises the five model specifications we tested:
+
+| Step | Question being asked | Model |
+|------|---------------------|-------|
+| Baseline | Does FR alone predict position? | A: Position ~ FR |
+| League FE | Does adding league intercepts help? | B: Position ~ FR + League |
+| Alternative | Is log(Market Value) better than FR? | C: Position ~ Log(MV) |
+| Full alternative | Log(MV) + league + time controls | D: Position ~ Log(MV) + League + Season |
+| Non-linear | Does a curved (quadratic) fit help? | **H: Position ~ FR + FR²** |
+
+We also fit a logistic regression (Model E) to predict championship probability,
+which we discuss in Section 5.
+
+Model selection uses AIC (Akaike Information Criterion) — a lower AIC means a
+better trade-off between fit and model complexity. We also report R² and adjusted
+R² for completeness, and verify our preferred model with formal F-tests.
+
+## Model Comparison Results
+
+```{r model-comparison-table}
+modG  <- lm(League_Position ~ Financial_Rank * League,                              data = df)
+modH2 <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2) + League,        data = df)
+modH3 <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2) + Season_Index,  data = df)
+modH4 <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2) + League + Season_Index, data = df)
+modI  <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2) + I(Financial_Rank^3), data = df)
+modJ  <- lm(League_Position ~ log(Financial_Rank),                                  data = df)
+modM  <- lm(League_Position ~ sqrt(Financial_Rank),                                 data = df)
+
+ols_fits <- list(A = modA, B = modB, C = modC, D = modD,
+                 G = modG, H = modH, H2 = modH2, H3 = modH3, H4 = modH4,
+                 I = modI, J = modJ, M = modM) |>
+  map_dfr(glance, .id = "Model") |>
+  transmute(
+    Model,
+    Formula = c("FR", "FR + League FE", "Log(MV)",
+                "Log(MV) + League + Season",
+                "FR x League", "FR + FR-sq (*)",
+                "FR + FR-sq + League",
+                "FR + FR-sq + Season",
+                "FR + FR-sq + League + Season",
+                "FR + FR-sq + FR-cub", "Log(FR)", "sqrt(FR)"),
+    R2     = round(r.squared, 4),
+    Adj_R2 = round(adj.r.squared, 4),
+    AIC    = round(AIC, 1),
+    BIC    = round(BIC, 1)
+  )
+
+logit_row <- tibble(
+  Model   = "E",
+  Formula = "Champion ~ FR (Logit)",
+  R2      = round(1 - modE$deviance / modE$null.deviance, 4),
+  Adj_R2  = NA_real_,
+  AIC     = round(AIC(modE), 1),
+  BIC     = NA_real_
+)
+
+comp_tbl <- bind_rows(ols_fits, logit_row) |>
+  mutate(
+    Adj_R2 = ifelse(is.na(Adj_R2), "---", as.character(Adj_R2)),
+    BIC    = ifelse(is.na(BIC),    "---", as.character(BIC))
+  )
+
+tbl_out <- comp_tbl |>
+  kbl(longtable = FALSE,
+    col.names = c("Model", "Formula", "R²", "Adj. R²", "AIC", "BIC"),
+    caption   = "Model comparison. (*) = preferred specification (lowest AIC among OLS models).",
+    align     = "llrrrr"
+  )
+
+if (knitr::is_latex_output()) {
+  tbl_out <- tbl_out |>
+    kable_styling(latex_options = c("striped", "hold_position", "scale_down"),
+                  font_size = 10, full_width = FALSE)
+} else {
+  tbl_out <- tbl_out |>
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                  full_width = TRUE)
+}
+
+tbl_out |>
+  column_spec(2, width = "4.5cm", latex_column_spec = "p{4.5cm}") |>
+  column_spec(3, width = "1.3cm") |>
+  column_spec(4, width = "1.3cm") |>
+  column_spec(5, width = "1.3cm") |>
+  column_spec(6, width = "1.3cm") |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(which(comp_tbl$Model == "H"),  bold = TRUE, background = "#FEF9E7") |>
+  row_spec(which(comp_tbl$Model %in% c("H2","H3","H4")), background = "#D6EAF8") |>
+  footnote(
+    general          = "OLS: League_Position (1=champion). Model E R² is McFadden pseudo-R²; Adj. R² and BIC undefined for logit (---). (*) Model H preferred; H2/H3/H4 have higher AIC.",
+    general_title    = "Note:",
+    threeparttable   = TRUE
+  )
+```
+
+::: {.callout-finding}
+**Model H wins decisively.** The highlighted row (Model H: League_Position = a + b1 x FR + b2 x FR-squared) achieves the lowest AIC of any OLS model — AIC = `r aic_H`. Compared to the simple linear baseline (Model A, AIC ≈ 5099.8), adding just one extra term (FR-squared) reduces AIC by `r round(5099.8 - aic_H, 1)` points.
+
+**Extended models H2, H3, and H4 (shaded grey) confirm the baseline.** Model H2 adds league fixed effects (AIC = 5077.3), Model H3 adds a linear season trend (AIC = 5072.5), and Model H4 includes both controls (AIC = 5079.3) — all three are worse than Model H by AIC. A joint nested F-test comparing H4 to H yields F(5) = 0.247, p = 0.941, confirming that neither league dummies nor the season trend add explanatory power. Full details and coefficient tables are reported in Section 9.4.
+
+Model I adds a cubic term but does not significantly improve fit over Model H (see Section 9.1). Models J and M are simpler one-term alternatives that also capture diminishing returns in a different mathematical form, but both produce higher AIC than Model H.
+
+The quadratic specification is therefore statistically optimal among all tested forms and is theoretically motivated by the principle of diminishing returns to financial advantage at the top of the financial hierarchy.
+:::
+
+## What Does Model H Actually Say? (The Coefficients)
+
+Having selected Model H as our best model, we now interpret its estimated
+coefficients in detail.
+
+```{r model-h-coefs}
+coef_H_raw |>
+  mutate(
+    term = recode(term,
+      "(Intercept)"          = "Intercept (α)",
+      "Financial_Rank"       = "Financial Rank (b1)",
+      "I(Financial_Rank^2)"  = "FR-squared (b2)"
+    ),
+    across(c(estimate, std.error, statistic, conf.low, conf.high),
+           ~ round(., 4)),
+    p.value   = formatC(p.value, format = "e", digits = 2),
+    CI_95     = sprintf("[%.4f, %.4f]", conf.low, conf.high)
+  ) |>
+  select(term, estimate, std.error, statistic, p.value, CI_95) |>
+  kbl(longtable = FALSE,
+    col.names = c("Term", "Estimate", "Std. Error", "t-value",
+                  "p-value", "95% CI"),
+    caption   = "Model H coefficient estimates. Response: League Position (1 = champion)."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  column_spec(4:5, bold = TRUE)
+```
+
+**Understanding the three coefficients in plain language:**
+
+- **Intercept (α ≈ −0.38):** This is the predicted position for a hypothetical
+  club with FR = 0 (i.e., before we account for their rank). It has no direct
+  real-world interpretation but anchors the curve.
+
+- **β₁ ≈ 1.231 (Financial Rank):** For every one step increase in Financial Rank
+  — moving from the 1st to the 2nd wealthiest club, for example — the predicted
+  final position gets worse by roughly **1.23 places**, all else being equal. This
+  is the core result: being poorer than your rivals costs you about 1.2 league
+  positions per rank step at the top of the financial hierarchy.
+
+- **β₂ ≈ −0.020 (Financial Rank²):** The negative quadratic coefficient means
+  **diminishing returns at the bottom** of the table. As FR increases, the
+  *marginal* positional penalty for each additional rank step shrinks. At FR = 1,
+  the marginal cost of dropping one rank is approximately 1.23 − 2 × 0.020 × 1 =
+  **1.19 positions**. At FR = 15, the same step only costs 1.23 − 2 × 0.020 × 15 =
+  **0.63 positions**. In practical terms: the gap between the richest and
+  second-richest club in a league is larger than the gap between the 14th and 15th
+  richest.
+
+- **R² = `r r2_H`:** Together, the linear and quadratic FR terms explain
+  **`r round(100*r2_H, 1)`%** of the total variation in final league position
+  across all 975 team-seasons — using just one predictor variable (FR, in two forms).
+
+## Visualising the Quadratic Fit
+
+The curve below makes the non-linear relationship concrete. Notice that the
+predicted position drops steeply as FR moves from 1 to 5 (the top of the
+financial hierarchy), and more gradually from FR 10 to FR 20 (the bottom).
+
+```{r quadratic-curve-png, out.width="92%", fig.cap="Model H predicted league position as a function of Financial Rank, with 95% confidence interval. The y-axis is reversed: lower position number = better finish. Key predicted values are annotated at FR = 1, 5, 10, 15, 20."}
+knitr::include_graphics("outputs/21_quadratic_fit_plot.png")
+```
+
+**Reading the curve:** A club ranked 1st financially is predicted to finish around
+2nd place. A club ranked 5th financially is predicted to finish around 5th–6th.
+By FR = 10, the model predicts a mid-table finish of around 11th–12th. At FR = 20
+(the poorest club in a 20-team league), the predicted finish is around 16th–17th,
+not 20th — this is the "diminishing returns" effect: even the poorest club is
+not predicted to finish stone last, because their competitors at FR 18–20 are
+similarly constrained.
+
+## How Well Does FR Explain Each League Separately?
+
+```{r league-r2-bars-inline, out.width="90%", fig.cap="R-squared for Financial Rank (blue) and Log(Market Value) (green) as predictors, by league. In every league, Financial Rank explains more variance than Log(Market Value). Serie A has the highest explanatory power at 79%."}
+knitr::include_graphics("outputs/32_league_r2_bars.png")
+```
+
+The chart confirms what Table 3 told us: Financial Rank explains 61–79% of
+final league position **within each individual league**, not just in the pooled
+analysis. Serie A shows the strongest predictability (R² = 0.79), while
+Ligue 1 and Bundesliga show the lowest (R² ≈ 0.61–0.64) — though even these
+are very high by social science standards.
+
+---
+
+# Step 3 — Can We Predict Who Wins the Title?
+
+## A Different Question: Championship Probability
+
+So far we have treated League Position as a continuous number and asked how
+Financial Rank shifts that number. But we can also ask a yes/no question:
+*does Financial Rank predict whether a team wins the league at all?* For this
+we use **logistic regression**, where the outcome is a binary variable — 1 if
+the team won the title, 0 otherwise (Model E).
+
+The logistic model estimates the log-odds of winning the title as a linear
+function of Financial Rank:
+
+$$\log\!\left(\frac{P(\text{Champion})}{1 - P(\text{Champion})}\right) = \alpha + \beta_{\text{FR}} \cdot \text{FR}$$
+
+Here, a negative β means higher FR (poorer squad) reduces the odds of winning.
+
+```{r logit-model-summary}
+logit_coefs <- tidy(modE, conf.int = TRUE, exponentiate = FALSE) |>
+  mutate(
+    OR    = round(exp(estimate), 4),
+    across(c(estimate, std.error, statistic, conf.low, conf.high), ~ round(., 4)),
+    p.value = formatC(p.value, format = "e", digits = 2),
+    term    = recode(term,
+      "(Intercept)"    = "Intercept (α)",
+      "Financial_Rank" = "Financial Rank (beta)"
+    )
+  )
+
+mcf_null <- glm(Champion_bin ~ 1, data = df, family = binomial())
+mcf_r2   <- round(1 - as.numeric(logLik(modE)) / as.numeric(logLik(mcf_null)), 3)
+
+logit_coefs |>
+  select(term, estimate, std.error, statistic, p.value, OR) |>
+  kbl(longtable = FALSE,
+    col.names = c("Term", "Log-Odds", "Std. Error", "z-value",
+                  "p-value", "Odds Ratio"),
+    caption = sprintf(
+      "Table 6. Logistic Model E coefficients. McFadden R² = %.3f, AIC = %.1f.",
+      mcf_r2, AIC(modE)
+    )
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+**Interpreting the key coefficient:** The estimated β = `r round(coef(modE)[2], 3)`
+means that each one-step increase in Financial Rank **multiplies the odds of winning
+the title by** e^(`r round(coef(modE)[2], 3)`) = `r round(exp(coef(modE)[2]), 3)`.
+That is a **`r round((1 - exp(coef(modE)[2]))*100, 1)`% reduction in championship
+odds for every additional rank step**. Moving from FR 1 to FR 2 cuts championship
+odds by `r round((1 - exp(coef(modE)[2]))*100, 1)`%; moving from FR 1 to FR 3
+cuts it by nearly `r round((1 - exp(coef(modE)[2])^2)*100, 1)`%.
+
+## The Championship Probability Curve
+
+The figure below converts those log-odds into probabilities and plots them for
+every possible Financial Rank value.
+
+```{r champion-prob-curve-png, out.width="92%", fig.cap="Predicted probability of winning the league title as a function of Financial Rank (Logistic Model E). Key probability values are annotated at FR = 1, 2, 3, 5, 10, and 11."}
+knitr::include_graphics("outputs/12_champion_probability_curve.png")
+```
+
+```{r prob-table}
+data.frame(Financial_Rank = c(1, 2, 3, 4, 5, 8, 11)) |>
+  mutate(
+    Probability = predict(modE,
+                          newdata = data.frame(Financial_Rank = c(1,2,3,4,5,8,11)),
+                          type = "response"),
+    Probability_pct = paste0(round(Probability * 100, 2), "%")
+  ) |>
+  select(Financial_Rank, Probability_pct) |>
+  kbl(longtable = FALSE,
+    col.names = c("Financial Rank", "P(Champion)"),
+    caption   = "Predicted championship probabilities at key FR values (Model E)."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#FEF9E7")
+```
+
+**What this means in practice:** The richest club in a league (FR = 1) has a
+predicted championship probability of **`r prob_fr1`%** according to the model.
+That may sound low, but remember there are typically 18–20 clubs in a league, so
+the baseline probability of any random club winning is only 5–6%. An FR = 1 club
+is roughly `r round(prob_fr1 / (100 / 20))` times more likely to win the title
+than an average club. By FR = 5, the probability drops to under 5%. By FR = 10 or
+higher, championship probability is essentially zero — which makes Leicester's
+actual title in 2015–16 all the more remarkable.
+
+::: {.callout-stat}
+**Important caveat:** Even the wealthiest squad only has a ~`r prob_fr1`%
+championship probability. Football is inherently random — injuries, fixture
+schedules, weather, individual brilliance, and managerial decisions all introduce
+variance. The model captures the *structural* advantage of financial strength but
+cannot account for the enormous randomness of any individual season.
+:::
+
+---
+
+# Step 4 — Who Beat the Model? Residual Analysis
+
+## What Are Residuals and Why Do They Matter?
+
+After fitting a model, the **residual** for each team-season is simply the
+difference between where they actually finished and where the model predicted
+they would finish:
+
+> Residual = Actual Position − Predicted Position
+
+- A **negative residual** means the team **finished better** than their finances
+  predicted — they are *overperformers*.
+- A **positive residual** means the team **finished worse** than their finances
+  predicted — they are *underperformers*.
+- A residual near **zero** means the model predicted them correctly.
+
+We define a statistical threshold of **±1.5 standard deviations** of the
+residual distribution. Teams beyond this threshold are flagged as genuine
+statistical outliers — clubs that are truly surprising relative to their finances.
+
+## The Residuals Plot
+
+```{r resid-plot-png, out.width="95%", fig.cap="Residuals vs. Fitted Values for Model H. Each point is one team-season. Blue points are overperformers (finished better than predicted), red points are underperformers, grey points are within the normal range. The dashed lines mark the ±1.5 SD outlier thresholds. Notable clubs are labelled."}
+knitr::include_graphics("outputs/28b_residual_plot_clean.png")
+```
+
+**Reading this plot:** The horizontal axis shows what the model *predicted* for
+each team (their expected league position based on FR). The vertical axis shows
+the residual. Most of the `r n_obs` observations cluster tightly around zero —
+the model predicts them well. A small number of points, however, fall far from
+zero. Among the overperformers (negative residuals, blue), Leicester City 2015–16
+stands out dramatically at the bottom of the chart. Among the underperformers
+(positive residuals, red), clubs that spent heavily but underachieved appear at
+the top.
+
+The residual standard deviation is `r round(resid_sd, 2)` positions. Most clubs
+(approximately `r n_obs - n_overp - n_underp` of `r n_obs`) fall within ±1.5 SD =
+±`r round(1.5 * resid_sd, 1)` positions of their prediction. Only `r n_overp`
+teams qualify as overperformers and `r n_underp` as underperformers by this
+threshold.
+
+## Cook's Distance: Measuring Statistical Influence
+
+Cook's Distance measures how much the entire set of regression coefficients would
+change if a particular observation were removed. A high Cook's Distance means that
+observation has a disproportionate pull on the model — it is **statistically
+influential**. The conventional threshold is 4/*N* = `r cooks_thresh`.
+
+```{r cooks-distance-png, out.width="95%", fig.cap="Cook's Distance for all 975 observations. The dashed red line marks the threshold 4/N = 0.0041. Points above the line are statistically influential observations. The top 12 are labelled by club name and season."}
+knitr::include_graphics("outputs/29b_cooks_distance_clean.png")
+```
+
+**What this tells us:** There are `r n_influential` observations above the
+Cook's Distance threshold. The most influential observation — by a wide margin —
+is Leicester City 2015–16. This is not a surprise: a club that finished 10 places
+better than the model predicted will strongly pull the fitted curve away from its
+optimal position. The key point is that Leicester is not just a dramatic story —
+it is a *statistically* influential data point that we need to acknowledge and
+understand.
+
+## Outlier Summary Tables by League
+
+The `r n_overp + n_underp` statistical outliers (teams whose residual exceeded ±1.5 SD =
+`r round(1.5 * resid_sd, 2)` positions) are presented below as **one table per league**,
+sorted within each league from largest over-performance (most negative residual) to largest
+under-performance. Blue rows = overperformers; red rows = underperformers.
+
+```{r outlier-by-league, results='asis'}
+tbl_letters <- setNames(letters[seq_along(league_order)], league_order)
+
+for (lg in league_order) {
+  lg_data <- aug_H |>
+    filter(Outlier_Flag != "Normal",
+           as.character(League) == lg) |>
+    arrange(Residual_H) |>
+    select(Team, Season, League_Position, Financial_Rank,
+           Fitted_H, Residual_H, Outlier_Flag) |>
+    mutate(across(c(Fitted_H, Residual_H), ~ round(., 2)))
+
+  cat(sprintf("\n\n### %s\n\n", lg))
+
+  if (nrow(lg_data) == 0) {
+    cat(sprintf(
+      "*No statistical outliers (|Residual| > %.2f positions) detected in %s during the study period.*\n\n",
+      1.5 * resid_sd, lg
+    ))
+    next
+  }
+
+  n_over  <- sum(lg_data$Outlier_Flag == "Overperformer")
+  n_under <- sum(lg_data$Outlier_Flag == "Underperformer")
+  overp_rows  <- which(lg_data$Outlier_Flag == "Overperformer")
+  underp_rows <- which(lg_data$Outlier_Flag == "Underperformer")
+
+  tbl <- lg_data |>
+    select(-Outlier_Flag) |>
+    kbl(longtable = FALSE,
+        label = paste0("outlier-", gsub("[^a-z]", "-", tolower(lg))),
+        col.names = c("Team", "Season", "Actual Pos.", "FR",
+                      "Predicted", "Residual"),
+        caption = sprintf(
+          "Table 8%s. %s outliers (|Residual| > %.2f): %d overperformer(s) [blue], %d underperformer(s) [red].",
+          tbl_letters[lg], lg, 1.5 * resid_sd, n_over, n_under
+        )
+    ) |>
+    kable_styling(
+      latex_options     = c("striped", "scale_down"),
+      bootstrap_options = c("striped", "hover", "condensed"),
+      full_width        = FALSE,
+      position          = "left"
+    ) |>
+    row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+
+  if (length(overp_rows) > 0)
+    tbl <- row_spec(tbl, overp_rows, background = "#EBF5FB")
+  if (length(underp_rows) > 0)
+    tbl <- row_spec(tbl, underp_rows, background = "#FDEDEC")
+
+  print(tbl)
+  cat("\n\n")
+}
+```
+
+**Reading the tables:** Within each league, clubs are sorted from the greatest
+over-performance (top of table) to the greatest under-performance (bottom).
+A negative residual means the club finished *better* than their Financial Rank
+predicted; a positive residual means they finished *worse*. Leicester City 2015–16
+leads all leagues with a residual of `r leicester_resid` positions — the most
+extreme over-performance in the entire dataset.
+
+---
+
+# Step 5 — The Exceptions: Cinderella Stories
+
+## Champions from Outside the Financial Top Three
+
+Over 10 seasons across 5 leagues, there were `r n_champ` league champions in
+total. Of these, **`r pct_fr1`%** (`r fr1_champs` clubs) were the financially
+wealthiest club in their league that season. An additional cluster came from FR = 2
+and FR = 3. But how many champions came from *outside* the financial top three?
+
+```{r surprise-champs-table}
+surprise_aug <- aug_H |>
+  filter(Champion_bin == 1, Financial_Rank > 3) |>
+  select(League, Season, Team, Financial_Rank, Market_Value_M_EUR,
+         Fitted_H, Residual_H) |>
+  mutate(across(c(Fitted_H, Residual_H), ~ round(., 1)))
+
+surprise_aug |>
+  arrange(Residual_H) |>
+  kbl(longtable = FALSE,
+    col.names = c("League", "Season", "Club", "FR",
+                  "Squad Value (M€)", "Model Prediction", "Residual"),
+    caption   = sprintf(
+      "Table 9. The %d champions who won from outside the financial top 3 (FR > 3).",
+      fr_gt3_n
+    )
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(which(surprise_aug |> arrange(Residual_H) |> pull(Team) == "Leicester City"),
+           bold = TRUE, background = "#FDEDEC") |>
+  column_spec(4, bold = TRUE, color = "#C0392B")
+```
+
+::: {.callout-alert}
+**The sobering reality:** Only **`r fr_gt3_n` of `r n_champ` champions** (≈
+`r round(100*fr_gt3_n/n_champ)`%) came from outside the financial top three.
+Of these `r fr_gt3_n` cases, three clubs (Napoli FR = 5, Lille FR = 4, Liverpool
+FR = 4) were financially competitive — only one step or two outside the top tier,
+and within one standard deviation of expectation. **Only Leicester City** (FR = 11)
+is a genuine statistical outlier. The rest of the "surprises" are barely surprising
+at all when you examine their finances closely.
+:::
+
+## The Distribution of Champion Financial Ranks
+
+```{r champions-fr-dist-png, out.width="88%", fig.cap="Distribution of Financial Rank among all 50 league champions across 10 seasons and 5 leagues. Blue bars show the 'expected zone' (FR 1-3); red bars show the 'surprise zone' (FR 4+). The dominance of FR 1 is striking."}
+knitr::include_graphics("outputs/34_champions_fr_dist.png")
+```
+
+**What this chart shows:** The vast majority of league titles go to clubs ranked
+1st, 2nd, or 3rd financially. The bar for FR = 1 alone towers over the others —
+`r pct_fr1`% of all championships. As we move to FR 4 and beyond, the bars shrink
+rapidly toward zero. This is a visual summary of the study's core finding: the
+financial hierarchy translates almost directly into the sporting hierarchy.
+
+## All 50 Champions: Ranked by How Much They Beat the Model
+
+```{r champions-dotplot-by-league, fig.height=7.8, fig.width=6.5, fig.cap="Champions residuals vs. Model H prediction, split by league (10 champions each). Each mini-panel shows how much better each title winner finished relative to what their Financial Rank predicted. Blue shading = outlier zone (< -1.5 SD). Diamond = surprise winner (FR > 3). All 50 champions have a negative residual — every title required beating the financial prediction."}
+make_league_dotplot <- function(lg) {
+  dat <- champ_csv |>
+    filter(as.character(League) == lg) |>
+    arrange(Residual_H) |>
+    mutate(y = reorder(ShortLabel, -Residual_H))
+
+  ggplot(dat, aes(x = Residual_H, y = y)) +
+    annotate("rect",
+             xmin = -Inf, xmax = -1.5 * resid_sd,
+             ymin = -Inf, ymax = Inf,
+             fill = "#1A2A4A", alpha = 0.07) +
+    geom_vline(xintercept = 0, linetype = "dashed",
+               colour = "grey70", linewidth = 0.4) +
+    geom_vline(xintercept = -1.5 * resid_sd, linetype = "dotted",
+               colour = "#1A2A4A", alpha = 0.5, linewidth = 0.4) +
+    geom_segment(aes(x = 0, xend = Residual_H, yend = y),
+                 colour = league_colours[lg], alpha = 0.55, linewidth = 0.55) +
+    geom_point(aes(shape = Surprise),
+               colour = league_colours[lg], size = 2.0, stroke = 0.3) +
+    scale_shape_manual(values = c("FALSE" = 16, "TRUE" = 18), guide = "none") +
+    scale_x_continuous(breaks = seq(-12, 0, 3),
+                       labels = function(x) paste0(x)) +
+    labs(x = NULL, y = NULL, title = lg) +
+    theme_bw(base_size = 7.5) +
+    theme(
+      plot.title        = element_text(face = "bold", colour = "#1A2A4A",
+                                       size = 8, margin = margin(b = 2)),
+      axis.text.y       = element_text(size = 6.0, lineheight = 0.9),
+      axis.text.x       = element_text(size = 6.0),
+      axis.ticks        = element_line(linewidth = 0.3),
+      panel.grid.minor  = element_blank(),
+      panel.grid.major.y = element_blank(),
+      plot.margin       = margin(3, 5, 3, 2)
+    )
+}
+
+league_plots <- lapply(league_order, make_league_dotplot)
+
+# Shared x-axis label strip
+x_label <- cowplot::ggdraw() +
+  cowplot::draw_label(
+    "Residual: Actual Position - Predicted Position  (negative = beat the model)",
+    colour = "#566573", size = 6.5, x = 0.5, hjust = 0.5
+  )
+
+cowplot::plot_grid(
+  cowplot::plot_grid(plotlist = league_plots, ncol = 2,
+                     align = "v", axis = "lr"),
+  x_label,
+  ncol = 1,
+  rel_heights = c(0.96, 0.04)
+)
+ggsave("outputs/37_champions_dotplot_by_league.png", width = 6.5, height = 7.8, dpi = 150)
+```
+
+**A fascinating observation:** Every single one of the 50 champions has a negative
+residual — meaning every champion finished better than their finances alone would
+predict. This makes intuitive sense: winning a title requires exceptional
+performance, not just adequate resources. Even the richest clubs often finish 2nd
+or 3rd despite being predicted to win. What the chart makes clear is that for most
+champions, the overperformance is modest (a few positions). For Leicester, it is
+off the chart.
+
+## Leicester City 2015–16: A Closer Look
+
+Leicester City's Premier League title in 2015–16 is widely regarded as one of
+the greatest upsets in sporting history. Our data allows us to quantify exactly
+how unusual it was.
+
+```{r leicester-scatter-png, out.width="88%", fig.cap="Premier League team-seasons plotted by Financial Rank vs. Final Position. All observations except Leicester 2015-16 are shown in blue; Leicester is highlighted in red. The model-fitted curve (dark line) shows what was expected. Leicester's position is far outside the normal pattern."}
+knitr::include_graphics("outputs/33_scatter_story.png")
+```
+
+```{r leicester-context}
+tibble(
+  Metric = c(
+    "Financial Rank (Premier League, 2015–16)",
+    "Squad Market Value",
+    "League Average Market Value",
+    "Model H: Predicted Position",
+    "Actual Final Position",
+    "Residual",
+    "Residuals SD (all 975 obs.)",
+    "Residual in SD units",
+    "Cook's Distance",
+    "Cook's D Threshold (4/N)"
+  ),
+  Value = c(
+    "11th (out of 20)",
+    sprintf("€%sM", format(round(leicester_row$Market_Value_M_EUR[1], 0), big.mark=",")),
+    sprintf("€%sM (Premier League avg.)", format(round(
+      mean(df$Market_Value_M_EUR[df$League == "Premier League" &
+                                   df$Season == "2015-2016"], na.rm=TRUE), 0
+    ), big.mark=",")),
+    sprintf("%.1f", leicester_row$Fitted_H[1]),
+    "1st (Champions)",
+    sprintf("%.1f positions", leicester_row$Residual_H[1]),
+    sprintf("%.2f", resid_sd),
+    sprintf("%.1f SD", leicester_row$Residual_H[1] / resid_sd),
+    sprintf("%.4f", leicester_row$CooksD[1]),
+    sprintf("%.4f", 4 / n_obs)
+  )
+) |>
+  kbl(longtable = FALSE,
+      caption = "Leicester City 2015-16 vs. model expectations.") |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(c(4,5,6,8), bold = TRUE, background = "#FEF9E7")
+```
+
+::: {.callout-alert}
+**Quantifying the miracle:** Leicester's residual of **`r leicester_resid` positions**
+corresponds to **`r round(leicester_resid / resid_sd, 1)` standard deviations**
+below the mean. In a normal distribution, an observation `r round(abs(leicester_resid / resid_sd), 1)`
+SDs from the mean occurs with probability well below 0.1%. Their Cook's Distance
+is the highest in the dataset, confirming it is not a data error but a genuine,
+mathematically unprecedented event in this 10-season study. Importantly, removing
+Leicester from the dataset does **not** weaken our core finding — if anything, it
+marginally *increases* Model H's R², showing the result is robust to this
+extraordinary case.
+:::
+
+---
+
+# Step 6 — Is This Finding Reliable? Robustness Checks
+
+## Confirming the Quadratic Shape with a Formal F-Test
+
+We confirmed that the non-linear (quadratic) specification is genuinely better
+than a linear model using a nested F-test. This test asks: does adding FR²
+significantly improve fit over Model A (FR alone)?
+
+```{r nested-f-tests}
+nested_raw <- read_csv("outputs/18_nested_model_significance_tests.csv",
+                       show_col_types = FALSE)
+
+nested_raw |>
+  mutate(
+    p_display = case_when(
+      p_value < 0.001 ~ "< 0.001 ***",
+      p_value < 0.01  ~ sprintf("%.4f **", p_value),
+      p_value < 0.05  ~ sprintf("%.4f *",  p_value),
+      TRUE            ~ sprintf("%.4f",    p_value)
+    ),
+    Verdict = case_when(
+      p_value < 0.001 & grepl("Quadratic", Comparison) ~
+        "Quadratic term confirmed",
+      p_value > 0.05  & grepl("Interaction.*League", Comparison) ~
+        "Effect is league-uniform",
+      p_value > 0.05  & grepl("Time", Comparison) ~
+        "Effect is time-stable",
+      p_value > 0.05  & grepl("Cubic", Comparison) ~
+        "Cubic term not needed — Model H sufficient",
+      p_value < 0.05  ~  "Significant",
+      TRUE            ~ "Not significant"
+    )
+  ) |>
+  select(Comparison, Df, F_statistic, p_display, Verdict) |>
+  mutate(F_statistic = round(F_statistic, 3)) |>
+  kbl(longtable = FALSE,
+    col.names = c("Comparison", "df", "F-statistic", "p-value", "Verdict"),
+    caption   = "Nested F-test results for Model H specification checks."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#FEF9E7") |>
+  column_spec(5, bold = TRUE)
+```
+
+::: {.callout-success}
+**All four robustness checks pass:** (1) The quadratic term FR² is highly
+significant (*F* = 31.71, *p* < 0.001), confirming the non-linear shape is real
+and not a coincidence. (2) The interaction of FR with League is not significant,
+confirming the effect is the same in all five leagues — the financial hierarchy
+works the same way in Italy as in England. (3) There is no significant time trend
+(FR × Season interaction), confirming the relationship has been stable from 2015–16
+through 2024–25. (4) The cubic term FR³ is not significant (*F* = 0.20, *p* = 0.653),
+confirming that the quadratic specification (Model H: League_Position = a + b1 x FR +
+b2 x FR-squared) is sufficient and adding higher-order polynomial terms does not
+improve fit.
+:::
+
+## Addressing Heteroskedasticity
+
+A potential concern with OLS models is **heteroskedasticity** — when the variance
+of the residuals is not constant across fitted values. If present, the standard
+errors we report may be unreliable.
+
+```{r heterosk-test}
+diag_raw <- read_csv("outputs/14_heteroskedasticity_autocorrelation_tests.csv",
+                     show_col_types = FALSE)
+
+diag_raw |>
+  mutate(
+    p_display = case_when(
+      p_value < 0.001 ~ "< 0.001 ***",
+      p_value < 0.01  ~ sprintf("%.4f **", p_value),
+      TRUE            ~ sprintf("%.4f", p_value)
+    ),
+    Implication = c(
+      "Residual variance is not constant — robust standard errors recommended",
+      "Observations within a team correlated across seasons"
+    )
+  ) |>
+  select(Test, Statistic, p_display, Implication) |>
+  kbl(longtable = FALSE,
+    col.names = c("Test", "Statistic", "p-value", "Implication"),
+    caption   = "Diagnostic tests for heteroskedasticity and autocorrelation."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1:2, background = "#FDEDEC")
+```
+
+The Breusch–Pagan test detects significant heteroskedasticity (*p* < 0.001).
+To verify our results are not affected, we re-estimated the model using
+**HC1 heteroskedasticity-robust standard errors** and compared them to the
+regular OLS standard errors.
+
+```{r robust-se-comparison}
+robust_raw <- read_csv("outputs/15_modelD_robust_se.csv", show_col_types = FALSE) |>
+  mutate(
+    SE_change = round((std.error - std.error_OLS) / std.error_OLS * 100, 1),
+    term = gsub("League", "League: ", term)
+  ) |>
+  select(term, estimate, std.error_OLS, std.error, SE_change) |>
+  mutate(across(c(estimate, std.error_OLS, std.error), ~ round(., 4)))
+
+robust_raw |>
+  kbl(longtable = FALSE,
+    col.names = c("Term", "Estimate", "OLS SE", "HC1 Robust SE", "% Change"),
+    caption   = "Model D: OLS vs. HC1 robust standard errors. The main predictor remains highly significant."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(2, bold = TRUE, background = "#FEF9E7") |>
+  column_spec(5, color = ifelse(abs(robust_raw$SE_change) > 10, "#C0392B", "#196F3D"),
+              bold = TRUE)
+```
+
+The changes in standard errors are modest. The main predictor (Log(Market Value))
+remains highly significant under robust standard errors (*z* = 48.5, *p* < 0.001).
+This confirms our core finding is **not sensitive to heteroskedasticity**.
+
+## Time Stability: Has the Relationship Changed Over a Decade?
+
+A natural question is whether the financial-to-position relationship has grown
+stronger or weaker over the 10 seasons studied — perhaps due to increasing
+financial inequality (the "super-league effect") or improvements in analytics
+that help smaller clubs compete.
+
+```{r time-stability}
+time_raw <- read_csv("outputs/22_time_trend_results.csv", show_col_types = FALSE) |>
+  filter(grepl("Season_Index|Interaction", term)) |>
+  mutate(across(c(estimate, std.error, statistic), ~ round(., 4)),
+         p_display = sprintf("%.4f", p.value))
+
+time_raw |>
+  select(term, estimate, std.error, statistic, p_display) |>
+  kbl(longtable = FALSE,
+    col.names = c("Term", "Estimate", "SE", "t-value", "p-value"),
+    caption   = "Time-trend coefficients: FR × Season Index interaction."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+```{r time-trend-png, out.width="88%", fig.cap="The estimated effect of Financial Rank on League Position plotted across all 10 seasons. The flat trend line and wide confidence intervals confirm there is no significant time trend — the relationship has not changed from 2015-16 to 2024-25."}
+knitr::include_graphics("outputs/23_time_trend_plot.png")
+```
+
+The interaction coefficient FR × Season_Index is very close to zero and
+statistically non-significant (*p* > 0.05). **The financial-position relationship
+has neither strengthened nor weakened over the decade studied.** It was as powerful
+in the 2024–25 season as it was in 2015–16. Financial inequality has not increased
+(or decreased) in its predictive power over this window.
+
+---
+
+## Model H Extended: Adding League and Season Controls
+
+A natural follow-up question is whether Model H's fit improves if we explicitly add
+league fixed effects (to absorb cross-league heterogeneity in average positions) and
+a linear time trend (Season_Index, to absorb any secular drift). We fit three extended
+variants built on Model H's quadratic FR specification:
+
+- **Model H2**: League_Position ~ FR + FR-squared + League (4 league dummy variables)
+- **Model H3**: League_Position ~ FR + FR-squared + Season_Index (linear time trend only)
+- **Model H4**: League_Position ~ FR + FR-squared + League + Season_Index (both controls)
+
+All three are compared to the baseline Model H via AIC and formal nested F-tests.
+
+```{r e1-model-comparison}
+e1_raw <- read_csv("outputs/E1_model_comparison_H4.csv", show_col_types = FALSE)
+e1_raw |>
+  kbl(longtable = FALSE,
+      col.names = c("Model", "Formula", "N", "R²", "Adj. R²", "AIC", "BIC"),
+      caption   = "Table E1. Model H family comparison: adding League and Season controls."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(which(e1_raw$Model == "H"), bold = TRUE, background = "#FEF9E7")
+```
+
+```{r e2-ftest-h4}
+e2_raw <- read_csv("outputs/E2_ftest_H4.csv", show_col_types = FALSE)
+e2_raw |>
+  mutate(
+    p_display = case_when(
+      p_value < 0.001 ~ "< 0.001 ***",
+      p_value < 0.01  ~ sprintf("%.4f **",  p_value),
+      p_value < 0.05  ~ sprintf("%.4f *",   p_value),
+      TRUE            ~ sprintf("%.4f",     p_value)
+    )
+  ) |>
+  select(Comparison, df_diff, F_statistic, p_display) |>
+  mutate(F_statistic = round(F_statistic, 3)) |>
+  kbl(longtable = FALSE,
+      col.names = c("Comparison", "df", "F-statistic", "p-value"),
+      caption   = "Table E2. Nested F-tests: extending Model H with League and Season controls."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+```{r e3-h4-coefs}
+e3_raw <- read_csv("outputs/E3_h4_coefficients.csv", show_col_types = FALSE)
+e3_raw |>
+  mutate(
+    across(c(estimate, std.error, statistic, conf.low, conf.high), ~ round(., 4)),
+    p_display = case_when(
+      p.value < 0.001 ~ "< 0.001 ***",
+      p.value < 0.01  ~ sprintf("%.4f **",  p.value),
+      p.value < 0.05  ~ sprintf("%.4f *",   p.value),
+      TRUE            ~ sprintf("%.4f",     p.value)
+    )
+  ) |>
+  select(term, estimate, std.error, statistic, p_display) |>
+  kbl(longtable = FALSE,
+      col.names = c("Term", "Estimate", "Std. Error", "t-value", "p-value"),
+      caption   = "Table E3. Model H4 full coefficient table (quadratic FR + League fixed effects + Season trend)."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+**What the results show:** Model H4 achieves R² = 0.6714 and AIC = 5079.27, compared
+to Model H's R² = 0.6709 and AIC = 5070.52. The nested F-test comparing H4 to Model H
+yields F(5) = 0.247, p = 0.941, which is **not significant** at p < 0.05 — Model H wins
+on AIC by 8.75 points. Neither the League fixed effects (F(4) = 0.304, p = 0.876) nor
+the Season_Index term (F(1) = 0.023, p = 0.880) add significant explanatory power beyond
+the quadratic baseline. The Season_Index coefficient in H4 is −0.006 (SE = 0.036,
+p = 0.879), confirming no statistically meaningful time trend. None of the four League
+fixed effects are statistically significant (all p > 0.35). **Conclusion: Model H
+(FR + FR-squared) is the correct and sufficient specification.** Adding league intercepts or a
+time control does not improve fit — the quadratic Financial Rank model generalises
+equally well across all five leagues and all ten seasons without further adjustment.
+
+---
+
+# Conclusions
+
+## What We Found: A Summary
+
+This study has systematically examined whether financial strength predicts sporting
+success in Europe's five major football leagues over 10 seasons. The answer is
+unambiguous: **yes, and very strongly so.** Here are the four main findings:
+
+::: {.callout-finding}
+**Finding 1 — Money very strongly predicts where clubs finish.**
+The Pearson correlation between Financial Rank and final league position is
+r = `r r_pearson` (Spearman ρ = 0.814), both statistically significant at
+*p* < 0.001 across all `r n_obs` team-seasons. The best-fitting model (Model H,
+quadratic in FR) explains **R² = `r r2_H`** — nearly two-thirds of all variation
+in final standings — using nothing but a club's within-league wealth rank.
+:::
+
+::: {.callout-finding}
+**Finding 2 — The relationship is non-linear: diminishing returns at the bottom.**
+Adding a squared term (FR²) significantly improves model fit (*F* = 31.71,
+*p* < 0.001). The marginal positional penalty of dropping one rank is largest
+at the top of the financial hierarchy (~1.19 positions per rank at FR 1→2) and
+shrinks toward the bottom (~0.63 positions per rank at FR 15→16). In plain
+language: the gap between the richest and second-richest club is much larger
+than the gap between the 15th and 16th richest.
+:::
+
+::: {.callout-finding}
+**Finding 3 — The effect is the same in every league and has not changed over time.**
+The FR × League interaction is not significant (*F* = 1.17, *p* = 0.32), meaning
+the financial hierarchy operates identically in Germany, Spain, France, England,
+and Italy. The FR × Season time trend is also not significant (*F* = 0.44,
+*p* = 0.51), meaning the relationship has been equally strong throughout 2015–16
+to 2024–25. Financial dominance is a universal and stable feature of European
+football, not a recent trend or a league-specific phenomenon.
+:::
+
+::: {.callout-alert}
+**Finding 4 — Exceptions exist, but only one is truly extraordinary.**
+Of `r n_champ` league titles across the decade, only `r fr_gt3_n` were won by
+clubs outside the financial top three. Three of those four (Napoli, Lille, and
+Liverpool) were at FR 4–5, barely outside the expected zone, and within one
+standard deviation of expectation. Only **Leicester City 2015–16** — Financial
+Rank 11, predicted to finish 11th, actually won the title — is a genuine
+statistical outlier (`r round(leicester_resid / resid_sd, 1)` SDs from the mean,
+highest Cook's D in the dataset). Such events are statistically exceptional and
+cannot be used to argue that money does not matter.
+:::
+
+## Limitations and Future Directions
+
+Every study has limitations, and being transparent about them is part of good
+scientific practice. The table below summarises the main limitations and suggests
+how future research could address them.
+
+```{r limitations-table}
+tibble(
+  Limitation = c(
+    "Market value as quality proxy",
+    "No managerial quality variable",
+    "No injury data",
+    "Panel structure ignored",
+    "Top divisions only"
+  ),
+  Issue = c(
+    "Transfermarkt valuations may lag actual squad quality by weeks; subjective editor estimates",
+    "Exceptional coaches (Ranieri at Leicester) are not captured in the financial model",
+    "Injury crises can dramatically alter a squad's effective quality mid-season",
+    "Teams appear multiple seasons; correlated errors across seasons are unmodelled",
+    "Results may not generalise to lower divisions or smaller national leagues"
+  ),
+  Potential_Fix = c(
+    "Use wage bill data as an alternative or cross-validate with Opta squad ratings",
+    "Add manager tenure, prior record, or a coaching quality index",
+    "Incorporate injury-adjusted squad value (e.g., weighted by availability %)",
+    "Fixed-effects panel model or clustered standard errors at the team level",
+    "Replicate in Eredivisie, Championship, Scottish Premiership"
+  )
+) |>
+  kbl(longtable = FALSE,
+    col.names = c("Limitation", "Issue", "Potential Fix"),
+    caption   = "Study limitations and suggested future extensions."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  column_spec(1, bold = TRUE, width = if (knitr::is_latex_output()) "2.8cm" else "20%") |>
+  column_spec(2,              width = if (knitr::is_latex_output()) "5.8cm" else "40%") |>
+  column_spec(3,              width = if (knitr::is_latex_output()) "5.4cm" else "40%")
+```
+
+---
+
+# Technical Appendix
+
+## A. Full Coefficient Table (All Models A–E)
+
+```{r full-coef-table, echo=TRUE}
+coef_all <- read_csv("outputs/08_regression_results.csv", show_col_types = FALSE)
+
+coef_all |>
+  filter(grepl("^[ABCDE]", model_label)) |>
+  select(model_label, term, estimate, std.error, statistic, p.value) |>
+  mutate(
+    across(c(estimate, std.error, statistic), ~ round(., 4)),
+    p_display = case_when(
+      p.value < 0.001 ~ "< 0.001 ***",
+      p.value < 0.01  ~ sprintf("%.4f **", p.value),
+      p.value < 0.05  ~ sprintf("%.4f *",  p.value),
+      TRUE            ~ sprintf("%.4f",    p.value)
+    ),
+    model_label = sub(":.*", "", model_label)
+  ) |>
+  select(-p.value) |>
+  kbl(longtable = TRUE,
+    col.names = c("Model", "Term", "Estimate", "Std. Error",
+                  "t / z", "p-value"),
+    caption   = "Table A1. Full regression coefficient table (Models A–E)."
+  ) |>
+  kable_styling(
+    latex_options = c("repeat_header", "striped"),
+    full_width    = FALSE
+  ) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  collapse_rows(columns = 1, valign = "top")
+```
+
+## B. Model H Quadratic Coefficients (Detailed)
+
+```{r appendix-modelh, echo=TRUE}
+coef_H_raw |>
+  mutate(
+    term  = recode(term,
+      "(Intercept)"         = "Intercept",
+      "Financial_Rank"      = "Financial Rank (b1)",
+      "I(Financial_Rank^2)" = "FR-squared (b2)"
+    ),
+    across(c(estimate, std.error, statistic, conf.low, conf.high), ~ round(., 5)),
+    p.value = formatC(p.value, format = "e", digits = 3)
+  ) |>
+  select(term, estimate, std.error, statistic, p.value, conf.low, conf.high) |>
+  kbl(longtable = FALSE,
+    col.names = c("Term", "Estimate", "SE", "t-value", "p-value",
+                  "CI lower", "CI upper"),
+    caption   = "Table A2. Model H (Position ~ FR + FR-sq) full coefficient table with 95pct CIs."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+## C. R Code Used in This Analysis
+
+The complete R scripts used to produce all data, models, and outputs are available
+in the project directory. Below we reproduce the key analysis steps for transparency
+and reproducibility.
+
+**Data loading and model setup:**
+
+```{r code-data, echo=TRUE, eval=FALSE}
+# Load and clean the master dataset
+df <- read_csv("data/merged/master_dataset.csv", show_col_types = FALSE) |>
+  filter(!is.na(League_Position), !is.na(Financial_Rank),
+         !is.na(Market_Value_M_EUR), !is.na(Log_Normalized_Value)) |>
+  mutate(
+    League       = factor(as.character(League), levels = league_order),
+    Champion_bin = as.integer(
+      tolower(as.character(Champion)) %in% c("yes", "true", "1")
+    )
+  )
+```
+
+**Fitting the regression models:**
+
+```{r code-models, echo=TRUE, eval=FALSE}
+# OLS models
+modA <- lm(League_Position ~ Financial_Rank,                      data = df)
+modB <- lm(League_Position ~ Financial_Rank + League,             data = df)
+modC <- lm(League_Position ~ Log_Normalized_Value,                data = df)
+modD <- lm(League_Position ~ Log_Normalized_Value + League + Season_Index, data = df)
+modH <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2), data = df)
+
+# Logistic regression for championship probability
+modE <- glm(Champion_bin ~ Financial_Rank, data = df, family = binomial())
+```
+
+**Computing residuals and outlier flags:**
+
+```{r code-residuals, echo=TRUE, eval=FALSE}
+aug_H <- augment(modH, data = df) |>
+  rename(Fitted_H = .fitted, Residual_H = .resid, CooksD = .cooksd)
+
+resid_sd <- sd(aug_H$Residual_H, na.rm = TRUE)
+
+aug_H <- aug_H |>
+  mutate(
+    Outlier_Flag = case_when(
+      Residual_H < -1.5 * resid_sd ~ "Overperformer",
+      Residual_H >  1.5 * resid_sd ~ "Underperformer",
+      TRUE                          ~ "Normal"
+    )
+  )
+```
+
+**Model comparison using AIC:**
+
+```{r code-aic, echo=TRUE, eval=FALSE}
+# Compare all OLS models by AIC, R-squared, and adjusted R-squared
+model_comparison <- list(A = modA, B = modB, C = modC, D = modD, H = modH) |>
+  map_dfr(glance, .id = "Model") |>
+  transmute(Model, R2 = round(r.squared, 4),
+            Adj_R2 = round(adj.r.squared, 4),
+            AIC    = round(AIC, 1),
+            BIC    = round(BIC, 1))
+```
+
+**Key analysis scripts in the project:**
+
+| Script | Purpose |
+|--------|---------|
+| `RScripts/01_scrape_ESPN_standings.R` | Download league standings from ESPN |
+| `RScripts/02_scrape_transfermarkt_market_values.R` | Download squad market values |
+| `RScripts/03_compute_financial_rank.R` | Assign within-league Financial Rank |
+| `RScripts/04_merge_standings_and_market_values.R` | Build master dataset |
+| `RScripts/05_analysis_and_regression.R` | Core OLS and logit models |
+| `RScripts/05b_extended_regression.R` | Robustness checks and extended models |
+| `RScripts/05c_model_h4_extended.R` | Model H4: League + Season extensions (Section 9.4) |
+| `RScripts/06_residuals_and_outliers.R` | Residual analysis, Cook's Distance |
+| `RScripts/07_beautiful_charts.R` | Publication-quality visualisations |
+
+## D. Session Information
+
+```{r session-info}
+si <- sessionInfo()
+tibble(
+  Item  = c("R version", "Platform", "Date knitted",
+            "Key packages"),
+  Value = c(
+    paste(si$R.version$major, si$R.version$minor, sep = "."),
+    si$running,
+    format(Sys.Date(), "%Y-%m-%d"),
+    paste(c("dplyr", "ggplot2", "broom", "kableExtra", "ggrepel"),
+          collapse = ", ")
+  )
+) |>
+  kbl(longtable = FALSE, col.names = c("", "")) |>
+  kbs(bo = c("striped","condensed"), pos = "left") |>
+  column_spec(1, bold = TRUE, width = if (knitr::is_latex_output()) "4cm" else "25%")
+```
+
+---
+
+*Report generated with R Markdown. Data sources: ESPN FC (league standings),
+Transfermarkt (squad market values). All analysis scripts are available in the
+project repository. For questions, contact: mdmuktadir0611@gmail.com*

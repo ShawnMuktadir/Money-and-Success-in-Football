@@ -1,7 +1,11 @@
-Model,Type,Formula,N,R2_McFadden,Adj_R2,AIC
-A,OLS,Pos ~ Financial_Rank,975,0.6602,0.6599,5099.82
-B,OLS,Pos ~ Financial_Rank + League,975,0.6604,0.6586,5107.36
-C,OLS,Pos ~ Log_Normalized_Value,975,0.5326,0.5322,5410.59
-D,OLS,Pos ~ Log_Norm_Value + League + Season_Index,975,0.6407,0.6385,5164.26
-E,Logit,Champion ~ Financial_Rank,975,0.5477,NA,182.41
-F,Logit,Champion ~ Log_Norm_Value + League,975,0.5915,NA,173.13
+Model,Type,Formula,Notes,N,R2,Adj_R2,AIC,BIC
+A,OLS,Pos ~ FR,League_Position = a + b1 x FR,975,0.6602,0.6599,5099.82,5114.46
+B,OLS,Pos ~ FR + League,League_Position = a + b1 x FR + b2 x League,975,0.6604,0.6586,5107.36,5141.54
+C,OLS,Pos ~ Log(MV),League_Position = a + b1 x Log(Market_Value),975,0.5326,0.5322,5410.59,5425.23
+D,OLS,Pos ~ Log(MV) + League + Season,League_Position = a + b1 x Log(Market_Value) + b2 x League + b3 x Season,975,0.6407,0.6385,5164.26,5203.31
+G,OLS,Pos ~ FR x League,League_Position = a + b1 x FR x League,975,0.662,0.6588,5110.66,5164.37
+H*,OLS,Pos ~ FR + FR^2,League_Position = a + b1 x FR + b2 x FR-squared  [preferred],975,0.6709,0.6703,5070.52,5090.05
+I,OLS,Pos ~ FR + FR^2 + FR^3,League_Position = a + b1 x FR + b2 x FR-squared + b3 x FR-cubed,975,0.671,0.67,5072.32,5096.73
+J,OLS,Pos ~ Log(FR),League_Position = a + b1 x Log(FR),975,0.6258,0.6254,5193.97,5208.62
+M,OLS,Pos ~ sqrt(FR),League_Position = a + b1 x sqrt(FR),975,0.6686,0.6682,5075.52,5090.16
+E,Logit,Champion ~ FR,Log(P(Champion) / (1 - P(Champion))) = a + b1 x FR,975,0.5477,NA,182.41,192.18
