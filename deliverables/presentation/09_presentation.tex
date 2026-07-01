@@ -658,6 +658,141 @@
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
+% SLIDE 13B — Time-Split Scatter (Early vs Late)
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=8]{Extra Robustness: Splitting the Decade in Two}
+  \begin{columns}[T]
+    \begin{column}{0.64\textwidth}
+      \includegraphics[width=\linewidth,
+                       height=0.74\textheight,
+                       keepaspectratio]{38a_time_split_scatter.png}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \vspace{4pt}
+      {\small Model H re-fit completely independently on two five-season
+        halves --- if financial inequality were increasing (or shrinking),
+        the two curves should visibly differ.}
+      \vspace{8pt}
+      {\small
+      \begin{tabular}{@{}l r r@{}}
+        \toprule
+        \rowcolor{NavyBlue!18}
+        \color{white}\textbf{Period} &
+        \color{white}$R^2$ &
+        \color{white}FR slope \\
+        \midrule
+        Early (15/16--19/20) & 0.646 & 1.249 \\
+        \rowcolor{RowA}
+        Late (20/21--24/25)  & 0.698 & 1.210 \\
+        \bottomrule
+      \end{tabular}
+      }
+      \vspace{8pt}
+      \findingbox{The two quadratic curves are visually almost
+        indistinguishable --- confirming Slide~13's time-stability
+        finding with a completely independent test design.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
+% SLIDE 13C — Time-Split Coefficient Comparison
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=8]{The Financial Rank Slope Barely Moved Across the Decade}
+  \begin{columns}[T]
+    \begin{column}{0.60\textwidth}
+      \includegraphics[width=\linewidth,
+                       height=0.72\textheight,
+                       keepaspectratio]{38b_time_split_coefficients.png}
+    \end{column}
+    \begin{column}{0.36\textwidth}
+      \vspace{2pt}
+      \statpanel{Interaction $p = 0.80$}{Financial\_Rank $\times$ Period
+        --- not remotely significant}
+      \vspace{6pt}
+      {\footnotesize\begin{itemize}\setlength\itemsep{4pt}
+        \item Early slope: 1.249, 95\% CI [1.028, 1.470]
+        \item Late slope: 1.210, 95\% CI [1.006, 1.415]
+        \item Intervals overlap almost completely.
+      \end{itemize}}
+      \vspace{4pt}
+      \findingbox{\footnotesize Two independent designs --- continuous
+        and binary --- agree: the relationship has not measurably
+        changed since 2015--16.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
+% SLIDE 13D — Points Instead of Position
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=8]{Robust to Outcome Measure: Points Instead of Position}
+  \begin{columns}[T]
+    \begin{column}{0.62\textwidth}
+      \includegraphics[width=\linewidth,
+                       height=0.72\textheight,
+                       keepaspectratio]{39_points_model_scatter.png}
+    \end{column}
+    \begin{column}{0.34\textwidth}
+      \vspace{2pt}
+      \statpanel{$R^2 = 0.677$}{Points $\sim$ FR + FR$^2$
+        (vs.\ 0.671 using position; sign flips --- FR is
+        now \textbf{negative}, since more points is better)}
+      \vspace{6pt}
+      {\footnotesize\begin{itemize}\setlength\itemsep{3pt}
+        \item \textbf{Leicester 2015--16 still has the single
+              largest residual} in the whole dataset.
+        \item New story: rich clubs that \emph{collapsed} ---
+              Chelsea, AS Monaco, Bayer Leverkusen.
+      \end{itemize}}
+      \vspace{4pt}
+      \findingbox{\footnotesize Position or points --- Financial
+        Rank predicts either, and Leicester 2015--16 is the
+        largest anomaly either way.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
+% SLIDE 13E — NBA Cross-Sport Comparison
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=8]{External Validity: Does Money Buy Success Outside Football?}
+  \vspace{2pt}
+  \begin{center}
+    \includegraphics[width=\linewidth,
+                     height=0.44\textheight,
+                     keepaspectratio]{40_nba_vs_football_comparison.png}
+  \end{center}
+  \vspace{6pt}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      {\footnotesize
+      \begin{tabular}{@{}l r r r r@{}}
+        \toprule
+        \rowcolor{NavyBlue!18}
+        \color{white}\textbf{Sport} &
+        \color{white}$N$ &
+        \color{white}$r$ &
+        \color{white}$R^2$ &
+        \color{white}Top-3 \\
+        \midrule
+        Football & 975 & 0.81 & 0.671 & 92\,\% \\
+        \rowcolor{RowA}
+        NBA (cap) & 300 & 0.44 & 0.203 & 50\,\% \\
+        \bottomrule
+      \end{tabular}
+      }
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \alertbox{\footnotesize A hard cap visibly weakens the
+        pattern. Oklahoma City's 2024--25 title, won with the
+        league's 23rd-highest payroll, would be a Leicester-level
+        outlier in football; in the NBA it is routine.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
 % SLIDE 14 — Conclusions
 % ══════════════════════════════════════════════════════════════
 \begin{frame}[shrink=8]{Conclusions: What Ten Years of Data Tell Us}
@@ -716,6 +851,41 @@
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
+% SLIDE 14B — Conclusions (continued): Extended Robustness
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=8]{Conclusions (continued): Extended Robustness Holds Up Too}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{5.\ Survives Every Extended Check}
+        {\small An independent Early/Late split (interaction
+        $p=0.80$) and a points-based re-fit ($R^2=0.677$ vs.\
+        $0.671$) both confirm the core finding --- and both
+        still flag \textbf{Leicester City 2015--16} as the
+        single largest statistical anomaly.}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{6.\ Generalises Beyond Football --- Weaker
+        Under a Cap}
+        {\small The NBA shows the identical quadratic pattern,
+        but far more weakly: $R^2=0.203$ vs.\ $0.671$;
+        only 50\,\% vs.\ 92\,\% of titles to top-3 spenders.
+        Evidence a hard salary cap loosens the spending-winning
+        link.}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \vspace{10pt}
+  \findingbox{Financial dominance is \textbf{universal},
+    \textbf{stable}, and \textbf{statistically powerful} ---
+    across all five leagues, all ten seasons, an alternative
+    outcome measure, and even a different sport. Leicester City
+    2015--16 is the exception that proves the rule; a hard
+    salary cap is one of the few things shown here to
+    meaningfully dent it.}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
 % SLIDE 15 — Thank You / Questions
 % ══════════════════════════════════════════════════════════════
 \begin{frame}[shrink=8]{Thank You --- Questions?}
@@ -749,6 +919,8 @@
                 by FR alone
           \item \textbf{1} genuine statistical outlier in
                 10 years: Leicester City 2015--16
+          \item \textbf{NBA check:} $R^2=0.20$ under a salary
+                cap vs.\ \textbf{0.67} in football
         \end{itemize}}
       \end{block}
       \vspace{8pt}

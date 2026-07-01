@@ -246,6 +246,15 @@ instead they came 1st. Their residual of **`r leicester_resid` positions** is th
 largest shock in the entire dataset and a once-in-a-generation event.
 :::
 
+::: {.callout-stat}
+**Extended robustness (Step 7):** the core finding is additionally stress-tested
+against a two-period time split, an alternative outcome variable (points instead
+of position), and a cross-sport comparison with the NBA's salary-capped league.
+It survives all three — though the NBA comparison shows that a hard salary cap
+can meaningfully weaken, without eliminating, the link between spending and
+winning.
+:::
+
 ---
 
 # Introduction
@@ -1378,13 +1387,247 @@ equally well across all five leagues and all ten seasons without further adjustm
 
 ---
 
+# Step 7 — Extended Robustness and External Validity
+
+The robustness checks in Step 6 all use the same outcome variable (final league
+position) and the same pooled dataset. This section pushes further along three
+independent axes: a cleaner, more intuitive time-split test; a completely
+different outcome variable (points instead of position); and a completely
+different sport (the NBA) with a fundamentally different financial structure —
+a hard salary cap. If Model H's finding is genuinely robust, it should survive
+all three.
+
+## A Cleaner Two-Period Robustness Check
+
+Step 6 already showed that a *continuous* FR × Season_Index interaction is not
+significant. Here we repeat the idea in the plainest possible way: split the
+10 seasons into two five-season halves — **Early** (2015–16 to 2019–20) and
+**Late** (2020–21 to 2024–25) — and re-fit Model H completely independently on
+each half. If financial inequality has been increasing (a "super-league effect")
+or shrinking (better analytics helping smaller clubs), the fitted curve should
+visibly differ between the two halves.
+
+```{r time-split-table}
+split_raw <- read_csv("outputs/38_time_split_model_comparison.csv", show_col_types = FALSE)
+
+split_raw |>
+  select(Period, N, R2, Adj_R2, AIC, Slope_FR, Slope_FR_CI_low, Slope_FR_CI_high, Slope_FR2) |>
+  kbl(longtable = FALSE,
+    col.names = c("Period", "N", "R²", "Adj. R²", "AIC",
+                 "FR slope", "95% CI low", "95% CI high", "FR² slope"),
+    caption   = "Model H fit separately on the Early (2015–16 to 2019–20) and Late (2020–21 to 2024–25) halves of the decade."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+```{r time-split-scatter, out.width="92%", fig.cap="Financial Rank vs. League Position, fit separately for each five-season half. The two quadratic curves are visually almost indistinguishable."}
+knitr::include_graphics("outputs/38a_time_split_scatter.png")
+```
+
+```{r time-split-coef, out.width="80%", fig.cap="Financial Rank slope with 95% confidence interval, Early vs. Late period. The intervals overlap substantially."}
+knitr::include_graphics("outputs/38b_time_split_coefficients.png")
+```
+
+```{r time-split-interaction}
+int_raw <- read_csv("outputs/38_time_split_interaction_test.csv", show_col_types = FALSE) |>
+  filter(term == "Financial_Rank:PeriodLate (2020-21 to 2024-25)")
+int_p <- int_raw$p.value
+int_est <- round(int_raw$estimate, 4)
+```
+
+The Early-period FR slope is `r split_raw$Slope_FR[split_raw$Period == "Early (2015-16 to 2019-20)"]`
+(95% CI [`r split_raw$Slope_FR_CI_low[1]`, `r split_raw$Slope_FR_CI_high[1]`]); the
+Late-period slope is `r split_raw$Slope_FR[split_raw$Period == "Late (2020-21 to 2024-25)"]`
+(95% CI [`r split_raw$Slope_FR_CI_low[2]`, `r split_raw$Slope_FR_CI_high[2]`]) — the
+intervals overlap almost completely. A formal interaction test (Financial_Rank ×
+Period, fit on the pooled data) confirms this: the interaction coefficient is
+`r int_est` and **not statistically significant** (*p* = `r round(int_p, 3)`).
+
+::: {.callout-success}
+**Independent confirmation of time stability.** Two entirely different test
+designs — a continuous FR × Season_Index interaction (Step 6) and a binary
+Early/Late split with its own interaction test (here) — reach the same
+conclusion: the financial-to-position relationship has not measurably changed
+between the first and second half of the decade studied.
+:::
+
+## Robustness to the Outcome Measure: Points Instead of Position
+
+Final league position is a *rank*, not a raw quantity — a club that misses out
+on the title by one point looks identical, position-wise, to one that misses out
+by twenty. **Points** are a continuous measure of season-long dominance and
+provide an independent check: does the same financial hierarchy show up when we
+stop compressing performance into a 1–20 ranking?
+
+```{r points-model-coefs}
+pts_coef <- read_csv("outputs/39_points_model_coefficients.csv", show_col_types = FALSE)
+
+modH_points <- lm(Points ~ Financial_Rank + I(Financial_Rank^2), data = df)
+r2_points   <- round(summary(modH_points)$r.squared, 3)
+
+pts_coef |>
+  mutate(across(c(estimate, std.error, statistic), ~ round(., 4)),
+         p_display = ifelse(p.value < 0.001, "< 0.001 ***", sprintf("%.4f", p.value))) |>
+  select(term, estimate, std.error, statistic, p_display) |>
+  kbl(longtable = FALSE,
+    col.names = c("Term", "Estimate", "Std. Error", "t-value", "p-value"),
+    caption   = "Model H re-fit with Points as the outcome: Points ~ FR + FR-squared."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+As expected, the sign flips relative to the position model: because higher
+points are *better* (unlike position, where 1st is best), the Financial_Rank
+coefficient is now **negative** — each step down the financial hierarchy costs
+a club points, not positions. The model explains **R² = `r r2_points`** of the
+variation in points, comparable to the R² = `r r2_H` obtained with position as
+the outcome.
+
+```{r points-model-scatter, out.width="92%", fig.cap="Financial Rank vs. Points won that season, with the quadratic fit overlaid. Gold diamonds mark the three key story clubs from Steps 4–5."}
+knitr::include_graphics("outputs/39_points_model_scatter.png")
+```
+
+**Does the outlier ranking change?** We recomputed residuals from this
+points-based model and re-ranked every team-season by absolute residual size.
+
+```{r points-residual-ranking}
+pts_resid <- read_csv("outputs/39_points_model_residuals.csv", show_col_types = FALSE)
+
+pts_resid |>
+  arrange(Rank_Points_Residual) |>
+  slice_head(n = 10) |>
+  mutate(across(c(Residual_Points), ~ round(., 1))) |>
+  select(Team, Season, Financial_Rank, Points, Residual_Points, Rank_Position_Residual) |>
+  kbl(longtable = FALSE,
+    col.names = c("Team", "Season", "Fin. Rank", "Points", "Points Residual", "Rank (position model)"),
+    caption   = "Top 10 largest |residual| under the points-based model, alongside each team's rank in the original position-based model."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#FEF9E7")
+```
+
+**Leicester City 2015–16 still has the single largest residual** — with points
+as the outcome, exactly as with position. This is a reassuring confirmation:
+the "greatest statistical upset" finding from Step 5 is not an artefact of using
+position rather than points.
+
+What *does* change is which clubs round out the rest of the list. Where the
+position-based residuals (Step 4) foreground overperforming underdogs, the
+points-based residuals surface a complementary story: **rich clubs that
+collapsed**. AS Monaco (2018–19 and 2019–20), Chelsea (2015–16 and 2022–23),
+Bayer Leverkusen (2016–17), and VfL Wolfsburg (2015–16 and 2016–17) all appear
+among the ten largest points residuals — all financially top-5 clubs that won
+far fewer points than their wealth predicted. Chelsea's back-to-back collapses
+(defending champions finishing mid-table in 2015–16, then a 12th-place finish
+in 2022–23 despite record transfer spending under new ownership) and AS
+Monaco's post-2017 financial retrenchment are well-known real-world stories
+that this purely statistical residual ranking recovers without being told to
+look for them. Lens (2022–23, Financial Rank 8) is the only genuinely new
+*positive* surprise that does not already appear among the position-model's
+largest residuals.
+
+::: {.callout-success}
+**Robust to outcome measure.** Whether success is measured by final position or
+by points won, Financial Rank predicts outcomes with comparable strength, and
+the single largest statistical anomaly in the dataset — Leicester City 2015–16
+— is identified either way.
+:::
+
+## External Validity: Does Money Buy Success Outside Football?
+
+Every check so far uses European football data. A stronger test of "does money
+buy success" is whether the same statistical pattern appears in a completely
+different sports league — ideally one with a structurally different financial
+system. The NBA is a natural candidate: unlike Europe's football leagues, it
+operates under a **hard salary cap**, deliberately designed (like UEFA's
+Financial Fair Play, mentioned in the Introduction) to limit financial
+dominance. If money still predicts finish as strongly in a capped league as in
+an uncapped one, that would suggest caps do little to level the field; if the
+relationship is much weaker, that is evidence the cap is doing its job.
+
+We collected NBA team payroll and final standings for the same ten seasons
+studied for football (2015–16 to 2024–25), using ESPN's standings API (final
+regular-season record, pooled across both conferences and ranked 1–30 by win
+percentage) and Spotrac's historical team salary-cap tables (ranked 1–30 by
+total cap allocations, 1 = highest payroll). We then fit the identical Model H
+specification: `Final_Standing ~ Payroll_Rank + Payroll_Rank²`.
+
+::: {.callout-alert}
+**A definitional caveat.** Unlike European football, where the league table
+winner *is* the champion, the NBA crowns its champion through a separate
+playoff tournament — the best regular-season team frequently does not win the
+title (Oklahoma City Thunder's 2024–25 championship, for example, came with a
+payroll rank of only 23rd out of 30). `Final_Standing` below always refers to
+the regular-season finish (directly comparable to football's League_Position),
+while "champion" in the summary table below refers to the actual NBA Finals
+winner each season — a stricter, more literal reading of "champion" than
+simply topping the table.
+:::
+
+```{r nba-comparison-table}
+nba_summary <- read_csv("outputs/40_nba_vs_football_summary.csv", show_col_types = FALSE)
+
+nba_summary |>
+  kbl(longtable = FALSE,
+    col.names = c("Sport", "N", "Pearson r", "R²", "AIC", "Unique Champions", "% Titles: Top-3 Payroll"),
+    caption   = "Football vs. NBA: strength of the money-predicts-finish relationship, 2015–16 to 2024–25."
+  ) |>
+  kbs(fw = TRUE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#FEF9E7")
+```
+
+```{r nba-comparison-plot, out.width="95%", fig.cap="Side-by-side comparison: Financial Rank vs. League Position (European football, no salary cap) and Payroll Rank vs. Final Standing (NBA, hard salary cap). Both panels share the same quadratic specification and axis convention (rank 1 at the top)."}
+knitr::include_graphics("outputs/40_nba_vs_football_comparison.png")
+```
+
+The difference is stark. In football, Financial Rank explains **R² = 0.671**
+of final position (*r* = 0.813, *N* = 975). In the NBA, Payroll Rank explains
+only **R² = 0.203** of final standing (*r* = 0.436, *N* = 300) — a much noisier
+relationship, visible directly in the right-hand scatter of the figure above,
+where high-payroll and low-payroll teams are far more intermixed across the
+standings. The champion-level statistic tells the same story from a different
+angle: 92% of European titles went to a financial top-3 club, versus only 50%
+of NBA titles going to a top-3 payroll team (5 of 10, including the Thunder's
+2024–25 title won with the league's 23rd-highest payroll — a result that would
+be a Leicester-level statistical outlier in the football data, but is a
+comparatively routine occurrence in the NBA).
+
+::: {.callout-success}
+**Money predicts success everywhere, but the salary cap visibly weakens the
+relationship.** The core "money buys success" pattern is not unique to European
+football — it re-appears in the NBA — but the strength of that pattern is far
+from universal. A league office can meaningfully weaken the link between
+spending and winning through plan design (a hard cap), even though it cannot
+eliminate it entirely. This is indirect but genuine evidence in favour of the
+logic behind mechanisms like UEFA's Financial Fair Play, cited as motivation in
+the Introduction.
+:::
+
+::: {.callout-alert}
+**Limits of this comparison.** The NBA dataset is much smaller (300 vs. 975
+team-seasons; only 10 champion-seasons vs. 50), so the champion-level
+percentages in particular should be read with caution. This is also a single
+alternative sport with numerous other structural differences from football
+(playoff-determined titles, a fixed 30-team league, no promotion/relegation,
+different broadcast and roster-size economics) — any of which, not only the
+salary cap, could contribute to the weaker relationship observed.
+:::
+
+---
+
 # Conclusions
 
 ## What We Found: A Summary
 
 This study has systematically examined whether financial strength predicts sporting
-success in Europe's five major football leagues over 10 seasons. The answer is
-unambiguous: **yes, and very strongly so.** Here are the four main findings:
+success in Europe's five major football leagues over 10 seasons, and then
+stress-tested that answer against alternative time periods, an alternative
+outcome measure, and an entirely different sport. The answer is unambiguous:
+**yes, and very strongly so.** Here are the six main findings:
 
 ::: {.callout-finding}
 **Finding 1 — Money very strongly predicts where clubs finish.**
@@ -1427,6 +1670,31 @@ highest Cook's D in the dataset). Such events are statistically exceptional and
 cannot be used to argue that money does not matter.
 :::
 
+::: {.callout-finding}
+**Finding 5 — The result survives a battery of independent robustness checks.**
+Splitting the decade into two independent five-season halves (above) yields
+statistically indistinguishable Financial Rank slopes (interaction
+*p* = `r round(int_p, 3)`); re-running Model H with **points** instead of
+position as the outcome (above) still identifies Leicester City 2015–16 as
+the single largest statistical anomaly, while additionally surfacing a
+complementary story of financially strong clubs (Chelsea, AS Monaco, Bayer
+Leverkusen) that badly underspent their points total relative to expectation.
+Neither check weakens the core finding.
+:::
+
+::: {.callout-finding}
+**Finding 6 — The pattern generalises beyond football, but a salary cap
+visibly weakens it.**
+The same quadratic specification fit on ten seasons of NBA data (above)
+confirms that money-predicts-finish is not football-specific: Payroll Rank
+significantly predicts NBA final standing. But the relationship is far weaker
+under the NBA's hard salary cap (R² = 0.203, *r* = 0.436) than in football's
+unrestricted spending environment (R² = 0.671, *r* = 0.813), and only half of
+NBA titles in the period went to a top-3 payroll team, versus 92% in football.
+This is indirect evidence that deliberate cap-style mechanisms can meaningfully
+loosen — without eliminating — the link between spending and winning.
+:::
+
 ## Limitations and Future Directions
 
 Every study has limitations, and being transparent about them is part of good
@@ -1440,21 +1708,24 @@ tibble(
     "No managerial quality variable",
     "No injury data",
     "Panel structure ignored",
-    "Top divisions only"
+    "Top divisions only",
+    "NBA comparison is a single, small sample"
   ),
   Issue = c(
     "Transfermarkt valuations may lag actual squad quality by weeks; subjective editor estimates",
     "Exceptional coaches (Ranieri at Leicester) are not captured in the financial model",
     "Injury crises can dramatically alter a squad's effective quality mid-season",
     "Teams appear multiple seasons; correlated errors across seasons are unmodelled",
-    "Results may not generalise to lower divisions or smaller national leagues"
+    "Results may not generalise to lower divisions or smaller national leagues",
+    "The NBA cross-sport comparison above rests on only 300 team-seasons and 10 champion-seasons; NBA titles are also playoff-determined, not table position, making the sample smaller and structurally different from the football data"
   ),
   Potential_Fix = c(
     "Use wage bill data as an alternative or cross-validate with Opta squad ratings",
     "Add manager tenure, prior record, or a coaching quality index",
     "Incorporate injury-adjusted squad value (e.g., weighted by availability %)",
     "Fixed-effects panel model or clustered standard errors at the team level",
-    "Replicate in Eredivisie, Championship, Scottish Premiership"
+    "Replicate in Eredivisie, Championship, Scottish Premiership",
+    "Extend to further capped/uncapped leagues (NFL, MLB, EuroLeague basketball) for a larger cross-sport sample"
   )
 ) |>
   kbl(longtable = FALSE,
