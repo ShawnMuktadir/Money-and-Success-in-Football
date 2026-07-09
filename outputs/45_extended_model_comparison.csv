@@ -1,0 +1,6 @@
+Model,Outcome,Formula,N,R_squared,Adj_R_squared,AIC,FR_linear_coef,FR_squared_coef,Notes
+A: Linear (position),League_Position,Pos ~ FR,976,0.6606,0.6602,5104.44,0.81269,NA,Baseline straight-line fit
+H: Quadratic (position),League_Position,Pos ~ FR + FR^2,976,0.6713,0.6706,5075.12,1.23088,-0.02025,Preferred model — Task 3 comparison
+Points model (quadratic),Points,Points ~ FR + FR^2,976,0.6776,0.677,7234.59,-5.04657,0.12681,Higher Points = better; slope flips sign vs position models
+PPG model (quadratic),Points_Per_Game,PPG ~ FR + FR^2,976,0.6958,0.6952,100.1,-0.13411,0.00331,Task 1 model
+Inflation-adjusted FR model (quadratic),League_Position,Pos ~ FR_adj + FR_adj^2,976,0.6713,0.6706,5075.12,1.23088,-0.02025,0/976 genuine inflation-driven rank changes (mathematically invariant — same season-level divisor within each league-season); 0 apparent shifts are a pre-existing missing-data artifact (Serie A 2017-18) unrelated to inflation -> stats equal Model H by construction

@@ -1,0 +1,5 @@
+Model,Outcome,N,R_squared,Adj_R_squared,AIC,FR_coef,FR_squared_coef,FR_pvalue,FR_squared_pvalue
+A: Linear baseline,League_Position,976,0.6606,0.6602,5104.44,0.81269,NA,9.551999999999995e-231,NA
+H: Quadratic (position),League_Position,976,0.6713,0.6706,5075.12,1.23088,-0.02025,7.648e-52,2.323e-8
+H: Quadratic (points),Points,976,0.6776,0.677,7234.59,-5.04657,0.12681,2.8639999999999993e-86,1.554e-29
+H: Quadratic (PPG),Points_Per_Game,976,0.6958,0.6952,100.1,-0.13411,0.00331,4.106e-90,4.2419999999999994e-30

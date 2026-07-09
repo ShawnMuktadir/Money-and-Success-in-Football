@@ -34,11 +34,11 @@ track <- function(path) { OUTPUT_FILES <<- c(OUTPUT_FILES, path); invisible(path
 # ══════════════════════════════════════════════════════════════
 cat("=== PHASE 1: Load & Validate Master Dataset ===\n")
 
-master_path <- "data/merged/master_dataset.csv"
+master_path <- "data/merged/master_dataset_corrected.csv"
 if (!file.exists(master_path)) {
   stop(paste0(
     "Cannot find ", master_path, ".\n",
-    "Please run 04_merge_standings_and_market_values.R first."
+    "Please run extensions/scripts/15_spal_correction.R first."
   ))
 }
 

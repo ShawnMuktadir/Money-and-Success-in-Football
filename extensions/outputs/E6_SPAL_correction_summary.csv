@@ -1,0 +1,6 @@
+Team,Season,League,Market_Value_Before,Financial_Rank_Before,Financial_Rank_Adjusted_Before,Market_Value_After,Financial_Rank_After,Financial_Rank_Adjusted_After,Note
+SPAL,2017-2018,Serie A,NA,NA,NA,63.55,16,16,Root cause: unmatched during 04_merge — Market_Value_M_EUR & Financial_Rank were NA
+Benevento,2017-2018,Serie A,57.83,17,16,57.83,17,17,Rank was compacted by 1 because SPAL was excluded from the adjusted-rank calc; now matches its true Financial_Rank
+Hellas Verona,2017-2018,Serie A,56.5,18,17,56.5,18,18,Rank was compacted by 1 because SPAL was excluded from the adjusted-rank calc; now matches its true Financial_Rank
+Chievo Verona,2017-2018,Serie A,55.23,19,18,55.23,19,19,Rank was compacted by 1 because SPAL was excluded from the adjusted-rank calc; now matches its true Financial_Rank
+Crotone,2017-2018,Serie A,47.88,20,19,47.88,20,20,Rank was compacted by 1 because SPAL was excluded from the adjusted-rank calc; now matches its true Financial_Rank

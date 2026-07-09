@@ -136,8 +136,8 @@ league_colours <- c(
 )
 league_order <- names(league_colours)
 
-# ── Load master dataset ───────────────────────────────────────
-df <- read_csv("data/merged/master_dataset.csv", show_col_types = FALSE) |>
+# ── Load master dataset (corrected: SPAL 2017-18 market value fix) ────
+df <- read_csv("data/merged/master_dataset_corrected.csv", show_col_types = FALSE) |>
   filter(!is.na(League_Position), !is.na(Financial_Rank),
          !is.na(Market_Value_M_EUR), !is.na(Log_Normalized_Value)) |>
   mutate(
@@ -1807,8 +1807,8 @@ and reproducibility.
 **Data loading and model setup:**
 
 ```{r code-data, echo=TRUE, eval=FALSE}
-# Load and clean the master dataset
-df <- read_csv("data/merged/master_dataset.csv", show_col_types = FALSE) |>
+# Load and clean the master dataset (corrected: SPAL 2017-18 market value fix)
+df <- read_csv("data/merged/master_dataset_corrected.csv", show_col_types = FALSE) |>
   filter(!is.na(League_Position), !is.na(Financial_Rank),
          !is.na(Market_Value_M_EUR), !is.na(Log_Normalized_Value)) |>
   mutate(

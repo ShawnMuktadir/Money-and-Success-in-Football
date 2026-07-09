@@ -1,9 +1,9 @@
 model_label,response,term,estimate,std.error,statistic,p.value,conf.low,conf.high,significant_05
-J: Logit — Top4 ~ FR,Top4_binary,(Intercept),3.345634,0.306979,10.8986,0,2.743967,3.947302,TRUE
-J: Logit — Top4 ~ FR,Top4_binary,Financial_Rank,-0.754763,0.059536,-12.6773,0,-0.871452,-0.638074,TRUE
-J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,(Intercept),3.84677,0.443056,8.6824,0,2.978396,4.715143,TRUE
-J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,Log_Normalized_Value,4.639681,0.352283,13.1703,0,3.949219,5.330143,TRUE
-J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,LeagueLa Liga,0.182823,0.451588,0.4048,0.685591,-0.702272,1.067919,FALSE
-J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,LeagueLigue 1,1.396321,0.42649,3.274,0.00106,0.560415,2.232226,TRUE
-J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,LeaguePremier League,-2.256668,0.426755,-5.288,0,-3.093092,-1.420245,TRUE
-J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,LeagueSerie A,-1.801764,0.42536,-4.2359,2.3e-5,-2.635453,-0.968075,TRUE
+J: Logit — Top4 ~ FR,Top4_binary,(Intercept),3.345662,0.306973,10.8989,0,2.744006,3.947319,TRUE
+J: Logit — Top4 ~ FR,Top4_binary,Financial_Rank,-0.75477,0.059535,-12.6778,0,-0.871455,-0.638084,TRUE
+J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,(Intercept),3.846803,0.443051,8.6825,0,2.978439,4.715167,TRUE
+J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,Log_Normalized_Value,4.639717,0.352275,13.1707,0,3.94927,5.330163,TRUE
+J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,LeagueLa Liga,0.182826,0.45159,0.4048,0.685588,-0.702274,1.067925,FALSE
+J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,LeagueLigue 1,1.396331,0.426491,3.274,0.00106,0.560425,2.232237,TRUE
+J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,LeaguePremier League,-2.256686,0.426754,-5.288,0,-3.093109,-1.420263,TRUE
+J2: Logit full — Top4 ~ Log(MV) + League,Top4_binary,LeagueSerie A,-1.80179,0.425356,-4.236,2.3e-5,-2.635474,-0.968107,TRUE

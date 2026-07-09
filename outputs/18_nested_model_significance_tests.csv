@@ -1,5 +1,5 @@
 Comparison,Model1_Df,Model2_Df,Model1_RSS,Model2_RSS,Df,Sum_of_Sq,F_statistic,p_value
-Interaction (FR*League) vs Additive (FR+League),969,965,10599.0954,10548.1311,4,50.9643,1.1656,0.324439
-Quadratic (FR+FR^2) vs Linear (FR),973,972,10604.0132,10269.0219,1,334.9913,31.7081,2.3446e-8
-Time-trend (FR*Season) vs Additive (FR+Season),972,971,10603.9224,10599.0946,1,4.8278,0.4423,0.506181
-Cubic (FR+FR^2+FR^3) vs Quadratic (FR+FR^2),972,971,10269.0219,10266.8789,1,2.1429,0.2027,0.652674
+Interaction (FR*League) vs Additive (FR+League),970,966,10603.261,10550.7333,4,52.5277,1.2023,0.308186
+Quadratic (FR+FR^2) vs Linear (FR),974,973,10608.3036,10273.3261,1,334.9775,31.7262,2.323e-8
+Time-trend (FR*Season) vs Additive (FR+Season),973,972,10608.1754,10603.5996,1,4.5758,0.4194,0.517367
+Cubic (FR+FR^2+FR^3) vs Quadratic (FR+FR^2),973,972,10273.3261,10271.3793,1,1.9467,0.1842,0.667863

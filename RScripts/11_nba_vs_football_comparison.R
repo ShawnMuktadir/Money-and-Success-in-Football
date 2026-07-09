@@ -50,9 +50,9 @@ theme_clean <- theme_minimal(base_size = 12) +
 # ══════════════════════════════════════════════════════════════
 cat("=== PHASE 1: Load Data & Fit Models ===\n")
 
-master_path <- "data/merged/master_dataset.csv"
+master_path <- "data/merged/master_dataset_corrected.csv"
 nba_path    <- "data/merged/nba_master_dataset.csv"
-if (!file.exists(master_path)) stop("Cannot find master_dataset.csv — run script 04 first.")
+if (!file.exists(master_path)) stop("Cannot find master_dataset_corrected.csv — run extensions/scripts/15_spal_correction.R first.")
 if (!file.exists(nba_path))    stop("Cannot find nba_master_dataset.csv — run script 10 first.")
 
 football <- read_csv(master_path, show_col_types = FALSE) |>

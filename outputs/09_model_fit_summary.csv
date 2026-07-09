@@ -1,11 +1,11 @@
 Model,Type,Formula,Notes,N,R2,Adj_R2,AIC,BIC
-A,OLS,Pos ~ FR,League_Position = a + b1 x FR,975,0.6602,0.6599,5099.82,5114.46
-B,OLS,Pos ~ FR + League,League_Position = a + b1 x FR + b2 x League,975,0.6604,0.6586,5107.36,5141.54
-C,OLS,Pos ~ Log(MV),League_Position = a + b1 x Log(Market_Value),975,0.5326,0.5322,5410.59,5425.23
-D,OLS,Pos ~ Log(MV) + League + Season,League_Position = a + b1 x Log(Market_Value) + b2 x League + b3 x Season,975,0.6407,0.6385,5164.26,5203.31
-G,OLS,Pos ~ FR x League,League_Position = a + b1 x FR x League,975,0.662,0.6588,5110.66,5164.37
-H*,OLS,Pos ~ FR + FR^2,League_Position = a + b1 x FR + b2 x FR-squared  [preferred],975,0.6709,0.6703,5070.52,5090.05
-I,OLS,Pos ~ FR + FR^2 + FR^3,League_Position = a + b1 x FR + b2 x FR-squared + b3 x FR-cubed,975,0.671,0.67,5072.32,5096.73
-J,OLS,Pos ~ Log(FR),League_Position = a + b1 x Log(FR),975,0.6258,0.6254,5193.97,5208.62
-M,OLS,Pos ~ sqrt(FR),League_Position = a + b1 x sqrt(FR),975,0.6686,0.6682,5075.52,5090.16
-E,Logit,Champion ~ FR,Log(P(Champion) / (1 - P(Champion))) = a + b1 x FR,975,0.5477,NA,182.41,192.18
+A,OLS,Pos ~ FR,League_Position = a + b1 x FR,976,0.6606,0.6602,5104.44,5119.09
+B,OLS,Pos ~ FR + League,League_Position = a + b1 x FR + b2 x League,976,0.6607,0.659,5111.97,5146.16
+C,OLS,Pos ~ Log(MV),League_Position = a + b1 x Log(Market_Value),976,0.5331,0.5327,5415.51,5430.16
+D,OLS,Pos ~ Log(MV) + League + Season,League_Position = a + b1 x Log(Market_Value) + b2 x League + b3 x Season,976,0.6412,0.639,5168.54,5207.61
+G,OLS,Pos ~ FR x League,League_Position = a + b1 x FR x League,976,0.6624,0.6593,5115.12,5168.84
+H*,OLS,Pos ~ FR + FR^2,League_Position = a + b1 x FR + b2 x FR-squared  [preferred],976,0.6713,0.6706,5075.12,5094.65
+I,OLS,Pos ~ FR + FR^2 + FR^3,League_Position = a + b1 x FR + b2 x FR-squared + b3 x FR-cubed,976,0.6713,0.6703,5076.93,5101.35
+J,OLS,Pos ~ Log(FR),League_Position = a + b1 x Log(FR),976,0.626,0.6256,5198.99,5213.64
+M,OLS,Pos ~ sqrt(FR),League_Position = a + b1 x sqrt(FR),976,0.6689,0.6685,5080.2,5094.85
+E,Logit,Champion ~ FR,Log(P(Champion) / (1 - P(Champion))) = a + b1 x FR,976,0.5478,NA,182.41,192.18

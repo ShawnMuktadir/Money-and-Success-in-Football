@@ -48,8 +48,8 @@ period_colours <- c(
 # ══════════════════════════════════════════════════════════════
 cat("=== PHASE 1: Load Dataset & Assign Period ===\n")
 
-master_path <- "data/merged/master_dataset.csv"
-if (!file.exists(master_path)) stop("Cannot find master_dataset.csv — run script 04 first.")
+master_path <- "data/merged/master_dataset_corrected.csv"
+if (!file.exists(master_path)) stop("Cannot find master_dataset_corrected.csv — run extensions/scripts/15_spal_correction.R first.")
 
 master <- read_csv(master_path, show_col_types = FALSE)
 

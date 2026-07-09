@@ -65,9 +65,9 @@ league_colours <- c(
 # ══════════════════════════════════════════════════════════════
 cat("=== PHASE 1: Re-fit Model H & Compute Residuals ===\n")
 
-master_path <- "data/merged/master_dataset.csv"
+master_path <- "data/merged/master_dataset_corrected.csv"
 if (!file.exists(master_path)) {
-  stop("Cannot find data/merged/master_dataset.csv. Run 04_merge_standings_and_market_values.R first.")
+  stop("Cannot find data/merged/master_dataset_corrected.csv. Run extensions/scripts/15_spal_correction.R first.")
 }
 
 master <- read_csv(master_path, show_col_types = FALSE) |>
@@ -603,7 +603,7 @@ p35 <- ggplot(dumb_df, aes(x = x_label)) +
       "Bullseye symbol: predicted and actual coincide",
       " - model was essentially correct for this team.\n",
       "FR = Financial Rank (1 = richest squad in league that season)",
-      "  |  Model H: R^2 = 0.671, N = 975 team-seasons"
+      sprintf("  |  Model H: R^2 = %.3f, N = %d team-seasons", sumH$r.squared, nrow(model_df))
     )
   ) +
 

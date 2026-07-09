@@ -1,6 +1,6 @@
 Comparison,df_Model1,df_Model2,df_diff,RSS_Model1,RSS_Model2,F_statistic,p_value
-H2 vs H: Adding League FE,972,968,4,10269.0219,10256.1524,0.3037,0.875599
-H3 vs H: Adding Season_Index,972,971,1,10269.0219,10268.7799,0.0229,0.879785
-H4 vs H: Adding League + Season (joint),972,967,5,10269.0219,10255.9067,0.2473,0.941208
-H4 vs H2: Season beyond League,968,967,1,10256.1524,10255.9067,0.0232,0.879051
-H4 vs H3: League beyond Season,971,967,4,10268.7799,10255.9067,0.3034,0.875744
+H2 vs H: Adding League FE,973,969,4,10273.3261,10260.2385,0.309,0.872053
+H3 vs H: Adding Season_Index,973,972,1,10273.3261,10273.0249,0.0285,0.865987
+H4 vs H: Adding League + Season (joint),973,968,5,10273.3261,10259.9343,0.2527,0.93853
+H4 vs H2: Season beyond League,969,968,1,10260.2385,10259.9343,0.0287,0.865498
+H4 vs H3: League beyond Season,972,968,4,10273.0249,10259.9343,0.3088,0.87221

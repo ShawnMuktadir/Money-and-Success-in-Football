@@ -1,47 +1,47 @@
 model_label,response,term,estimate,std.error,statistic,p.value,conf.low,conf.high,significant_05,significant_01
-A: OLS — Pos ~ FR,League_Position,(Intercept),1.929611,0.219065,8.8084,0,1.500251,2.358971,TRUE,TRUE
-A: OLS — Pos ~ FR,League_Position,Financial_Rank,0.812307,0.018682,43.4797,0,0.77569,0.848924,TRUE,TRUE
-B: OLS — Pos ~ FR + League FE,League_Position,(Intercept),1.790942,0.304173,5.8879,0,1.194774,2.387109,TRUE,TRUE
-B: OLS — Pos ~ FR + League FE,League_Position,Financial_Rank,0.81148,0.018757,43.2619,0,0.774716,0.848244,TRUE,TRUE
-B: OLS — Pos ~ FR + League FE,League_Position,LeagueLa Liga,0.192578,0.340304,0.5659,0.571594,-0.474406,0.859561,FALSE,FALSE
-B: OLS — Pos ~ FR + League FE,League_Position,LeagueLigue 1,0.158034,0.341769,0.4624,0.643898,-0.511821,0.82789,FALSE,FALSE
-B: OLS — Pos ~ FR + League FE,League_Position,LeaguePremier League,0.192578,0.340304,0.5659,0.571594,-0.474406,0.859561,FALSE,FALSE
-B: OLS — Pos ~ FR + League FE,League_Position,LeagueSerie A,0.178285,0.340685,0.5233,0.600876,-0.489445,0.846014,FALSE,FALSE
-C: OLS — Pos ~ Log(MV),League_Position,(Intercept),2.891023,0.253965,11.3836,0,2.393261,3.388784,TRUE,TRUE
-C: OLS — Pos ~ Log(MV),League_Position,Log_Normalized_Value,-5.025755,0.15092,-33.3007,0,-5.321553,-4.729956,TRUE,TRUE
-D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,(Intercept),-0.214902,0.405174,-0.5304,0.595961,-1.009029,0.579225,FALSE,FALSE
-D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,Log_Normalized_Value,-5.965903,0.144096,-41.4021,0,-6.248327,-5.683479,TRUE,TRUE
-D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueLa Liga,-0.201082,0.350874,-0.5731,0.566718,-0.888783,0.486619,FALSE,FALSE
-D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueLigue 1,-1.102658,0.354413,-3.1112,0.001918,-1.797294,-0.408023,TRUE,TRUE
-D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeaguePremier League,4.085696,0.357528,11.4276,0,3.384955,4.786437,TRUE,TRUE
-D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueSerie A,2.787633,0.352839,7.9006,0,2.096082,3.479184,TRUE,TRUE
-D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,Season_Index,0.105919,0.038137,2.7773,0.005587,0.031172,0.180666,TRUE,TRUE
+A: OLS — Pos ~ FR,League_Position,(Intercept),1.927834,0.218979,8.8038,0,1.498643,2.357024,TRUE,TRUE
+A: OLS — Pos ~ FR,League_Position,Financial_Rank,0.812687,0.018667,43.5364,0,0.7761,0.849273,TRUE,TRUE
+B: OLS — Pos ~ FR + League FE,League_Position,(Intercept),1.787504,0.304025,5.8795,0,1.191627,2.383382,TRUE,TRUE
+B: OLS — Pos ~ FR + League FE,League_Position,Financial_Rank,0.811842,0.018742,43.3162,0,0.775108,0.848576,TRUE,TRUE
+B: OLS — Pos ~ FR + League FE,League_Position,LeagueLa Liga,0.192218,0.340195,0.565,0.57219,-0.474552,0.858987,FALSE,FALSE
+B: OLS — Pos ~ FR + League FE,League_Position,LeagueLigue 1,0.157741,0.34166,0.4617,0.644408,-0.5119,0.827382,FALSE,FALSE
+B: OLS — Pos ~ FR + League FE,League_Position,LeaguePremier League,0.192218,0.340195,0.565,0.57219,-0.474552,0.858987,FALSE,FALSE
+B: OLS — Pos ~ FR + League FE,League_Position,LeagueSerie A,0.188158,0.3402,0.5531,0.580335,-0.478622,0.854938,FALSE,FALSE
+C: OLS — Pos ~ Log(MV),League_Position,(Intercept),2.8888760000000002,0.253861,11.3798,0,2.391319,3.386434,TRUE,TRUE
+C: OLS — Pos ~ Log(MV),League_Position,Log_Normalized_Value,-5.028888,0.150788,-33.3508,0,-5.324427,-4.73335,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,(Intercept),-0.215187,0.404939,-0.5314,0.595259,-1.008853,0.578479,FALSE,FALSE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,Log_Normalized_Value,-5.966295,0.14388,-41.4671,0,-6.248295,-5.684295,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueLa Liga,-0.201161,0.350692,-0.5736,0.566364,-0.888504,0.486182,FALSE,FALSE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueLigue 1,-1.10279,0.354224,-3.1133,0.001905,-1.797056,-0.408524,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeaguePremier League,4.085899,0.357328,11.4346,0,3.385548,4.78625,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,LeagueSerie A,2.788796,0.352146,7.9194,0,2.098603,3.478988,TRUE,TRUE
+D: OLS full — Pos ~ Log(MV) + League + Season,League_Position,Season_Index,0.105862,0.038106,2.7781,0.005573,0.031176,0.180548,TRUE,TRUE
 E: Logit — Champion ~ FR,Champion_binary,(Intercept),1.64163,0.40334,4.0701,4.7e-5,0.851098,2.432162,TRUE,TRUE
 E: Logit — Champion ~ FR,Champion_binary,Financial_Rank,-1.298481,0.189993,-6.8343,0,-1.670861,-0.926101,TRUE,TRUE
-F: Logit full — Champion ~ Log(MV) + League,Champion_binary,(Intercept),0.951861,0.532199,1.7885,0.073689,-0.09123,1.994952,FALSE,FALSE
-F: Logit full — Champion ~ Log(MV) + League,Champion_binary,Log_Normalized_Value,7.150332,1.0523420000000001,6.7947,0,5.087779,9.212884,TRUE,TRUE
+F: Logit full — Champion ~ Log(MV) + League,Champion_binary,(Intercept),0.951861,0.532199,1.7885,0.073688,-0.09123,1.994952,FALSE,FALSE
+F: Logit full — Champion ~ Log(MV) + League,Champion_binary,Log_Normalized_Value,7.150332,1.0523420000000001,6.7947,0,5.08778,9.212884,TRUE,TRUE
 F: Logit full — Champion ~ Log(MV) + League,Champion_binary,LeagueLa Liga,-0.862718,0.660666,-1.3058,0.19161,-2.157599,0.432163,FALSE,FALSE
 F: Logit full — Champion ~ Log(MV) + League,Champion_binary,LeagueLigue 1,1.31556,0.924295,1.4233,0.154646,-0.496024,3.127144,FALSE,FALSE
 F: Logit full — Champion ~ Log(MV) + League,Champion_binary,LeaguePremier League,-1.315534,0.620033,-2.1217,0.033862,-2.530777,-0.100292,TRUE,FALSE
 F: Logit full — Champion ~ Log(MV) + League,Champion_binary,LeagueSerie A,-0.973806,0.626469,-1.5544,0.12008,-2.201662,0.254051,FALSE,FALSE
-G: OLS — Pos ~ FR * League,League_Position,(Intercept),2.064706,0.514137,4.0159,6.4e-5,1.057015,3.072397,TRUE,TRUE
-G: OLS — Pos ~ FR * League,League_Position,Financial_Rank,0.782663,0.047498,16.4777,0,0.689568,0.875757,TRUE,TRUE
-G: OLS — Pos ~ FR * League,League_Position,LeagueLa Liga,0.177147,0.707211,0.2505,0.802264,-1.20896,1.563255,FALSE,FALSE
-G: OLS — Pos ~ FR * League,League_Position,LeagueLigue 1,0.095605,0.710089,0.1346,0.892926,-1.296143,1.487354,FALSE,FALSE
-G: OLS — Pos ~ FR * League,League_Position,LeaguePremier League,0.041335,0.706826,0.0585,0.953379,-1.34402,1.426689,FALSE,FALSE
-G: OLS — Pos ~ FR * League,League_Position,LeagueSerie A,-0.902945,0.707361,-1.2765,0.202087,-2.289348,0.483458,FALSE,FALSE
-G: OLS — Pos ~ FR * League,League_Position,Financial_Rank:LeagueLa Liga,0.004202,0.062456,0.0673,0.946369,-0.11821,0.126614,FALSE,FALSE
-G: OLS — Pos ~ FR * League,League_Position,Financial_Rank:LeagueLigue 1,0.008322,0.063149,0.1318,0.895188,-0.115448,0.132092,FALSE,FALSE
-G: OLS — Pos ~ FR * League,League_Position,Financial_Rank:LeaguePremier League,0.017143,0.062417,0.2747,0.78364,-0.105192,0.139478,FALSE,FALSE
-G: OLS — Pos ~ FR * League,League_Position,Financial_Rank:LeagueSerie A,0.105922,0.062509,1.6945,0.090491,-0.016593,0.228437,FALSE,FALSE
-H: OLS — Pos ~ FR + FR^2 (*preferred*),League_Position,(Intercept),0.418938,0.34423,1.217,0.223889,-0.255741,1.093617,FALSE,FALSE
-H: OLS — Pos ~ FR + FR^2 (*preferred*),League_Position,Financial_Rank,1.230512,0.076512,16.0825,0,1.08055,1.380473,TRUE,TRUE
-H: OLS — Pos ~ FR + FR^2 (*preferred*),League_Position,I(Financial_Rank^2),-0.02025,0.003596,-5.631,0,-0.027298,-0.013201,TRUE,TRUE
-I: OLS — Pos ~ FR + FR^2 + FR^3,League_Position,(Intercept),0.253116,0.504246,0.502,0.615802,-0.735187,1.24142,FALSE,FALSE
-I: OLS — Pos ~ FR + FR^2 + FR^3,League_Position,Financial_Rank,1.315932,0.2046,6.4317,0,0.914924,1.71694,TRUE,TRUE
-I: OLS — Pos ~ FR + FR^2 + FR^3,League_Position,I(Financial_Rank^2),-0.030276,0.022559,-1.3421,0.17989,-0.074491,0.013939,FALSE,FALSE
-I: OLS — Pos ~ FR + FR^2 + FR^3,League_Position,I(Financial_Rank^3),3.22e-4,7.15e-4,0.4502,0.652674,-0.001079,0.001722,FALSE,FALSE
-J: OLS — Pos ~ Log(FR),League_Position,(Intercept),-1.57975,0.314082,-5.0297,1e-6,-2.195339,-0.96416,TRUE,TRUE
-J: OLS — Pos ~ Log(FR),League_Position,log(Financial_Rank),5.658332,0.140285,40.3346,0,5.383379,5.933285,TRUE,TRUE
-M: OLS — Pos ~ sqrt(FR),League_Position,(Intercept),-4.022183,0.339117,-11.8607,0,-4.686841,-3.357525,TRUE,TRUE
-M: OLS — Pos ~ sqrt(FR),League_Position,sqrt(Financial_Rank),4.688157,0.105821,44.3029,0,4.480752,4.895561,TRUE,TRUE
+G: OLS — Pos ~ FR * League,League_Position,(Intercept),2.064706,0.513935,4.0174,6.3e-5,1.057412,3.071999,TRUE,TRUE
+G: OLS — Pos ~ FR * League,League_Position,Financial_Rank,0.782663,0.047479,16.4842,0,0.689604,0.875721,TRUE,TRUE
+G: OLS — Pos ~ FR * League,League_Position,LeagueLa Liga,0.177147,0.706932,0.2506,0.802187,-1.208413,1.562708,FALSE,FALSE
+G: OLS — Pos ~ FR * League,League_Position,LeagueLigue 1,0.095605,0.709809,0.1347,0.892884,-1.295594,1.486805,FALSE,FALSE
+G: OLS — Pos ~ FR * League,League_Position,LeaguePremier League,0.041335,0.706548,0.0585,0.953361,-1.343473,1.426142,FALSE,FALSE
+G: OLS — Pos ~ FR * League,League_Position,LeagueSerie A,-0.908916,0.706977,-1.2856,0.198877,-2.294565,0.476732,FALSE,FALSE
+G: OLS — Pos ~ FR * League,League_Position,Financial_Rank:LeagueLa Liga,0.004202,0.062432,0.0673,0.946348,-0.118161,0.126566,FALSE,FALSE
+G: OLS — Pos ~ FR * League,League_Position,Financial_Rank:LeagueLigue 1,0.008322,0.063124,0.1318,0.895147,-0.1154,0.132043,FALSE,FALSE
+G: OLS — Pos ~ FR * League,League_Position,Financial_Rank:LeaguePremier League,0.017143,0.062392,0.2748,0.783557,-0.105143,0.139429,FALSE,FALSE
+G: OLS — Pos ~ FR * League,League_Position,Financial_Rank:LeagueSerie A,0.107262,0.062424,1.7183,0.086063,-0.015086,0.22961,FALSE,FALSE
+H: OLS — Pos ~ FR + FR^2 (*preferred*),League_Position,(Intercept),0.417189,0.344114,1.2124,0.225671,-0.257263,1.091641,FALSE,FALSE
+H: OLS — Pos ~ FR + FR^2 (*preferred*),League_Position,Financial_Rank,1.230883,0.076487,16.0928,0,1.080972,1.380795,TRUE,TRUE
+H: OLS — Pos ~ FR + FR^2 (*preferred*),League_Position,I(Financial_Rank^2),-0.020249,0.003595,-5.6326,0,-0.027295,-0.013203,TRUE,TRUE
+I: OLS — Pos ~ FR + FR^2 + FR^3,League_Position,(Intercept),0.259186,0.504011,0.5142,0.607196,-0.728657,1.24703,FALSE,FALSE
+I: OLS — Pos ~ FR + FR^2 + FR^3,League_Position,Financial_Rank,1.312264,0.204462,6.4181,0,0.911526,1.713002,TRUE,TRUE
+I: OLS — Pos ~ FR + FR^2 + FR^3,League_Position,I(Financial_Rank^2),-0.0298,0.022541,-1.3221,0.186459,-0.073979,0.014379,FALSE,FALSE
+I: OLS — Pos ~ FR + FR^2 + FR^3,League_Position,I(Financial_Rank^3),3.06e-4,7.14e-4,0.4292,0.667863,-0.001093,0.001706,FALSE,FALSE
+J: OLS — Pos ~ Log(FR),League_Position,(Intercept),-1.58351,0.314,-5.043,1e-6,-2.19894,-0.968081,TRUE,TRUE
+J: OLS — Pos ~ Log(FR),League_Position,log(Financial_Rank),5.661541,0.14021,40.379,0,5.386734,5.936347,TRUE,TRUE
+M: OLS — Pos ~ sqrt(FR),League_Position,(Intercept),-4.026779,0.338963,-11.8797,0,-4.691135,-3.362423,TRUE,TRUE
+M: OLS — Pos ~ sqrt(FR),League_Position,sqrt(Financial_Rank),4.690426,0.105742,44.3572,0,4.483175,4.897677,TRUE,TRUE

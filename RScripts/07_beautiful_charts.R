@@ -71,9 +71,9 @@ league_colours <- c(
 # ══════════════════════════════════════════════════════════════
 cat("=== PHASE 1: Load Data & Re-fit Model H ===\n")
 
-master_path <- "data/merged/master_dataset.csv"
+master_path <- "data/merged/master_dataset_corrected.csv"
 if (!file.exists(master_path)) {
-  stop("Cannot find data/merged/master_dataset.csv. Run 04_merge_standings_and_market_values.R first.")
+  stop("Cannot find data/merged/master_dataset_corrected.csv. Run extensions/scripts/15_spal_correction.R first.")
 }
 
 master <- read_csv(master_path, show_col_types = FALSE) |>

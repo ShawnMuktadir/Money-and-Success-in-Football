@@ -6,7 +6,7 @@
 % (run from project root so \graphicspath{{outputs/}} resolves)
 % Submission: July 2, 2026 | Presentation: July 8, 2026
 % ==============================================================
-\documentclass[aspectratio=169,10pt]{beamer}
+\documentclass[aspectratio=1610,10pt]{beamer}
 
 % ── Metropolis theme ──────────────────────────────────────────
 \usetheme[progressbar=frametitle, block=fill, numbering=fraction]{metropolis}
@@ -60,16 +60,22 @@
 % ── TU Dortmund logo (conditional on file presence) ───────────
 % Place tu-do-logo.pdf next to this .tex file or in the project root.
 \IfFileExists{tu-do-logo.pdf}{%
-  \titlegraphic{\hfill\includegraphics[height=1.4cm]{tu-do-logo.pdf}}%
-  \logo{\includegraphics[height=0.55cm]{tu-do-logo.pdf}}%
+  \titlegraphic{\hfill\includegraphics[height=1.0cm]{tu-do-logo.pdf}}%
+  %%\logo{\includegraphics[height=0.55cm]{tu-do-logo.pdf}}%
 }{\titlegraphic{}\logo{}}
 
 % ── Presentation metadata ─────────────────────────────────────
 \title{Money and Success in Football}
-\subtitle{Does Financial Strength Predict League Position?}
-\author{Md.~Muktadir \and [Second Author]}   % <-- supply second author name
-\institute{TU Dortmund University\\Sports Economics Seminar}
-\date{Summer Semester 2026}
+\subtitle{Does Financial Strength Predict League Titles?}
+\author[Group X]{%
+  \texorpdfstring{%
+    {\small\textbf{Group X:}\\[0.2em]
+    Md Muktadir \quad|\quad Linus Mainka}%
+  }{Group X}}
+\institute{\small TU Dortmund University
+  \textendash{} Department of Statistics}
+\date{\small Summer Semester 2026 \quad|\quad
+  Final Presentation \quad|\quad 08 July 2026}
 
 % ── Callout box commands (consistent with 08_final_presentation) ─
 \newcommand{\findingbox}[1]{%
@@ -142,7 +148,7 @@
     \end{column}
     \begin{column}{0.43\textwidth}
       \vspace{4pt}
-      \findingbox{This study uses \textbf{975 team-seasons} from
+      \findingbox{This study uses \textbf{976 team-seasons} from
         5 leagues and 10 seasons (2015--16 to 2024--25)
         to answer with evidence, not opinion.}
       \vspace{8pt}
@@ -167,7 +173,7 @@
           League           & Premier League \\
           Squad value      & \textsterling{}161M
                              (avg: \textsterling{}458M) \\
-          Model prediction & 11th place \\
+          Model prediction & 11.5th place \\
           Actual finish    & \textbf{1st (Champion)} \\
           Residual         & $\mathbf{-10.5}$ positions \\
           Bookmaker odds   & \textbf{5\,000-to-1} \\
@@ -205,7 +211,7 @@
 % ══════════════════════════════════════════════════════════════
 % SLIDE 4 — Data and Scope
 % ══════════════════════════════════════════════════════════════
-\begin{frame}[shrink=8]{Data and Scope: 975 Team-Seasons Across Five Leagues}
+\begin{frame}[shrink=8]{Data and Scope: 976 Team-Seasons Across Five Leagues}
   \begin{columns}[T]
     \begin{column}{0.50\textwidth}
       \vspace{2pt}
@@ -232,14 +238,15 @@
         Ligue 1        & 196 & \texteuro{}185M & 0.791 \\
         \rowcolor{RowA}
         Premier League & 200 & \texteuro{}458M & 0.801 \\
-        Serie A        & 199 & \texteuro{}247M & 0.889 \\
+        Serie A        & 200 & \texteuro{}246M & 0.890 \\
         \midrule
         \rowcolor{RowB}
-        \textbf{All}   & \textbf{975} & \texteuro{}278M & \textbf{0.813} \\
+        \textbf{All}   & \textbf{976} & \texteuro{}278M & \textbf{0.813} \\
         \bottomrule
-      \end{tabular}
+      \end{tabular}%
+      }%
+      \\[3pt]
       {\footnotesize\color{SlateGrey} All $r$ values: $p < 0.001$.}
-      }
     \end{column}
     \begin{column}{0.46\textwidth}
       \begin{block}{Key Variable: Financial Rank (FR)}
@@ -263,9 +270,43 @@
         Even before any model: correlations above 0.8
         tell us money is a very powerful predictor.
         Pearson $r = 0.813$, Spearman $\rho = 0.814$;
-        both $p < 0.001$, $N = 975$.}
+        both $p < 0.001$, $N = 976$.}
     \end{column}
   \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
+% SLIDE 4b — Raw Money vs Points (Motivates Financial Rank)
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=8]{Before Ranking: Does Raw Squad Value Predict Points?}
+  \begin{columns}[T]
+    \begin{column}{0.64\textwidth}
+      \includegraphics[width=\linewidth,
+                       height=0.62\textheight,
+                       keepaspectratio]{03_points_vs_market_value.png}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \vspace{6pt}
+      {\small\begin{itemize}\setlength\itemsep{6pt}
+        \item Log-scale x-axis: squad value spans
+              \texteuro{}20M to \texteuro{}1.3B.
+        \item \textbf{Red dots} = league champions ---
+              clustered firmly in the upper-right.
+        \item The relationship is strong, but raw
+              euros mix two different things: a
+              club's wealth, and its league's
+              overall wealth.
+      \end{itemize}}
+    \end{column}
+  \end{columns}
+  \vspace{4pt}
+  \begin{center}
+    \alertbox{A \texteuro{}300M squad is rich in
+      Ligue~1 but mid-table in the Premier League.
+      \textbf{Raw value cannot be compared
+      across leagues} --- this is exactly why
+      we built \textbf{Financial Rank} next.}
+  \end{center}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
@@ -275,7 +316,7 @@
   \begin{columns}[T]
     \begin{column}{0.62\textwidth}
       \includegraphics[width=\linewidth,
-                       height=0.74\textheight,
+                       height=0.62\textheight,
                        keepaspectratio]{04_points_by_financial_rank_tier.png}
     \end{column}
     \begin{column}{0.34\textwidth}
@@ -294,30 +335,32 @@
                 \textbf{clean and balanced}.
         \end{itemize}}
       \end{block}
-      \vspace{6pt}
-      \findingbox{The boxplot confirms a \textbf{monotonic
-        decline} in league points as Financial Rank
-        increases --- the ranking system is balanced
-        and meaningfully stratifies performance.}
     \end{column}
   \end{columns}
+  \vspace{4pt}
+  \begin{center}
+    \findingbox{The boxplot confirms a \textbf{monotonic
+      decline} in league points as Financial Rank
+      increases --- the ranking system is balanced
+      and meaningfully stratifies performance.}
+  \end{center}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
 % SLIDE 6 — Main Scatter Plot
 % ══════════════════════════════════════════════════════════════
-\begin{frame}[shrink=8]{Richer Squads Finish Higher --- Across All 975 Team-Seasons}
+\begin{frame}[shrink=8]{Richer Squads Finish Higher --- Across All 976 Team-Seasons}
   \begin{columns}[T]
     \begin{column}{0.64\textwidth}
       \includegraphics[width=\linewidth,
-                       height=0.74\textheight,
+                       height=0.80\textheight,
                        keepaspectratio]{33_scatter_story.png}
     \end{column}
     \begin{column}{0.32\textwidth}
       \vspace{6pt}
       \statpanel{$r = 0.813$\quad $R^2 = 0.671$}{Pearson
         correlation and variance explained\\
-        FR vs.\ Final Position, $N=975$, $p<0.001$}
+        FR vs.\ Final Position, $N=976$, $p<0.001$}
       \vspace{6pt}
       {\small\begin{itemize}\setlength\itemsep{5pt}
         \item FR\,=\,1--2 clubs cluster strongly
@@ -358,22 +401,43 @@
         \rowcolor{RowA}
         Premier League & 0.801 & 0.641 \\
         \rowcolor{RowB}
-        \textbf{Serie A} & \textbf{0.889} & \textbf{0.791} \\
+        \textbf{Serie A} & \textbf{0.890} & \textbf{0.792} \\
         \midrule
         All (pooled)   & 0.813 & 0.671 \\
         \bottomrule
       \end{tabular}
       }
-      \vspace{16pt}
-      \findingbox{Financial Rank alone explains
-        \textbf{61--79\,\%} of final position
-        \emph{within each individual league}.
-        Serie~A shows the strongest relationship
-        ($R^2 = 0.79$); even the weakest
-        (Bundesliga, $R^2 = 0.61$) is very
-        high by any academic standard.}
     \end{column}
   \end{columns}
+  \vspace{4pt}
+  \begin{center}
+    \findingbox{Financial Rank alone explains
+      \textbf{61--79\,\%} of final position
+      \emph{within each individual league}.
+      Serie~A shows the strongest relationship
+      ($R^2 = 0.79$); even the weakest
+      (Bundesliga, $R^2 = 0.61$) is very
+      high by any academic standard.}
+  \end{center}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
+% SLIDE 7b — Faceted Scatter by League
+% Insert after Slide 7 (R² bars), before Slide 8 (Model AIC)
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=5]{The Pattern Holds in Every League}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth,
+                     height=0.76\textheight,
+                     keepaspectratio]{36_faceted_league_scatter.png}
+  \end{center}
+  \vspace{2pt}
+  \findingbox{Five leagues, one pattern. The slope is statistically
+    indistinguishable across Bundesliga, La Liga, Ligue\,1, Premier
+    League, and Serie\,A\,---\,confirming the financial hierarchy is
+    \textbf{universal}, not a quirk of one competition.
+    Serie\,A shows the tightest fit; even the loosest (Ligue\,1)
+    is extremely strong by any standard.}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
@@ -392,17 +456,17 @@
     \color{white}Adj.\,$R^2$ &
     \color{white}\textbf{AIC} \\
     \midrule
-    A  & FR only (linear baseline)             & 0.660 & 0.660 & 5099.8 \\
+    A  & FR only (linear baseline)             & 0.661 & 0.660 & 5104.4 \\
     \rowcolor{RowA}
-    C  & Log(Market Value) only               & 0.533 & 0.532 & 5410.6 \\
+    C  & Log(Market Value) only               & 0.533 & 0.533 & 5415.5 \\
     \rowcolor{RowB}
     \textbf{H} &
     \textbf{FR\,$+$\,FR}$^{\mathbf{2}}$
     \textbf{(quadratic)} &
-    \textbf{0.671} & \textbf{0.670} & \textbf{5070.5} \\
+    \textbf{0.671} & \textbf{0.671} & \textbf{5075.1} \\
     \rowcolor{RowA}
-    H4 & FR\,$+$\,FR$^2$\,$+$\,League\,$+$\,Season & 0.671 & 0.669 & 5079.3 \\
-    J  & Log(FR)                               & 0.626 & 0.625 & 5194.0 \\
+    H4 & FR\,$+$\,FR$^2$\,$+$\,League\,$+$\,Season & 0.672 & 0.669 & 5083.9 \\
+    J  & Log(FR)                               & 0.626 & 0.626 & 5199.0 \\
     \rowcolor{LightRed}
     E  & Champion\,$\sim$\,FR (Logit)  &
        \multicolumn{2}{c}{McFadden\,=\,0.548} & 182.4 \\
@@ -418,13 +482,13 @@
         \textbf{29.3 points} vs.\ the linear baseline.
         Extended Model H4 (league + season controls)
         scores higher AIC than H --- the controls add
-        no explanatory power ($F(5) = 0.247$,
-        $p = 0.941$).}
+        no explanatory power ($F(5) = 0.253$,
+        $p = 0.939$).}
     \end{column}
     \begin{column}{0.44\textwidth}
       {\footnotesize\color{SlateGrey}
       OLS response: League Position
-      (1\,=\,champion), $N = 975$.
+      (1\,=\,champion), $N = 976$.
       Lower AIC\,=\,better fit per parameter.
       Bold\,=\,preferred specification.
       Model~E uses logistic regression
@@ -454,7 +518,7 @@
         \vspace{2pt}
         \begin{itemize}\setlength\itemsep{4pt}
           \item $\hat{\beta}_1 = 1.231$
-                (SE\,0.077), $p < 0.001$
+                (SE\,0.076), $p < 0.001$
           \item $\hat{\beta}_2 = -0.020$
                 (SE\,0.004), $p < 0.001$
           \item $R^2 = 0.671$
@@ -466,9 +530,9 @@
           \item FR\,1$\,\to\,$2:
                 $\approx\mathbf{1.19}$ positions lost
           \item FR\,15$\,\to\,$16:
-                $\approx\mathbf{0.63}$ positions lost
+                $\approx\mathbf{0.62}$ positions lost
           \item Negative quadratic confirmed:
-                $F = 31.71$, $p < 0.001$
+                $F = 31.73$, $p < 0.001$
         \end{itemize}}
       \end{block}
     \end{column}
@@ -482,7 +546,7 @@
   \begin{columns}[T]
     \begin{column}{0.62\textwidth}
       \includegraphics[width=\linewidth,
-                       height=0.70\textheight,
+                       height=0.62\textheight,
                        keepaspectratio]{12_champion_probability_curve.png}
     \end{column}
     \begin{column}{0.34\textwidth}
@@ -503,22 +567,24 @@
         11          & ${<}0.01$\,\% \\
         \bottomrule
       \end{tabular}
-      }
-      \vspace{4pt}
+      }%
+      \\[4pt]
       {\scriptsize\color{SlateGrey}
       Model E: Champion\,$\sim$\,FR (logistic).
       $\hat{\beta}_{\mathrm{FR}} = -1.298$, $p < 0.001$.
       Each rank step multiplies odds by $0.273$
       ($-72.7$\,\%). McFadden $R^2 = 0.548$.}
-      \vspace{8pt}
-      \findingbox{FR\,=\,1: \textbf{58.5\,\%}
-        title probability --- ${\approx}3{\times}$
-        the baseline for a 20-team league.
-        This is \textbf{structural advantage},
-        not certainty: winning from FR\,=\,11
-        is virtually impossible by this model.}
     \end{column}
   \end{columns}
+  \vspace{4pt}
+  \begin{center}
+    \findingbox{FR\,=\,1: \textbf{58.5\,\%}
+      title probability --- ${\approx}3{\times}$
+      the baseline for a 20-team league.
+      This is \textbf{structural advantage},
+      not certainty: winning from FR\,=\,11
+      is virtually impossible by this model.}
+  \end{center}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
@@ -528,7 +594,7 @@
   \begin{columns}[T]
     \begin{column}{0.65\textwidth}
       \includegraphics[width=\linewidth,
-                       height=0.70\textheight,
+                       height=0.64\textheight,
                        keepaspectratio]{28b_residual_plot_clean.png}
     \end{column}
     \begin{column}{0.31\textwidth}
@@ -545,15 +611,35 @@
           \item Near zero: correctly predicted
         \end{itemize}}
       \end{block}
-      \vspace{8pt}
-      \alertbox{Dashed lines mark
-        $\pm$1.5\,SD ($\approx\pm$4.9 positions).
-        Teams outside this band are
-        \textbf{genuine statistical outliers}
-        --- performance unexplained by
-        finances alone.}
     \end{column}
   \end{columns}
+  \vspace{4pt}
+  \begin{center}
+    \alertbox{Dashed lines mark
+      $\pm$1.5\,SD ($\approx\pm$4.9 positions).
+      Teams outside this band are
+      \textbf{genuine statistical outliers}
+      --- performance unexplained by
+      finances alone.}
+  \end{center}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
+% SLIDE 11b — Predicted vs Actual Dumbbell Chart
+% Insert after Slide 11 (Residuals) and before Slide 12 (Leicester)
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=5]{Five Teams That Defied Their Financial Rank}
+  \begin{center}
+    \includegraphics[width=0.92\linewidth,
+                     height=0.72\textheight,
+                     keepaspectratio]{35_predicted_vs_actual_dumbbell.png}
+  \end{center}
+  \vspace{2pt}
+  \findingbox{Each arrow spans the gap between what financial rank predicted
+    and what happened on the pitch. A grey bullseye means the model was
+    correct; a blue arrow pointing \textbf{up} means the team beat its
+    financial expectation. Leicester City's arrow spans \textbf{10.5
+    positions} --- the largest single gap in all 976 team-seasons.}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
@@ -563,7 +649,7 @@
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
       \includegraphics[width=\linewidth,
-                       height=0.70\textheight,
+                       height=0.62\textheight,
                        keepaspectratio]{33_scatter_story.png}
     \end{column}
     \begin{column}{0.44\textwidth}
@@ -587,15 +673,71 @@
         \bottomrule
       \end{tabular}
       }
-      \vspace{8pt}
-      \alertbox{4 of 50 champions (8\,\%) came
-        from FR\,$>$\,3. Napoli (FR\,5),
-        Lille (FR\,4), Liverpool (FR\,4) were
-        within 1\,SD of expectation.
-        \textbf{Only Leicester} (FR\,=\,11)
-        is a genuine statistical outlier.}
     \end{column}
   \end{columns}
+  \vspace{4pt}
+  \begin{center}
+    \alertbox{4 of 50 champions (8\,\%) came
+      from FR\,$>$\,3. Napoli (FR\,5),
+      Lille (FR\,4), Liverpool (FR\,4) were
+      within 1\,SD of expectation.
+      \textbf{Only Leicester} (FR\,=\,11)
+      is a genuine statistical outlier.}
+  \end{center}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
+% SLIDE 12b — Champion Financial Rank Distribution
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=8]{How Often Does Money Actually Win the Title?}
+  \begin{columns}[T]
+    \begin{column}{0.66\textwidth}
+      \includegraphics[width=\linewidth,
+                       height=0.62\textheight,
+                       keepaspectratio]{34_champions_fr_dist.png}
+    \end{column}
+    \begin{column}{0.30\textwidth}
+      \vspace{6pt}
+      {\small\begin{itemize}\setlength\itemsep{6pt}
+        \item \textbf{38 of 50} titles (76\,\%)
+              went to the single richest club
+              in the league that season.
+        \item \textbf{46 of 50} titles (92\,\%)
+              came from the financial top 3.
+        \item Only \textbf{4 titles} (8\,\%)
+              came from outside the top 3 ---
+              and three of those four were
+              barely outside it (FR 4--5).
+      \end{itemize}}
+    \end{column}
+  \end{columns}
+  \vspace{4pt}
+  \begin{center}
+    \alertbox{Only \textbf{1 of 50} champions
+      in ten years came from truly outside
+      the expected zone: \textbf{Leicester
+      City} at FR\,=\,11.}
+  \end{center}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════
+% SLIDE 12c — Every Champion, Ranked by Surprise
+% ══════════════════════════════════════════════════════════════
+\begin{frame}[shrink=10]{Every Champion in Ten Years, Ranked by How Much They Beat the Model}
+  \begin{center}
+    \includegraphics[width=\linewidth,
+                     height=0.75\textheight,
+                     keepaspectratio]{37_champions_dotplot_by_league.png}
+  \end{center}
+  \vspace{2pt}
+  \noindent\fcolorbox{PitchGold}{PitchGold!18}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\small\bfseries\color{NavyBlue}
+        Every champion overperformed --- winning always required beating
+        the financial prediction, not just meeting it. For most
+        (Bayern, Real Madrid, PSG, Man City) the margin is modest:
+        1--3 positions. \textbf{Leicester City sits alone, far left
+        of every other point on this chart.}}}}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
@@ -614,21 +756,21 @@
     \color{white}\textbf{Verdict} \\
     \midrule
     Quadratic vs.\ linear (FR$^2$) &
-      $F = 31.71$, 1\,df & $< 0.001$ &
+      $F = 31.73$, 1\,df & $< 0.001$ &
       \textcolor{GrassGreen}{\textbf{FR$^2$ confirmed}} \\
     \rowcolor{RowA}
     FR\,$\times$\,League interaction &
-      $F = 1.17$, 4\,df & $0.32$ &
+      $F = 1.20$, 4\,df & $0.31$ &
       \textcolor{SlateGrey}{Effect uniform} \\
     FR\,$\times$\,Season time trend &
-      $F = 0.44$, 1\,df & $0.51$ &
+      $F = 0.42$, 1\,df & $0.52$ &
       \textcolor{SlateGrey}{Stable 2015--25} \\
     \rowcolor{RowA}
     Cubic term (FR$^3$) &
-      $F = 0.20$, 1\,df & $0.65$ &
+      $F = 0.18$, 1\,df & $0.67$ &
       \textcolor{SlateGrey}{Model H sufficient} \\
     H4 vs.\ H (League\,$+$\,Season) &
-      $F(5) = 0.247$ & $0.941$ &
+      $F(5) = 0.253$ & $0.939$ &
       \textcolor{SlateGrey}{Controls add nothing} \\
     \rowcolor{LightRed}
     Heteroskedasticity (BP test) &
@@ -660,275 +802,257 @@
 % ══════════════════════════════════════════════════════════════
 % SLIDE 13B — Time-Split Scatter (Early vs Late)
 % ══════════════════════════════════════════════════════════════
-\begin{frame}[shrink=8]{Extra Robustness: Splitting the Decade in Two}
-  \begin{columns}[T]
-    \begin{column}{0.64\textwidth}
-      \includegraphics[width=\linewidth,
-                       height=0.74\textheight,
-                       keepaspectratio]{38a_time_split_scatter.png}
-    \end{column}
-    \begin{column}{0.32\textwidth}
-      \vspace{4pt}
-      {\small Model H re-fit completely independently on two five-season
-        halves --- if financial inequality were increasing (or shrinking),
-        the two curves should visibly differ.}
-      \vspace{8pt}
-      {\small
-      \begin{tabular}{@{}l r r@{}}
-        \toprule
-        \rowcolor{NavyBlue!18}
-        \color{white}\textbf{Period} &
-        \color{white}$R^2$ &
-        \color{white}FR slope \\
-        \midrule
-        Early (15/16--19/20) & 0.646 & 1.249 \\
-        \rowcolor{RowA}
-        Late (20/21--24/25)  & 0.698 & 1.210 \\
-        \bottomrule
-      \end{tabular}
-      }
-      \vspace{8pt}
-      \findingbox{The two quadratic curves are visually almost
-        indistinguishable --- confirming Slide~13's time-stability
-        finding with a completely independent test design.}
-    \end{column}
-  \end{columns}
+\begin{frame}[shrink=5]{Has the Relationship Changed? Early vs Late Decade}
+  \begin{center}
+    \includegraphics[width=\linewidth,
+                     height=0.70\textheight,
+                     keepaspectratio]{38a_time_split_scatter.png}
+  \end{center}
+  \vspace{4pt}
+  \noindent\fcolorbox{NavyBlue!20}{NavyBlue!7}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\small\bfseries\color{NavyBlue}
+        Splitting the decade at 2020 --- pre- and post-COVID ---
+        the quadratic curve is visually almost identical in both
+        halves. Early $R^2 = 0.646$, Late $R^2 = 0.698$;
+        slopes 1.250 vs 1.210. Financial dominance did not
+        weaken or strengthen across the decade.}}}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
 % SLIDE 13C — Time-Split Coefficient Comparison
 % ══════════════════════════════════════════════════════════════
-\begin{frame}[shrink=8]{The Financial Rank Slope Barely Moved Across the Decade}
-  \begin{columns}[T]
-    \begin{column}{0.60\textwidth}
-      \includegraphics[width=\linewidth,
-                       height=0.72\textheight,
-                       keepaspectratio]{38b_time_split_coefficients.png}
-    \end{column}
-    \begin{column}{0.36\textwidth}
-      \vspace{2pt}
-      \statpanel{Interaction $p = 0.80$}{Financial\_Rank $\times$ Period
-        --- not remotely significant}
-      \vspace{6pt}
-      {\footnotesize\begin{itemize}\setlength\itemsep{4pt}
-        \item Early slope: 1.249, 95\% CI [1.028, 1.470]
-        \item Late slope: 1.210, 95\% CI [1.006, 1.415]
-        \item Intervals overlap almost completely.
-      \end{itemize}}
-      \vspace{4pt}
-      \findingbox{\footnotesize Two independent designs --- continuous
-        and binary --- agree: the relationship has not measurably
-        changed since 2015--16.}
-    \end{column}
-  \end{columns}
+\begin{frame}[shrink=5]{The Financial Rank Slope Barely Moved Across the Decade}
+  \begin{center}
+    \includegraphics[width=0.88\linewidth,
+                     height=0.68\textheight,
+                     keepaspectratio]{38b_time_split_coefficients.png}
+  \end{center}
+  \vspace{4pt}
+  \noindent\fcolorbox{NavyBlue!20}{NavyBlue!7}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\small\bfseries\color{NavyBlue}
+        Early slope: 1.250\,[1.029, 1.470] \quad
+        Late slope: 1.210\,[1.006, 1.415].
+        The 95\,\% confidence intervals overlap almost completely
+        and the interaction $p = 0.80$ --- no statistically
+        meaningful change across the decade.}}}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
 % SLIDE 13D — Points Instead of Position
 % ══════════════════════════════════════════════════════════════
-\begin{frame}[shrink=8]{Robust to Outcome Measure: Points Instead of Position}
-  \begin{columns}[T]
-    \begin{column}{0.62\textwidth}
-      \includegraphics[width=\linewidth,
-                       height=0.72\textheight,
-                       keepaspectratio]{39_points_model_scatter.png}
-    \end{column}
-    \begin{column}{0.34\textwidth}
-      \vspace{2pt}
-      \statpanel{$R^2 = 0.677$}{Points $\sim$ FR + FR$^2$
-        (vs.\ 0.671 using position; sign flips --- FR is
-        now \textbf{negative}, since more points is better)}
-      \vspace{6pt}
-      {\footnotesize\begin{itemize}\setlength\itemsep{3pt}
-        \item \textbf{Leicester 2015--16 still has the single
-              largest residual} in the whole dataset.
-        \item New story: rich clubs that \emph{collapsed} ---
-              Chelsea, AS Monaco, Bayer Leverkusen.
-      \end{itemize}}
-      \vspace{4pt}
-      \findingbox{\footnotesize Position or points --- Financial
-        Rank predicts either, and Leicester 2015--16 is the
-        largest anomaly either way.}
-    \end{column}
-  \end{columns}
+\begin{frame}[shrink=5]{Robust to Outcome Measure: Points Earned Tells the Same Story}
+  \begin{center}
+    \includegraphics[width=\linewidth,
+                     height=0.70\textheight,
+                     keepaspectratio]{39_points_model_scatter.png}
+  \end{center}
+  \vspace{4pt}
+  \noindent\fcolorbox{NavyBlue!20}{NavyBlue!7}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\small\bfseries\color{NavyBlue}
+        Replacing league position with points earned as the
+        outcome variable: $R^2 = 0.678$ vs 0.671 using position
+        --- virtually identical explanatory power.
+        \textbf{Leicester City 2015--16 remains the single
+        largest residual in the entire dataset} whichever
+        outcome measure is used.}}}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
 % SLIDE 13E — NBA Cross-Sport Comparison
 % ══════════════════════════════════════════════════════════════
-\begin{frame}[shrink=8]{External Validity: Does Money Buy Success Outside Football?}
-  \vspace{2pt}
+\begin{frame}[shrink=5]{What If Money Were Capped? Football vs the NBA}
   \begin{center}
     \includegraphics[width=\linewidth,
-                     height=0.44\textheight,
+                     height=0.66\textheight,
                      keepaspectratio]{40_nba_vs_football_comparison.png}
   \end{center}
-  \vspace{6pt}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      {\footnotesize
-      \begin{tabular}{@{}l r r r r@{}}
-        \toprule
-        \rowcolor{NavyBlue!18}
-        \color{white}\textbf{Sport} &
-        \color{white}$N$ &
-        \color{white}$r$ &
-        \color{white}$R^2$ &
-        \color{white}Top-3 \\
-        \midrule
-        Football & 975 & 0.81 & 0.671 & 92\,\% \\
-        \rowcolor{RowA}
-        NBA (cap) & 300 & 0.44 & 0.203 & 50\,\% \\
-        \bottomrule
-      \end{tabular}
-      }
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \alertbox{\footnotesize A hard cap visibly weakens the
-        pattern. Oklahoma City's 2024--25 title, won with the
-        league's 23rd-highest payroll, would be a Leicester-level
-        outlier in football; in the NBA it is routine.}
-    \end{column}
-  \end{columns}
+  \vspace{4pt}
+  \noindent\fcolorbox{AlertRed!50}{AlertRed!8}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\small\bfseries\color{NavyBlue}
+        Same quadratic model, two sports.
+        Football (no cap): $r = 0.81$, $R^2 = 0.671$,
+        92\,\% of titles to financial top 3.
+        NBA (hard salary cap): $r = 0.44$, $R^2 = 0.203$,
+        only 50\,\% of titles to top-3 spenders.
+        \textbf{A salary cap visibly and substantially
+        weakens the money--success link.}
+        This is the counterfactual to UEFA Financial Fair Play.}}}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
 % SLIDE 14 — Conclusions
 % ══════════════════════════════════════════════════════════════
 \begin{frame}[shrink=8]{Conclusions: What Ten Years of Data Tell Us}
-  \vspace{1pt}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      {\small
-      \textbf{\color{NavyBlue}1.\ Money strongly predicts
-        league position.}\\
-      $r = 0.813$, $R^2 = 0.671$ with FR alone across
-      975 team-seasons ($p < 0.001$): \textbf{67\,\%}
-      of positional variation explained.
+  \vspace{2pt}
 
-      \vspace{4pt}
-      \textbf{\color{NavyBlue}2.\ The relationship is
-        non-linear (diminishing returns).}\\
-      FR$^2$ term: $F = 31.71$, $p < 0.001$.
-      Marginal penalty: 1.19 positions per rank
-      at the top vs.\ 0.63 positions at the bottom.
+  \noindent\fcolorbox{NavyBlue!20}{NavyBlue!7}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\footnotesize\bfseries\color{NavyBlue}Finding 1 --- Money very strongly predicts where clubs finish.}\\[2pt]
+      {\scriptsize\color{SlateGrey}$r = 0.813$, $R^2 = 0.671$ across 976 team-seasons ($p < 0.001$):
+      \textbf{67\,\%} of positional variation explained by FR alone.}}}
+  \vspace{3pt}
 
-      \vspace{4pt}
-      \textbf{\color{NavyBlue}3.\ The effect is
-        stable across leagues and over time.}\\
-      FR\,$\times$\,League: $F = 1.17$, $p = 0.32$
-      (uniform). FR\,$\times$\,Season: $F = 0.44$,
-      $p = 0.51$ (stable 2015--25).
+  \noindent\fcolorbox{NavyBlue!20}{NavyBlue!7}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\footnotesize\bfseries\color{NavyBlue}Finding 2 --- The relationship is non-linear: diminishing returns.}\\[2pt]
+      {\scriptsize\color{SlateGrey}FR$^2$ term: $F = 31.73$, $p < 0.001$.
+      Marginal penalty: \textbf{1.19 positions} per rank at the top vs.\ \textbf{0.62 positions} at the bottom.
+      The gap between richest and second-richest is much larger than the gap between 15th and 16th richest.}}}
+  \vspace{3pt}
 
-      \vspace{4pt}
-      \textbf{\color{NavyBlue}4.\ Only one true
-        exception in ten years.}\\
-      4 of 50 champions from FR\,$>$\,3.
-      Only Leicester 2015--16 (FR\,=\,11,
-      residual\,$= -10.5$, $= -3.2$\,SD)
-      is a genuine statistical outlier.}
-    \end{column}
-    \begin{column}{0.41\textwidth}
-      \vspace{2pt}
-      \begin{exampleblock}{Limitations}
-        {\small\begin{itemize}\setlength\itemsep{2pt}
-          \item Market value as quality proxy
-                (injuries unmodelled)
-          \item Managerial quality not captured
-          \item Panel structure ignored
-          \item Top-five leagues only
-        \end{itemize}}
-      \end{exampleblock}
-      \vspace{8pt}
-      \findingbox{Financial dominance is
-        \textbf{universal}, \textbf{stable}, and
-        \textbf{statistically powerful} across
-        all five leagues and all ten seasons.
-        Leicester City 2015--16 is the
-        exception that proves the rule.}
-    \end{column}
-  \end{columns}
+  \noindent\fcolorbox{NavyBlue!20}{NavyBlue!7}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\footnotesize\bfseries\color{NavyBlue}Finding 3 --- The effect is stable across leagues and over time.}\\[2pt]
+      {\scriptsize\color{SlateGrey}FR\,$\times$\,League: $F = 1.20$, $p = 0.31$ (uniform across all 5 leagues).
+      FR\,$\times$\,Season: $F = 0.42$, $p = 0.52$ (stable 2015--16 to 2024--25).
+      Financial dominance is \textbf{universal} and \textbf{stable}, not a recent trend or league-specific.}}}
+  \vspace{3pt}
+
+  \noindent\fcolorbox{AlertRed!50}{AlertRed!8}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\footnotesize\bfseries\color{AlertRed}Finding 4 --- Exceptions exist, but only one is truly extraordinary.}\\[2pt]
+      {\scriptsize\color{NavyBlue}4 of 50 champions came from FR\,$>$\,3.
+      Napoli (FR\,5), Lille (FR\,4), Liverpool (FR\,4) were within 1\,SD of expectation.
+      \textbf{Only Leicester City 2015--16} --- FR\,=\,11, predicted 11th, won the title ---
+      is a genuine statistical outlier ($-3.2$\,SD, highest Cook's\,D in dataset).}}}
+  \vspace{4pt}
+
+  \noindent\fcolorbox{PitchGold}{PitchGold!18}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\small\bfseries\color{NavyBlue}Financial dominance is \textbf{universal}, \textbf{stable},
+      and \textbf{statistically powerful} across all five leagues and all ten seasons.
+      Leicester City 2015--16 is the exception that proves the rule.}}}
+
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
-% SLIDE 14B — Conclusions (continued): Extended Robustness
+% SLIDE 14B — Conclusions: Extended Robustness
+% Insert immediately after Slide 14 (main conclusions)
 % ══════════════════════════════════════════════════════════════
-\begin{frame}[shrink=8]{Conclusions (continued): Extended Robustness Holds Up Too}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{exampleblock}{5.\ Survives Every Extended Check}
-        {\small An independent Early/Late split (interaction
-        $p=0.80$) and a points-based re-fit ($R^2=0.677$ vs.\
-        $0.671$) both confirm the core finding --- and both
-        still flag \textbf{Leicester City 2015--16} as the
-        single largest statistical anomaly.}
-      \end{exampleblock}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{alertblock}{6.\ Generalises Beyond Football --- Weaker
-        Under a Cap}
-        {\small The NBA shows the identical quadratic pattern,
-        but far more weakly: $R^2=0.203$ vs.\ $0.671$;
-        only 50\,\% vs.\ 92\,\% of titles to top-3 spenders.
-        Evidence a hard salary cap loosens the spending-winning
-        link.}
-      \end{alertblock}
-    \end{column}
-  \end{columns}
-  \vspace{10pt}
-  \findingbox{Financial dominance is \textbf{universal},
-    \textbf{stable}, and \textbf{statistically powerful} ---
-    across all five leagues, all ten seasons, an alternative
-    outcome measure, and even a different sport. Leicester City
-    2015--16 is the exception that proves the rule; a hard
-    salary cap is one of the few things shown here to
-    meaningfully dent it.}
+\begin{frame}[shrink=5]{Conclusions: Three Additional Checks, Same Answer}
+  \vspace{4pt}
+
+  \noindent\fcolorbox{NavyBlue!20}{NavyBlue!7}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\footnotesize\bfseries\color{NavyBlue}
+        Check 5 --- The finding is stable across time (Early vs Late decade).}\\[2pt]
+      {\scriptsize\color{SlateGrey}
+        Model H re-fit independently on 2015--16 to 2019--20 ($R^2 = 0.646$)
+        and 2020--21 to 2024--25 ($R^2 = 0.698$). Slopes 1.250 vs 1.210;
+        95\,\% confidence intervals overlap almost completely;
+        interaction $p = 0.80$. Pre- and post-COVID: no meaningful change.}}}
+  \vspace{5pt}
+
+  \noindent\fcolorbox{NavyBlue!20}{NavyBlue!7}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\footnotesize\bfseries\color{NavyBlue}
+        Check 6 --- The finding holds regardless of how we measure success.}\\[2pt]
+      {\scriptsize\color{SlateGrey}
+        Replacing league position with points earned as the outcome:
+        $R^2 = 0.678$ vs 0.671 --- virtually identical.
+        \textbf{Leicester City 2015--16 remains the single largest
+        residual in the entire dataset} whichever outcome measure is used.
+        Position or points, the story does not change.}}}
+  \vspace{5pt}
+
+  \noindent\fcolorbox{AlertRed!50}{AlertRed!8}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\footnotesize\bfseries\color{AlertRed}
+        Check 7 --- A salary cap substantially weakens the money--success link.}\\[2pt]
+      {\scriptsize\color{NavyBlue}
+        Same quadratic model applied to the NBA (hard salary cap, 2015--16 to 2024--25):
+        $r = 0.44$, $R^2 = 0.203$ vs football's $r = 0.81$, $R^2 = 0.671$.
+        Only 50\,\% of NBA titles went to top-3 spenders vs 92\,\% in football.
+        8 different NBA champions in 8 years would be unthinkable in European football.
+        This is direct evidence that \textbf{UEFA Financial Fair Play has a
+        meaningful theoretical basis.}}}}
+  \vspace{6pt}
+
+  \noindent\fcolorbox{PitchGold}{PitchGold!18}{%
+    \parbox{\dimexpr\textwidth-2\fboxrule-2\fboxsep}{%
+      {\small\bfseries\color{NavyBlue}
+        Across seven independent checks --- quadratic shape, league uniformity,
+        time stability, cubic rejection, robust standard errors, alternative
+        outcome measure, and cross-sport comparison --- the core finding
+        survives every single one.
+        Financial dominance in European football is \textbf{real},
+        \textbf{stable}, and \textbf{structurally built in}.}}}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════
 % SLIDE 15 — Thank You / Questions
 % ══════════════════════════════════════════════════════════════
 \begin{frame}[shrink=8]{Thank You --- Questions?}
+
+  % ── Top: title + stat panel full width ──────────────────────
+  \begin{center}
+    {\large\bfseries\color{NavyBlue} Money and Success in Football}\\[2pt]
+    {\small\color{SlateGrey} Does Financial Strength Predict League Position?}
+  \end{center}
+  \vspace{4pt}
+  \begin{center}
+    \begin{tikzpicture}
+      \node[fill=NavyBlue!7, draw=NavyBlue!25, line width=0.6pt,
+            rounded corners=4pt, inner sep=10pt,
+            text width=0.88\linewidth, align=center]{%
+        {\large\bfseries\color{NavyBlue}
+          $r = 0.813$ \quad $R^2 = 0.671$ \quad $N = 976$}\\[4pt]
+        {\footnotesize\color{SlateGrey}
+          Five leagues\enspace$\cdot$\enspace
+          Ten seasons\enspace$\cdot$\enspace
+          One answer: \textbf{\color{NavyBlue}yes, and very strongly so}}
+      };
+    \end{tikzpicture}
+  \end{center}
+  \vspace{6pt}
+
+  % ── Bottom: two columns ─────────────────────────────────────
   \begin{columns}[T]
-    \begin{column}{0.54\textwidth}
-      \vspace{4pt}
-      {\large\bfseries\color{NavyBlue}
-        Money and Success in Football}\\[3pt]
-      {\small\color{SlateGrey}
-        Does Financial Strength Predict League Position?}
-      \vspace{8pt}
-
-      \statpanel{$r=0.813$\quad $R^2=0.671$\quad $N=975$}{%
-        Five leagues $\cdot$ Ten seasons $\cdot$ One answer:
-        \textbf{yes, and very strongly so}}
-
-      \vspace{8pt}
-      {\small\color{SlateGrey}
-        \textbf{Data:} ESPN~FC + Transfermarkt\\
-        \textbf{Period:} 2015--16 to 2024--25\\
-        \textbf{Models:} OLS (A--H, H2--H4), Logit (E, J)\\
-        \textbf{Contact:} \url{mdmuktadir0611@gmail.com}}
+    \begin{column}{0.48\textwidth}
+      \begin{tikzpicture}
+        \node[fill=NavyBlue!5, draw=NavyBlue!20, line width=0.6pt,
+              rounded corners=4pt, inner sep=10pt,
+              text width=\linewidth-14pt]{%
+          {\footnotesize\bfseries\color{NavyBlue}Key Numbers to Remember}
+          \vspace{4pt}
+          \begin{itemize}\setlength\itemsep{4pt}
+            {\small
+            \item \textbf{76\,\%} of titles won by FR\,=\,1
+            \item \textbf{92\,\%} of titles from financial top~3
+            \item \textbf{67\,\%} of position variance explained
+                  by FR alone
+            \item \textbf{1} true outlier in 10 years:
+                  Leicester City 2015--16
+            }
+          \end{itemize}
+        };
+      \end{tikzpicture}
     \end{column}
-    \begin{column}{0.42\textwidth}
-      \vspace{4pt}
-      \begin{block}{Key Numbers to Remember}
-        {\small\begin{itemize}\setlength\itemsep{4pt}
-          \item \textbf{76\,\%} of titles: won by FR\,=\,1
-          \item \textbf{92\,\%} of titles: from financial top~3
-          \item \textbf{67\,\%} of position variance explained
-                by FR alone
-          \item \textbf{1} genuine statistical outlier in
-                10 years: Leicester City 2015--16
-          \item \textbf{NBA check:} $R^2=0.20$ under a salary
-                cap vs.\ \textbf{0.67} in football
-        \end{itemize}}
-      \end{block}
-      \vspace{8pt}
-      \alertbox{Leicester City 2015--16:
-        FR\,=\,11, predicted 11th, won the league.
-        Residual\,$= -10.5$ pos.\,$= -3.2$\,SD.
-        The model said impossible.
-        They proved it --- once in a generation.}
+    \begin{column}{0.48\textwidth}
+      \begin{tikzpicture}
+        \node[fill=AlertRed!8, draw=AlertRed!60, line width=0.8pt,
+              rounded corners=4pt, inner sep=10pt,
+              text width=\linewidth-14pt]{%
+          {\footnotesize\bfseries\color{AlertRed}
+            The One True Exception}\\[4pt]
+          {\small\color{NavyBlue}
+            \textbf{Leicester City 2015--16}\\[3pt]
+            FR\,=\,11 \quad Predicted: 11th\\
+            Actual: \textbf{1st (Champion)}\\
+            Residual\,$= -10.5$\,pos\,$= -3.2$\,SD\\[4pt]
+            \textit{The model said impossible.\\
+            They proved it --- once in a generation.}}
+        };
+      \end{tikzpicture}
+      \vspace{6pt}
+      {\scriptsize\color{SlateGrey}
+        \textbf{Data:} ESPN~FC + Transfermarkt\quad
+        \textbf{Period:} 2015--16 to 2024--25\\
+        \textbf{Models:} OLS (A--H, H2--H4), Logit (E)}
     \end{column}
   \end{columns}
 \end{frame}
