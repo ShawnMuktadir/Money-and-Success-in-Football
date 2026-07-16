@@ -1,0 +1,1109 @@
+---
+title: "Money and Success in Football"
+author: "Md. Muktadir"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+header-includes:
+  - \usepackage{grffile}
+  - \usepackage{float}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '1'
+    latex_engine: xelatex
+    number_sections: true
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    toc_depth: 1
+    theme: flatly
+    highlight: tango
+    code_folding: hide
+    fig_width: 10
+    fig_height: 6
+    df_print: paged
+    number_sections: true
+subtitle: |
+  Does Financial Strength Predict Points Per Game? A Generalized Additive Model
+  *Sports Economics Seminar, Summer Semester 2026*
+---
+
+```{css, echo=FALSE}
+/* Project colour palette */
+:root {
+  --navy:   #1A2A4A;
+  --gold:   #F5A623;
+  --red:    #C0392B;
+  --green:  #196F3D;
+  --steel:  #2C3E73;
+  --slate:  #566573;
+}
+
+/* Callout boxes */
+.callout-finding {
+  background: #FEF9E7;
+  border-left: 5px solid #F5A623;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-alert {
+  background: #FDEDEC;
+  border-left: 5px solid #C0392B;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-stat {
+  background: #EBF5FB;
+  border-left: 5px solid #2C3E73;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+.callout-success {
+  background: #EAFAF1;
+  border-left: 5px solid #196F3D;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.96em;
+}
+
+/* Table styling */
+table.table thead tr th {
+  background-color: #1A2A4A;
+  color: white;
+}
+.best-row { font-weight: bold; background: #FEF9E7 !important; }
+
+/* Misc */
+h1, h2, h3 { color: #1A2A4A; }
+.caption    { color: #566573; font-style: italic; font-size: 0.88em; }
+```
+
+```{r knitr-setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo      = FALSE,
+  message   = FALSE,
+  warning   = FALSE,
+  fig.align = "center",
+  fig.width = if (knitr::is_latex_output()) 6.5 else 10,
+  fig.height= if (knitr::is_latex_output()) 4.5 else 6,
+  dpi       = 150,
+  comment   = "#>"
+)
+options(knitr.kable.NA = "", scipen = 6, digits = 4)
+```
+
+```{r global-load, include=FALSE}
+source("utils/packages.R")
+source("utils/constants.R")
+source("utils/helpers.R")
+load_packages(c("dplyr", "readr", "ggplot2", "broom",
+                "tidyr", "scales", "purrr", "knitr", "forcats"))
+
+ensure_installed <- function(pkgs) {
+  miss <- pkgs[!vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)]
+  if (length(miss))
+    install.packages(miss, repos = "https://cloud.r-project.org", quiet = TRUE)
+  invisible(lapply(pkgs, library, character.only = TRUE))
+}
+ensure_installed(c("kableExtra", "ggrepel", "cowplot", "mgcv"))
+
+kbs <- function(tbl, fw = FALSE, pos = "center",
+                bo = c("striped","hover","condensed","responsive"), ...) {
+  if (knitr::is_latex_output()) {
+    kable_styling(tbl, full_width = FALSE,
+                  latex_options = c("striped", "scale_down", "hold_position"), ...)
+  } else {
+    kable_styling(tbl, bootstrap_options = bo,
+                  full_width = fw, position = pos, ...)
+  }
+}
+
+league_colours <- c(
+  "Bundesliga"     = "#E41A1C",
+  "La Liga"        = "#FF7F00",
+  "Ligue 1"        = "#4DAF4A",
+  "Premier League" = "#984EA3",
+  "Serie A"        = "#377EB8"
+)
+league_order <- names(league_colours)
+BIG4_LEAGUES <- c("Premier League", "La Liga", "Serie A", "Ligue 1")
+
+# Position-based dataset and models (kept for corroborating context only;
+# not the primary outcome in this version of the report)
+df <- read_csv("data/merged/master_dataset_corrected.csv", show_col_types = FALSE) |>
+  filter(!is.na(League_Position), !is.na(Financial_Rank),
+         !is.na(Market_Value_M_EUR), !is.na(Log_Normalized_Value)) |>
+  mutate(
+    League       = factor(as.character(League), levels = league_order),
+    Champion_bin = as.integer(
+      tolower(as.character(Champion)) %in% c("yes", "true", "1")
+    )
+  )
+modA <- lm(League_Position ~ Financial_Rank, data = df)
+modH <- lm(League_Position ~ Financial_Rank + I(Financial_Rank^2), data = df)
+n_obs      <- nrow(df)
+r_pearson  <- round(cor(df$Financial_Rank, df$League_Position, use = "complete.obs"), 3)
+r2_H_pos   <- round(summary(modH)$r.squared, 3)
+
+# Points-per-game dataset and the two models adopted in this version:
+# a plain linear specification and a generalized additive model with a
+# smooth term on Financial Rank. Derivation matches
+# extensions/scripts/16_linear_gam_revision.R exactly.
+master <- read_csv("data/merged/master_dataset_corrected.csv", show_col_types = FALSE) |>
+  mutate(League = as.character(League)) |>
+  mutate(
+    Matches_Played = case_when(
+      League %in% BIG4_LEAGUES ~ 38,
+      League == "Bundesliga"   ~ 34,
+      TRUE                     ~ NA_real_
+    ),
+    Points_Per_Game = Points / Matches_Played
+  )
+model_df_ppg <- master |> filter(!is.na(Financial_Rank), !is.na(Points_Per_Game))
+
+lin_ppg <- lm(Points_Per_Game ~ Financial_Rank, data = model_df_ppg)
+gam_ppg <- mgcv::gam(Points_Per_Game ~ s(Financial_Rank), data = model_df_ppg, method = "REML")
+
+lin_summary <- summary(lin_ppg)
+gam_summary <- summary(gam_ppg)
+gam_edf     <- unname(gam_summary$s.table[1, "edf"])
+gam_devexpl <- gam_summary$dev.expl
+
+aug_gam <- augment(gam_ppg, data = model_df_ppg) |>
+  rename(Fitted_PPG = .fitted, Residual_PPG = .resid)
+resid_sd_gam   <- sd(aug_gam$Residual_PPG, na.rm = TRUE)
+overp_thr_gam  <-  1.5 * resid_sd_gam
+underp_thr_gam <- -1.5 * resid_sd_gam
+aug_gam <- aug_gam |>
+  mutate(Outlier_Flag = case_when(
+    Residual_PPG > overp_thr_gam  ~ "Overperformer",
+    Residual_PPG < underp_thr_gam ~ "Underperformer",
+    TRUE                          ~ "Normal"
+  ))
+
+aug_lin <- augment(lin_ppg, data = model_df_ppg) |>
+  rename(Fitted_PPG_lin = .fitted, Residual_PPG_lin = .resid)
+resid_sd_lin <- sd(aug_lin$Residual_PPG_lin, na.rm = TRUE)
+
+leicester_gam  <- aug_gam |> filter(grepl("Leicester", Team), Season == "2015-2016")
+leverkusen_gam <- aug_gam |> filter(grepl("Leverkusen", Team), Season == "2023-2024")
+
+# Existing project outputs read directly, not recomputed
+desc_raw    <- read_csv("outputs/01_descriptive_statistics.csv", show_col_types = FALSE)
+coef_H_raw  <- read_csv("outputs/20_quadratic_model_results.csv", show_col_types = FALSE)
+coef_all    <- read_csv("outputs/08_regression_results.csv", show_col_types = FALSE)
+champ_csv   <- read_csv("outputs/31_all_champions_with_residuals.csv", show_col_types = FALSE) |>
+  mutate(League = factor(as.character(League), levels = league_order))
+gam_table   <- read_csv("extensions/outputs/gam_revision/gam_revision_table.csv", show_col_types = FALSE)
+e1_table    <- read_csv("extensions/outputs/E1_model_evolution_table.csv", show_col_types = FALSE)
+nba_summary <- read_csv("outputs/40_nba_vs_football_summary.csv", show_col_types = FALSE)
+
+n_champ    <- nrow(champ_csv)
+fr1_champs <- sum(champ_csv$Financial_Rank == 1)
+pct_fr1    <- round(100 * fr1_champs / n_champ)
+fr_gt3_n   <- sum(champ_csv$Financial_Rank > 3)
+```
+
+---
+
+# Executive Summary
+
+::: {.callout-finding}
+**Headline finding.** Modelled with points per game as the outcome and a
+generalized additive model (a flexible statistical model that lets the shape
+of a relationship be learned from the data rather than fixed in advance,
+explained fully in the Methodology section), Financial Rank explains
+**`r round(100*gam_devexpl)`%** of the variation in how many points a club
+earns per match across a season (deviance explained = `r round(gam_devexpl,3)`).
+Deviance explained is the equivalent of R squared for this type of flexible
+model: it is the share of the variation in the outcome that the model
+successfully accounts for, on a scale from 0 (no explanatory power) to 1
+(perfect prediction).
+:::
+
+::: {.callout-alert}
+**The two clubs the model cannot explain away.** Leicester City's 2015-16
+Premier League title and Bayer Leverkusen's unbeaten 2023-24 Bundesliga
+title both remain the standout statistical overperformers under this
+model: both clubs earned far more points per game than their financial
+rank predicted, and both results survive every alternative specification
+tested in this report.
+:::
+
+::: {.callout-stat}
+**Corroborating context.** The same underlying relationship, measured the
+original way (Financial Rank against final league position, using a
+correlation coefficient, a standard statistic between -1 and 1 that
+measures how closely two variables move together), gives a Pearson
+correlation of r = `r r_pearson` and an R squared of `r r2_H_pos` (that is,
+`r round(100*r2_H_pos)`% of the variation in final position explained).
+The two outcome measures agree: money is a very strong predictor of
+sporting success in these leagues, whichever way success is measured.
+:::
+
+::: {.callout-stat}
+**Scale of the study.** `r format(n_obs, big.mark=",")` team-seasons across
+5 major European leagues (Bundesliga, La Liga, Ligue 1, Premier League,
+Serie A), covering the 2015-16 to 2024-25 seasons.
+:::
+
+---
+
+# Introduction
+
+## Why Does This Question Matter?
+
+The five major European football leagues (the English Premier League,
+Spanish La Liga, German Bundesliga, Italian Serie A, and French Ligue 1)
+collectively generate over 18 billion euros in annual revenue, with squad
+transfer spending exceeding 12 billion euros in recent seasons. With this
+much money flowing through the sport, a natural and important question
+arises: does financial investment actually buy sporting success, or can a
+well organised, under funded club systematically compete at the top level?
+
+This question reaches beyond football itself. Competitive balance policy
+is one reason it matters: UEFA introduced Financial Fair Play specifically
+to prevent the wealthiest clubs from buying their way to dominance, and if
+money truly determines outcomes, such policies become more important, not
+less. Fan engagement is a second reason: if league tables are financially
+predetermined, some of the drama of competition is lost for supporters of
+smaller clubs. Sports economics theory is a third reason: understanding how
+resource advantages translate into tournament outcomes informs similar
+questions across every competitive sport with unequal team budgets.
+
+## The Analytical Approach Taken in This Report
+
+Two methodological choices shape everything that follows, and both are set
+out here at the start rather than introduced partway through.
+
+The first choice is the outcome variable. Rather than final league
+position (a ranking from first to last), this report treats points per
+game as the outcome to be explained. League position is what statisticians
+call an ordinal variable: it tells us that a team finished third and not
+fourth, but it says nothing about how large that gap actually was. A club
+that misses the title by a single point looks identical, position-wise, to
+one that misses it by twenty. Points per game is a continuous, evenly
+spaced quantity instead: the difference between 1.50 and 1.60 points per
+game always means the same thing, regardless of where in the table a team
+sits. A continuous outcome is generally the better fit for the regression
+methods used throughout this report, while a purely ordinal outcome like
+raw position is better suited to specialised rank based methods. Points
+per game also solves a second, more practical problem: because the
+Bundesliga plays a 34 match season while the other four leagues play 38
+matches, raw points totals are not directly comparable across leagues.
+Dividing by matches played removes that distortion (this is explained
+further in the Data section).
+
+The second choice is the functional form connecting financial strength to
+performance, that is, the shape of the mathematical relationship between
+the two. Earlier stages of this project fitted a fixed, curved shape (a
+quadratic term) chosen in advance. This report instead fits a generalized
+additive model, which allows the data to determine how much the
+relationship should curve and where, rather than committing to one
+particular curved shape before looking at the data. Both of these choices,
+the outcome variable and the modelling approach, are explained in full,
+plain language detail in the Methodology section below; they are simply
+stated here as the analytical plan followed throughout the rest of this
+report.
+
+## What We Set Out to Answer
+
+This report addresses three related questions using ten years of data from
+all five top tier European leagues. First, direction and strength: is
+there a statistically meaningful relationship between a club's financial
+rank within its league and how many points per game it earns, and how
+strong is that relationship? Second, model form: does a straight line
+relationship capture the pattern in the data, or is a more flexible,
+curved relationship needed, and does the data support a smoothly varying
+effect beyond what a single fixed curve could represent? Third, exceptions:
+which clubs defy the financial hierarchy, and how statistically unusual are
+they under this revised approach?
+
+---
+
+# The Data We Used
+
+## Sources and Sample
+
+The dataset combines two sources. ESPN FC provided final league standings
+and total points won for all five leagues across the 2015-16 through
+2024-25 seasons. Transfermarkt provided squad market values, the estimated
+total transfer market worth of all players in a squad, at the start of
+each season. After merging these sources and removing rows with missing
+key values, the working dataset contains `r format(n_obs, big.mark=",")`
+team-season observations; every club that played a full season in one of
+the five leagues during the study period appears once per season. One
+Serie A observation, SPAL in 2017-18, had a missing market value in the
+original source due to a merge failure between the standings and market
+value data; the correct value of 63.55 million euros was verified
+directly on Transfermarkt and inserted, raising N from 975 to 976.
+
+## Financial Rank: Why Rank Instead of Raw Value
+
+Squad market values cannot be compared directly across leagues. A squad
+worth 300 million euros is the richest in Ligue 1 but only the
+fifth-richest in the Premier League, since the Premier League's overall
+spending is much higher. Comparing raw euro values across leagues would be
+an apples to oranges comparison. The solution used throughout this project
+is Financial Rank: each squad is ranked from 1 (the most valuable squad)
+to the number of clubs in that league that season, separately within each
+league and season. Financial Rank 1 always means "the wealthiest club in
+this specific league this specific season," regardless of whether that
+squad is worth 600 million euros or 150 million euros. This within-league
+ranking is what makes it possible to pool all five leagues into a single
+analysis.
+
+## Points Per Game: Why Divide by Matches Played
+
+The outcome variable in this report, points per game, is total points
+earned in a season divided by matches played that season. This division
+matters because not every league plays the same number of matches: the
+Bundesliga has 18 clubs and a 34 match season, while the other four
+leagues have 20 clubs and a 38 match season. A club in a 38 match league
+can accumulate up to 114 points (38 wins at 3 points each), while a club
+in the 34 match Bundesliga can accumulate at most 102 points. Comparing
+raw point totals across these two league formats would systematically and
+unfairly penalise Bundesliga clubs. Dividing by matches played converts
+every team-season onto the same scale (points earned per match played),
+making comparisons across league formats fair for the first time.
+
+## Descriptive Statistics
+
+```{r desc-stats-combined}
+desc_raw |>
+  mutate(League = ifelse(Group == "ALL LEAGUES (combined)", "All leagues (combined)", Group)) |>
+  select(League, N, Mean_Position, Mean_MV_M_EUR, Mean_Points, Corr_FR_Pos) |>
+  mutate(across(where(is.numeric), ~ round(., 2))) |>
+  kbl(longtable = FALSE,
+    col.names = c("League", "N", "Mean position", "Mean squad value (million euros)",
+                  "Mean points", "Pearson r (FR vs. position)"),
+    caption   = "Sample size, average outcomes, and the Financial Rank to position correlation, by league and combined."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1, bold = TRUE, background = "#EBF5FB")
+```
+
+The "All leagues (combined)" row covers the full sample. Squad values vary
+substantially by league (the Premier League's average is considerably
+higher than Ligue 1's, for example), while the raw correlation between
+Financial Rank and final position already exceeds 0.78 in every single
+league before any model is fitted, reaching 0.89 in Serie A. This is a
+first hint, well before the modelling begins, that financial strength is a
+powerful predictor of sporting outcomes in every one of the five leagues
+studied.
+
+---
+
+# Methodology: From a Straight Line to a Learned Curve
+
+This report builds its model in three deliberate steps, each one relaxing
+an assumption made by the step before it. Each step is explained in full
+before the next one is introduced, so that a reader who has never
+encountered a generalized additive model can follow the reasoning from
+first principles.
+
+## Step 1: A Straight Line (Linear Specification)
+
+The simplest possible model is a straight line: predicted points per game
+equals some baseline value, plus a fixed amount for every step down the
+financial hierarchy. This kind of relationship is called linear because,
+if plotted, it forms a single straight line. A linear model implies a
+strong assumption: that the penalty for being one Financial Rank worse is
+exactly the same everywhere, whether we are comparing the wealthiest club
+to the second wealthiest, or the fourteenth wealthiest to the fifteenth.
+There is no reason to expect that assumption to be true in general, but it
+is the natural starting point and a useful baseline against which to judge
+whether anything more complex is actually needed.
+
+## Step 2: A Fixed Curve (Quadratic Specification)
+
+Earlier stages of this project (documented in full in the Appendix)
+established that the straight line assumption does not hold: the penalty
+for a worse financial rank is larger at the top of the hierarchy (between
+the first and second richest clubs, for example) than at the bottom
+(between the nineteenth and twentieth richest). To capture that pattern,
+a quadratic term was added: alongside Financial Rank itself, the model
+also includes Financial Rank multiplied by itself (Financial Rank
+squared). A squared term lets the fitted line bend into a single smooth
+curve, specifically a parabola, rather than staying straight. This is a
+genuine improvement, but it still commits to one particular curved shape
+in advance: a parabola always has exactly one bend, always symmetric on
+either side. There is no substantive reason to expect that the true
+relationship between financial rank and performance takes exactly this
+shape, rather than, for instance, levelling off among mid table clubs
+before steepening again near the bottom of the table.
+
+## Step 3: A Learned Curve (Generalized Additive Model)
+
+The final step, and the model adopted for the remainder of this report,
+relaxes the quadratic assumption entirely. A generalized additive model
+(commonly abbreviated GAM) replaces the fixed squared term with a smooth
+term: a flexible curve built from a combination of simpler basis
+functions, whose exact shape is estimated from the data rather than
+chosen by the analyst in advance. In plain terms, instead of telling the
+model "the relationship must be a parabola" and asking it to find the best
+parabola, a generalized additive model is told "find whatever smooth curve
+fits best," and it is free to produce a shape that bends more in one place
+than another, flattens out, or steepens, wherever the data actually
+support that pattern. The model fitted here is points per game explained
+by a smooth function of Financial Rank, estimated using the mgcv package
+in R with restricted maximum likelihood smoothing parameter selection (a
+standard, data driven method for choosing how flexible the smooth curve is
+allowed to be, balancing fit against overfitting). This preserves the core
+intuition behind the quadratic term, that the effect of financial rank is
+not constant, while removing the requirement that the non-constant effect
+take one specific, predetermined shape.
+
+---
+
+# Core Results
+
+## The Three-Way Comparison
+
+The table below compares all three specifications from the Methodology
+section: the linear model, the quadratic model (labelled Model H
+throughout this project and its earlier reports), and the generalized
+additive model, all fitted with points per game as the outcome and
+Financial Rank as the only predictor. Three columns need explaining before
+the numbers are presented. The first is R squared or deviance explained:
+for the two ordinary regression models this is R squared, the share of
+the variation in points per game the model accounts for, from 0 (none) to
+1 (all of it); for the generalized additive model the comparable quantity
+is deviance explained, which measures the same idea (share of variation
+accounted for) but is computed differently because a GAM's predictions do
+not come from a simple sum of fixed coefficients. The second column is
+AIC (Akaike Information Criterion), a score that rewards a model for
+fitting the data well but penalises it for using unnecessary complexity;
+lower AIC indicates a better trade-off between accuracy and simplicity,
+and AIC is only meaningful for comparing models fitted to the exact same
+outcome variable and data, which is the case for all three rows here. The
+third column, effective degrees of freedom, is reported only for the
+generalized additive model and is explained fully below the table.
+
+```{r core-results-table}
+gam_table |>
+  mutate(Model = recode(Model,
+    "H: Quadratic (PPG) [reference]" = "Quadratic (Model H)",
+    "Linear (PPG)"                  = "Linear",
+    "GAM (PPG)"                     = "Generalized additive model"
+  )) |>
+  select(Model, N, R2_or_Dev_Explained, AIC, EDF) |>
+  kbl(longtable = FALSE,
+    col.names = c("Model", "N", "R squared / deviance explained", "AIC",
+                  "Effective degrees of freedom"),
+    caption   = "Comparison of the linear, quadratic, and generalized additive specifications for points per game, from this report's underlying GAM revision output."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(3, bold = TRUE, background = "#FEF9E7")
+```
+
+Moving from a straight line to the fixed quadratic curve already raises
+the explained variation from `r round(gam_table$R2_or_Dev_Explained[gam_table$Model=="Linear (PPG)"],3)`
+to `r round(gam_table$R2_or_Dev_Explained[gam_table$Model=="H: Quadratic (PPG) [reference]"],3)`
+and lowers AIC by well over a hundred points. Moving further, from the
+fixed quadratic curve to the learned curve, raises the explained variation
+again, to a deviance explained of `r round(gam_devexpl,3)`, and lowers AIC
+again, to `r round(AIC(gam_ppg),2)`. Both curved specifications outperform
+the straight line comfortably, and the generalized additive model in turn
+outperforms the fixed quadratic curve on both statistics at once, using a
+comparable number of effective parameters.
+
+## Effective Degrees of Freedom, Explained
+
+Effective degrees of freedom (edf) measures how much curvature the smooth
+term actually used, on a scale where 1 means the smooth term behaved
+exactly like a straight line, and larger values mean progressively more
+flexible, wigglier curves. If the effective degrees of freedom here had
+come out close to 1, that would mean the extra flexibility of a
+generalized additive model bought nothing beyond what the simple linear
+model already achieved. Instead, the effective degrees of freedom is
+`r round(gam_edf,2)`, well above 1, which confirms there is genuine,
+non-trivial curvature in the relationship between financial rank and
+points per game that a straight line would completely miss. At the same
+time, `r round(gam_edf,2)` is also more nuanced than the two degrees of
+freedom implied by a fixed quadratic term: a quadratic curve can only bend
+once, in one direction, whereas a smooth term with an effective degrees of
+freedom around `r round(gam_edf,0)` can accommodate a more gradual,
+multi-part curve, for example a steep early drop among the wealthiest
+clubs followed by a flatter, more gradual decline among the rest. In
+short, the data support meaningfully more curvature than a single parabola
+allows, without requiring anywhere near the flexibility of an
+unconstrained, highly irregular curve.
+
+## The Fitted Curve and Its Confidence Band
+
+```{r gam-smooth-fig, out.width="80%", fig.height=3.8, fig.pos="H", fig.cap="The generalized additive model's fitted smooth term (dark line) and 95 percent confidence band (shaded), plotted against Financial Rank, with individual team-seasons jittered by league in the background."}
+knitr::include_graphics("extensions/outputs/gam_revision/gam_smooth_confidence.png")
+```
+
+The shaded region around the fitted curve is a confidence band, the
+two-dimensional version of a confidence interval. A confidence interval is
+a range of values, calculated from the data, that is expected to contain
+the true underlying value with a stated degree of certainty, conventionally
+95%; a confidence band simply plots that same range at every point along
+the curve, so its width shows exactly where the estimate is precise and
+where it is uncertain. Reading the figure: points per game falls steeply
+as Financial Rank worsens from first to roughly tenth, then flattens into
+a shallower decline for the remaining, less wealthy clubs, exactly the
+kind of multi-part curvature the effective degrees of freedom result
+predicted above.
+
+One limitation is visible in the same figure: the confidence band is
+narrow through most of the range but widens noticeably for financial ranks
+above approximately 15. This is a sample size effect, not a weakness in
+the modelling approach. The Bundesliga fields only eighteen clubs per
+season, so Financial Ranks of 19 and 20 are only ever populated by the
+other four leagues, each of which has twenty clubs. The result is a
+genuinely smaller number of observations at the poorest end of the
+financial rank scale, and the wider band there is an honest reflection of
+that reduced sample size, not evidence that the model performs worse for
+those clubs.
+
+---
+
+# Outlier Analysis
+
+## What a Residual Is, and Why It Is Useful
+
+Once a model has been fitted, every team-season has a predicted value
+(what the model expects that club to earn in points per game, given its
+Financial Rank) and an actual value (what the club actually earned). The
+difference between the two, actual minus predicted, is called the
+residual. A residual close to zero means the model predicted that club
+well. A large positive residual means a club earned far more points per
+game than its finances predicted, an overperformer. A large negative
+residual means a club earned far fewer points per game than its finances
+predicted, an underperformer. Looking at the most extreme residuals is a
+systematic way of finding the clubs whose season cannot be explained by
+money alone, exactly the stories that make football interesting.
+
+This report flags any team-season whose residual is more than 1.5
+standard deviations from zero (a standard deviation is a measure of how
+spread out the residuals typically are; 1.5 times that spread marks a
+genuinely unusual case, not just ordinary season to season noise) as a
+statistical outlier. Under the generalized additive model, the residual
+standard deviation is `r round(resid_sd_gam,3)` points per game, so the
+outlier threshold is `r round(overp_thr_gam,3)` points per game in either
+direction. As an additional check on how much a single unusual
+observation can distort a fitted curve, this project also computed each
+observation's Cook's distance, a measure of how much the entire fitted
+model would shift if that one observation were removed; consistent with
+the position based analysis in earlier stages of this project, Leicester
+City's 2015-16 season is again the single most influential observation
+under the revised model (full diagnostic values are in the Appendix).
+
+## The Ten Largest Overperformers and Underperformers
+
+```{r outlier-table-export, include=FALSE}
+outlier_tbl_full <- aug_gam |>
+  filter(Outlier_Flag != "Normal") |>
+  mutate(League = factor(League, levels = league_order)) |>
+  select(Team, Season, League, Financial_Rank, Points_Per_Game, Fitted_PPG, Residual_PPG, Outlier_Flag) |>
+  arrange(desc(abs(Residual_PPG))) |>
+  mutate(across(c(Points_Per_Game, Fitted_PPG, Residual_PPG), ~ round(., 3)))
+
+readr::write_csv(outlier_tbl_full, "extensions/outputs/gam_revision/flagged_outliers_full.csv")
+
+top_over  <- outlier_tbl_full |> filter(Outlier_Flag == "Overperformer")  |> arrange(desc(Residual_PPG))       |> slice_head(n = 10)
+top_under <- outlier_tbl_full |> filter(Outlier_Flag == "Underperformer") |> arrange(desc(abs(Residual_PPG))) |> slice_head(n = 10)
+```
+
+```{r outlier-table-over}
+top_over |>
+  select(-Outlier_Flag) |>
+  kbl(longtable = FALSE,
+    col.names = c("Team", "Season", "League", "FR", "Actual PPG",
+                  "Pred. PPG", "Residual"),
+    caption   = "Top 10 overperformers under the generalized additive model, sorted by residual size (largest positive first). FR is Financial Rank; PPG is points per game."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1:nrow(top_over), background = "#EBF5FB")
+```
+
+```{r outlier-table-under}
+top_under |>
+  select(-Outlier_Flag) |>
+  kbl(longtable = FALSE,
+    col.names = c("Team", "Season", "League", "FR", "Actual PPG",
+                  "Pred. PPG", "Residual"),
+    caption   = "Top 10 underperformers under the generalized additive model, sorted by absolute residual size (largest negative first). FR is Financial Rank; PPG is points per game."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(1:nrow(top_under), background = "#FDEDEC")
+```
+
+The two tables above show the ten largest overperformers and ten largest
+underperformers; the complete table of all `r nrow(outlier_tbl_full)`
+flagged team-seasons is available as a CSV file in the project repository
+under `extensions/outputs/gam_revision/flagged_outliers_full.csv`.
+
+## Leicester City 2015-16: A Closer Look, Restated in Points Per Game
+
+Leicester City's Premier League title in 2015-16 is widely regarded as one
+of the greatest upsets in sporting history, and it remains exactly that
+under the revised model. Leicester finished Financial Rank 11 out of 20
+that season, yet won the title outright. Under the generalized additive
+model, Leicester's actual points per game exceeded the model's prediction
+by `r round(leicester_gam$Residual_PPG,3)` points per game
+(`r round(leicester_gam$Residual_PPG / resid_sd_gam,1)` standard
+deviations above expectation), the single largest overperformance in the
+entire dataset under this specification, larger in relative terms than it
+was under the earlier linear model. Bayer Leverkusen's unbeaten 2023-24
+Bundesliga title shows the same pattern: an overperformance of
+`r round(leverkusen_gam$Residual_PPG,3)` points per game relative to what
+their financial rank predicted. Both clubs continue to stand out as
+genuine statistical anomalies regardless of whether the outcome is
+measured in league position, total points, or points per game, and
+regardless of whether the functional form connecting financial rank to
+performance is a straight line, a fixed curve, or a learned curve. That
+consistency across every specification tried in this project is itself
+evidence that these two results are real football stories, not artefacts
+of any one modelling choice.
+
+## Champions from Outside the Financial Top Three
+
+This next result depends only on Financial Rank, not on which outcome
+variable is used to measure performance, so it is carried over unchanged
+from earlier stages of this project. Of `r n_champ` league titles across
+the decade studied, `r pct_fr1`% (`r fr1_champs` clubs) were won by the
+financially wealthiest squad in their league that season, and only
+`r fr_gt3_n` champions came from outside the financial top three.
+
+```{r champions-fr-dist-fig, out.width="75%", fig.height=3.8, fig.pos="H", fig.cap="Distribution of Financial Rank among all 50 league champions across 10 seasons and 5 leagues. The dominance of Financial Rank 1 is striking."}
+knitr::include_graphics("outputs/34_champions_fr_dist.png")
+```
+
+Of the `r fr_gt3_n` champions from outside the top three, three (Napoli at
+Financial Rank 5, Lille at Financial Rank 4, and Liverpool at Financial
+Rank 4) were only barely outside the expected zone and within a normal
+range of variation. Only Leicester City, at Financial Rank 11, is a
+genuine statistical outlier among the champions, confirming the finding
+above.
+
+---
+
+# Robustness
+
+## Why Run the Same Analysis Under Different Conditions
+
+A single result, however strong, could in principle be an artefact of one
+particular time period, one particular league, or one particular sport's
+institutional rules. A robustness check re-runs the same core analysis
+under a different slice of the data, or on a genuinely different dataset,
+to see whether the same conclusion still holds. If it does, that is strong
+evidence the finding reflects something real about how money and
+performance relate, rather than a coincidence of the specific sample
+used. The checks summarised below were originally carried out on the
+position based specification developed earlier in this project (full
+detail, including formal statistical tests such as checks for
+heteroskedasticity, a situation in which the spread of a model's errors is
+not constant across the range of predictions, and the corresponding use of
+robust standard errors, standard error estimates adjusted to remain valid
+even when that spread is not constant, is preserved in the Appendix). The
+fact that the same pattern holds under a different outcome variable
+entirely (points per game modelled with a generalized additive model, the
+approach used throughout this report) makes the overall finding more
+trustworthy still, since it means the conclusion does not depend on the
+specific choice of how success is measured.
+
+## Consistency Across Leagues
+
+```{r league-consistency-fig, out.width="75%", fig.height=3.5, fig.pos="H", fig.cap="R-squared (variance explained in final position) by Financial Rank, broken down by league."}
+knitr::include_graphics("outputs/32_league_r2_bars.png")
+```
+
+Financial Rank predicts final position with an R squared between 0.61 and
+0.79 depending on the league, with Serie A showing the strongest
+relationship and the Bundesliga and Ligue 1 the weakest, though even the
+weakest of the five remains a strong relationship by ordinary social
+science standards. No single league is driving the overall result; the
+financial hierarchy operates similarly across all five leagues studied.
+
+## Stability Over the Decade Studied
+
+```{r time-split-fig, out.width="75%", fig.height=3.5, fig.pos="H", fig.cap="Financial Rank vs. League Position, fit separately for the Early (2015-16 to 2019-20) and Late (2020-21 to 2024-25) halves of the decade. The two fitted curves are visually almost indistinguishable."}
+knitr::include_graphics("outputs/38a_time_split_scatter.png")
+```
+
+Splitting the ten seasons into two independent five-season halves and
+re-fitting the model separately on each half produces two fitted curves
+that overlap almost completely (Early period Financial Rank slope
+`r round(1.2497,2)`, Late period slope `r round(1.2102,2)`; a formal test
+of whether the two slopes differ gives p = 0.797, far from statistically
+significant). The relationship between financial rank and performance has
+neither strengthened nor weakened across the decade studied.
+
+## Transfer Market Inflation
+
+Squad market values rose substantially over the decade studied: indexed
+to a 2019-20 base of 1.00, the average squad value across the five
+leagues stood at 0.59 in 2015-16 and had risen to 1.30 by 2024-25. This
+raises a natural question: does that inflation distort Financial Rank, or
+any of the results built on it?
+
+By construction, it does not. Financial Rank is computed separately
+within each league-season: every squad in the same league-season is
+ranked against the other squads in that same league-season only, never
+against squads from a different year. Because inflation raises all squad
+values within a given league-season together, it scales every club by
+roughly the same factor at the same point in time. A within-season rank
+is unaffected by a common scaling: if every value in a league-season is
+multiplied by the same number, the order from richest to poorest does not
+change, so neither does the rank.
+
+This was also checked directly rather than left as a theoretical
+argument. Every squad market value in the corrected dataset was deflated
+by the yearly inflation index, and Financial Rank was recomputed from
+those deflated values for all 976 team-seasons. The recomputed ranks were
+identical to the original ranks in every single case: zero rank changes
+across the full corrected dataset. This directly addresses a question
+raised after the presentation of this project, whether the headline
+result could be an artefact of rising transfer market prices over the
+decade rather than a genuine, stable relationship between financial
+strength and sporting performance; the answer is that it is not.
+
+## Beyond Football: A Salary-Capped League
+
+```{r nba-comparison-fig, out.width="80%", fig.height=3.8, fig.pos="H", fig.cap="Side by side comparison: Financial Rank vs. League Position (European football, no salary cap) and Payroll Rank vs. Final Standing (NBA, hard salary cap)."}
+knitr::include_graphics("outputs/40_nba_vs_football_comparison.png")
+```
+
+The same quadratic specification, fit on ten seasons of NBA data (a
+professional basketball league that, unlike European football, operates
+under a hard salary cap limiting how much any one team can spend on
+player wages), confirms that the money predicts success pattern is not
+unique to football: Payroll Rank significantly predicts NBA final
+standing. But the relationship is far weaker under the NBA's cap
+(R squared = `r nba_summary$R2[2]`, r = `r nba_summary$Pearson_r[2]`)
+than in football's largely unrestricted spending environment
+(R squared = `r nba_summary$R2[1]`, r = `r nba_summary$Pearson_r[1]`), and
+only `r nba_summary$Pct_Top3_Payroll_Titles[2]`% of NBA titles in the
+period went to a top three payroll team, versus
+`r nba_summary$Pct_Top3_Payroll_Titles[1]`% in football. This is indirect
+evidence that deliberate cap style mechanisms, such as the salary cap
+tested here or Financial Fair Play in European football, can meaningfully
+weaken, without eliminating, the link between spending and winning.
+
+::: {.callout-success}
+**Points per game, checked against total points, was already tested and held.**
+An earlier stage of this project also re-fit the quadratic specification
+with total points won as the outcome instead of final position, and found
+that Leicester City 2015-16 remained the single largest statistical
+anomaly under that outcome too. Combined with the results above, the core
+finding has now been confirmed under three different outcome variables
+(position, points, and points per game) and two different functional
+forms (a fixed quadratic curve and a learned smooth curve), in addition
+to the time split and cross sport checks in this section.
+:::
+
+---
+
+# Conclusions
+
+This report set out to determine whether financial strength predicts
+sporting success in Europe's five major football leagues, using points per
+game as the outcome and a generalized additive model to let the data
+determine the shape of that relationship. The answer is unambiguous: yes,
+and very strongly so. Each finding below is written to stand on its own.
+
+::: {.callout-finding}
+**Finding 1: Financial Rank explains most of the variation in points per
+game, and does so better than any fixed-shape alternative tried.** The
+generalized additive model achieves a deviance explained of
+`r round(gam_devexpl,3)` (`r round(100*gam_devexpl)`%) and the lowest AIC
+of the three specifications compared, `r round(AIC(gam_ppg),2)`. The same
+underlying relationship, measured the original way through final league
+position, gives a Pearson correlation of r = `r r_pearson` and
+R squared = `r r2_H_pos`, confirming the result under an earlier,
+independently developed specification.
+:::
+
+::: {.callout-finding}
+**Finding 2: The relationship genuinely curves, and the curve is more
+nuanced than a simple parabola.** The generalized additive model's
+effective degrees of freedom of `r round(gam_edf,2)`, well above the value
+of 1 that would indicate no curvature at all, confirms real, non-trivial
+curvature in how financial rank relates to performance, while also
+showing that the curve is more flexible than the single symmetric bend a
+fixed quadratic term allows. In plain terms, the gap between the richest
+and second richest club matters more than the gap between two closely
+matched mid table clubs, and the shape of that pattern is best estimated
+directly from the data rather than assumed in advance.
+:::
+
+::: {.callout-finding}
+**Finding 3: The relationship is consistent across leagues and stable
+over time.** Financial Rank predicts final position with an R squared
+between 0.61 and 0.79 in every one of the five leagues studied, and
+splitting the decade into two independent five-season halves produces
+statistically indistinguishable fitted curves (p = 0.797 for the test of
+whether the slopes differ). Financial dominance is a stable, general
+feature of European football during the period studied, not a
+league-specific or recent phenomenon.
+:::
+
+::: {.callout-alert}
+**Finding 4: Genuine exceptions exist, but only two are truly
+extraordinary, and both survive every specification tested.** Of
+`r n_champ` league titles across the decade, only `r fr_gt3_n` were won by
+clubs outside the financial top three, and only Leicester City 2015-16 is
+a genuine statistical outlier among them. Under the generalized additive
+model adopted in this report, Leicester's overperformance grows to
+`r round(leicester_gam$Residual_PPG / resid_sd_gam,1)` standard deviations
+above expectation, and Bayer Leverkusen's unbeaten 2023-24 title joins it
+as a second clear overperformer. Both results hold under every outcome
+variable and every functional form tested in this project.
+:::
+
+::: {.callout-finding}
+**Finding 5: The result survives a battery of independent robustness
+checks.** The relationship holds within every individual league, across
+both halves of the decade studied, under three different outcome
+variables (position, points, and points per game), and under two
+different functional forms (a fixed quadratic curve and a learned smooth
+curve). No single check weakens the core finding.
+:::
+
+::: {.callout-finding}
+**Finding 6: The pattern generalises beyond football, but a salary cap
+visibly weakens it.** The same specification fit on NBA data confirms
+that money predicts success is not football-specific, but the
+relationship is far weaker under the NBA's hard salary cap
+(R squared = `r nba_summary$R2[2]`) than in football's largely
+unrestricted spending environment (R squared = `r nba_summary$R2[1]`).
+This is indirect evidence that deliberate cap style mechanisms can
+meaningfully loosen, without eliminating, the link between spending and
+winning.
+:::
+
+## Limitations and Future Directions
+
+```{r limitations-table}
+tibble(
+  Limitation = c(
+    "Market value as a quality proxy",
+    "No managerial quality variable",
+    "No injury data",
+    "Panel structure ignored",
+    "Top divisions only",
+    "NBA comparison is a single, small sample",
+    "Confidence intervals widen at the sparse end of Financial Rank"
+  ),
+  Issue = c(
+    "Transfermarkt valuations may lag actual squad quality by weeks and reflect subjective editor estimates",
+    "Exceptional coaches (such as Claudio Ranieri at Leicester) are not captured in the financial model",
+    "Injury crises can dramatically alter a squad's effective quality mid-season",
+    "Teams appear across multiple seasons; correlated errors across seasons are unmodelled",
+    "Results may not generalise to lower divisions or smaller national leagues",
+    "The NBA cross-sport comparison rests on only 300 team-seasons and 10 champion-seasons, and NBA titles are playoff-determined rather than table position, making the sample smaller and structurally different from the football data",
+    "The generalized additive model's confidence band widens noticeably for Financial Ranks above approximately 15, a direct consequence of the Bundesliga's 18-club format leaving fewer observations at the poorest end of the financial rank scale"
+  ),
+  Potential_Fix = c(
+    "Use wage bill data as an alternative, or cross-validate with an independent squad rating source",
+    "Add manager tenure, prior record, or a coaching quality index",
+    "Incorporate injury-adjusted squad value, for example weighted by player availability",
+    "Fixed-effects panel model or clustered standard errors at the team level",
+    "Replicate in the Eredivisie, the Championship, or the Scottish Premiership",
+    "Extend to further capped or uncapped leagues (the NFL, MLB, or EuroLeague basketball) for a larger cross-sport sample",
+    "Report predictions above Financial Rank 15 with explicit uncertainty caveats, or pool additional seasons to narrow the band"
+  )
+) |>
+  kbl(longtable = TRUE,
+    col.names = c("Limitation", "Issue", "Potential Fix"),
+    caption   = "Study limitations and suggested future extensions."
+  ) |>
+  kable_styling(
+    latex_options     = c("striped", "repeat_header"),
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE
+  ) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  row_spec(7, background = "#FEF9E7") |>
+  column_spec(1, bold = TRUE, width = if (knitr::is_latex_output()) "2.6cm" else "20%") |>
+  column_spec(2,              width = if (knitr::is_latex_output()) "6cm"   else "40%") |>
+  column_spec(3,              width = if (knitr::is_latex_output()) "6cm"   else "40%")
+```
+
+---
+
+# Statement of Individual Contributions {-}
+
+Md. Muktadir performed the data collection, cleaning, statistical
+modelling, all figures and tables, and wrote this technical report. Linus
+Mainka wrote the journalistic article and delivered the oral presentation.
+Both authors jointly developed the research question and revised the
+final materials.
+
+---
+
+# Appendix
+
+## A. Full Coefficient Table (Models A and H)
+
+```{r full-coef-table}
+coef_all |>
+  filter(grepl("^[AH]", model_label)) |>
+  select(model_label, term, estimate, std.error, statistic, p.value) |>
+  mutate(
+    across(c(estimate, std.error, statistic), ~ round(., 4)),
+    p_display = case_when(
+      p.value < 0.001 ~ "< 0.001 ***",
+      p.value < 0.01  ~ sprintf("%.4f **", p.value),
+      p.value < 0.05  ~ sprintf("%.4f *",  p.value),
+      TRUE            ~ sprintf("%.4f",    p.value)
+    ),
+    model_label = sub(":.*", "", model_label)
+  ) |>
+  select(-p.value) |>
+  kbl(longtable = TRUE,
+    col.names = c("Model", "Term", "Estimate", "Std. Error", "t / z", "p-value"),
+    caption   = "Table A1. Full regression coefficient table, Models A (linear) and H (quadratic)."
+  ) |>
+  kable_styling(latex_options = c("repeat_header", "striped"), full_width = FALSE) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  collapse_rows(columns = 1, valign = "top")
+```
+
+## B. Model H Quadratic Coefficients, Position Outcome (Detailed)
+
+```{r appendix-modelh}
+coef_H_raw |>
+  mutate(
+    term  = recode(term,
+      "(Intercept)"         = "Intercept",
+      "Financial_Rank"      = "Financial Rank (b1)",
+      "I(Financial_Rank^2)" = "Financial Rank squared (b2)"
+    ),
+    across(c(estimate, std.error, statistic, conf.low, conf.high), ~ round(., 5)),
+    p.value = formatC(p.value, format = "e", digits = 3)
+  ) |>
+  select(term, estimate, std.error, statistic, p.value, conf.low, conf.high) |>
+  kbl(longtable = FALSE,
+    col.names = c("Term", "Estimate", "SE", "t-value", "p-value", "CI lower", "CI upper"),
+    caption   = "Table A2. Model H (Position explained by Financial Rank plus Financial Rank squared) full coefficient table with 95 percent confidence intervals."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+## C. Points-Per-Game Model Comparison Table (Full Precision)
+
+```{r appendix-gam-table}
+gam_table |>
+  kbl(longtable = FALSE,
+    col.names = c("Model", "Outcome", "N", "R squared / deviance explained", "AIC", "Effective degrees of freedom"),
+    caption   = "Table A3. Linear, quadratic, and generalized additive model comparison for points per game, at full precision, from this report's underlying GAM revision output."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+## D. Whole-Project Model Evolution Table
+
+```{r appendix-e1-table}
+e1_table |>
+  select(Model, Outcome, N, R_squared, AIC) |>
+  kbl(longtable = FALSE,
+    col.names = c("Model", "Outcome", "N", "R squared", "AIC"),
+    caption   = "Table A4. Every position, points, and points-per-game specification fitted across the whole project, from this report's whole-project model evolution output."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+## E. Analysis Script Inventory
+
+The complete, runnable source code for this project is available at
+**https://github.com/ShawnMuktadir/Money-and-Success-in-Football**. Readers
+who want to reproduce or extend this analysis should start there. The
+table below lists every analysis script (scripts 01-12 are in `RScripts/`,
+scripts 13-16 are in `extensions/scripts/`), in run order, and what each
+one produces.
+
+```{r script-inventory}
+tibble(
+  Script = c(
+    "01_scrape_ESPN_standings.R", "02_scrape_transfermarkt_market_values.R",
+    "03_compute_financial_rank.R", "04_merge_standings_and_market_values.R",
+    "05_analysis_and_regression.R", "05b_extended_regression.R",
+    "05c_model_h4_extended.R", "06_residuals_and_outliers.R",
+    "07_beautiful_charts.R", "08_time_split_model.R", "09_points_model.R",
+    "10_scrape_nba_data.R", "11_nba_vs_football_comparison.R",
+    "12_ppg_inflation_extended.R", "13_model_evolution_comparison.R",
+    "14_additional_visuals.R", "15_spal_correction.R",
+    "16_linear_gam_revision.R"
+  ),
+  Produces = c(
+    "League standings and points, all five leagues, 2015-16 to 2024-25",
+    "Squad market values from Transfermarkt for the same leagues and seasons",
+    "Financial Rank computed within each league-season, with proper tie handling",
+    "The merged master dataset combining standings and market values",
+    "Descriptive statistics and the baseline regression models",
+    "Robustness diagnostics, interaction and quadratic model extensions",
+    "Model H extended with league fixed effects and a season index",
+    "Residual and outlier analysis for Model H",
+    "Presentation-ready versions of the residual and outlier charts",
+    "Early-decade vs late-decade stability test",
+    "Model H re-fit with total points instead of league position",
+    "NBA payroll and standings data for the cross-sport comparison",
+    "Football vs. NBA salary-cap robustness comparison",
+    "Points-per-game outcome and the transfer-market inflation adjustment",
+    "Whole-project model evolution comparison table",
+    "Follow-up visuals for model evolution and inflation checks",
+    "SPAL 2017-18 missing market value correction (Section 3.1)",
+    "Linear and generalized additive model specifications for points per game, the primary models used in this report"
+  )
+) |>
+  kbl(longtable = FALSE, caption = "Analysis scripts and their outputs, in run order.") |>
+  kable_styling(
+    latex_options = c("striped", "scale_down", "hold_position"),
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    font_size  = if (knitr::is_latex_output()) 8 else NULL
+  ) |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
+  column_spec(1, width = if (knitr::is_latex_output()) "4.2cm" else "25%")
+```
+
+## F. Session Information
+
+```{r session-info}
+si <- sessionInfo()
+tibble(
+  Item  = c("R version", "Platform", "Date knitted", "Key packages"),
+  Value = c(
+    paste(si$R.version$major, si$R.version$minor, sep = "."),
+    si$running,
+    format(Sys.Date(), "%Y-%m-%d"),
+    paste(c("dplyr", "ggplot2", "broom", "kableExtra", "ggrepel", "mgcv"), collapse = ", ")
+  )
+) |>
+  kbl(longtable = FALSE, col.names = c("", "")) |>
+  kbs(bo = c("striped","condensed"), pos = "left") |>
+  column_spec(1, bold = TRUE, width = if (knitr::is_latex_output()) "4cm" else "25%")
+```
+
+**Package citations.** Wood, S.N. (2017). *Generalized Additive Models*
+(2nd ed.), Chapman and Hall/CRC (mgcv). Wickham, H. (2016). *ggplot2:
+Elegant Graphics for Data Analysis*, Springer. Wickham et al., *dplyr*
+and *tidyr*, https://tidyverse.org. Robinson et al., *broom*,
+https://broom.tidymodels.org. Zhu, H., *kableExtra*,
+https://haozhu233.github.io/kableExtra/.
+
+---
+
+*Report generated with R Markdown. Data sources: ESPN FC (league standings),
+Transfermarkt (squad market values). All analysis scripts are available in
+the project repository. For questions, contact: mdmuktadir0611@gmail.com*

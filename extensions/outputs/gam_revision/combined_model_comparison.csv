@@ -1,0 +1,7 @@
+Model,Outcome,N,R2_or_Dev_Explained,AIC,EDF,meets_feedback_criteria,recommended
+A: Linear baseline,League_Position,976,0.6606,5104.44,NA,FALSE,FALSE
+H: Quadratic (position),League_Position,976,0.6713,5075.12,NA,FALSE,FALSE
+H: Quadratic (points),Points,976,0.6776,7234.59,NA,FALSE,FALSE
+H: Quadratic (PPG),Points_Per_Game,976,0.6958,100.1,NA,FALSE,FALSE
+Linear (PPG),Points_Per_Game,976,0.6524,228.5,NA,TRUE,FALSE
+GAM (PPG),Points_Per_Game,976,0.7065,75.32,6.303,TRUE,TRUE

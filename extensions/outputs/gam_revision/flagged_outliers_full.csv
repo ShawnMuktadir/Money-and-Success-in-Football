@@ -1,0 +1,135 @@
+Team,Season,League,Financial_Rank,Points_Per_Game,Fitted_PPG,Residual_PPG,Outlier_Flag
+Lyon,2019-2020,Ligue 1,2,1.053,2.049,-0.996,Underperformer
+Chelsea,2015-2016,Premier League,1,1.316,2.253,-0.937,Underperformer
+AS Monaco,2018-2019,Ligue 1,3,0.947,1.874,-0.927,Underperformer
+Leicester City,2015-2016,Premier League,11,2.132,1.211,0.921,Overperformer
+AS Monaco,2019-2020,Ligue 1,3,1.053,1.874,-0.822,Underperformer
+Lens,2022-2023,Ligue 1,8,2.211,1.406,0.805,Overperformer
+Toulouse,2019-2020,Ligue 1,15,0.342,1.075,-0.733,Underperformer
+Chelsea,2022-2023,Premier League,3,1.158,1.874,-0.716,Underperformer
+Bayer Leverkusen,2016-2017,Bundesliga,3,1.206,1.874,-0.668,Underperformer
+Schalke 04,2020-2021,Bundesliga,13,0.471,1.138,-0.668,Underperformer
+Clermont Foot,2022-2023,Ligue 1,19,1.553,0.887,0.665,Overperformer
+Stade Rennais,2023-2024,Ligue 1,3,1.211,1.874,-0.664,Underperformer
+Atalanta,2019-2020,Serie A,8,2.053,1.406,0.647,Overperformer
+Granada,2023-2024,La Liga,12,0.553,1.169,-0.616,Underperformer
+Southampton,2024-2025,Premier League,18,0.316,0.915,-0.599,Underperformer
+Bayer Leverkusen,2023-2024,Bundesliga,2,2.647,2.049,0.598,Overperformer
+Las Palmas,2017-2018,La Liga,12,0.579,1.169,-0.59,Underperformer
+Granada,2019-2020,La Liga,19,1.474,0.887,0.586,Overperformer
+Valencia,2015-2016,La Liga,4,1.158,1.743,-0.585,Underperformer
+Aston Villa,2015-2016,Premier League,16,0.447,1.024,-0.576,Underperformer
+Tottenham Hotspur,2024-2025,Premier League,6,1,1.565,-0.565,Underperformer
+Atalanta,2016-2017,Serie A,9,1.895,1.331,0.563,Overperformer
+VfL Wolfsburg,2016-2017,Bundesliga,5,1.088,1.646,-0.558,Underperformer
+1. FC Union Berlin,2022-2023,Bundesliga,10,1.824,1.266,0.558,Overperformer
+Liverpool,2019-2020,Premier League,2,2.605,2.049,0.556,Overperformer
+VfL Wolfsburg,2015-2016,Bundesliga,3,1.324,1.874,-0.551,Underperformer
+Parma,2020-2021,Serie A,15,0.526,1.075,-0.549,Underperformer
+Sheffield United,2019-2020,Premier League,20,1.421,0.877,0.544,Overperformer
+Montpellier,2024-2025,Ligue 1,17,0.421,0.964,-0.543,Underperformer
+Nottingham Forest,2024-2025,Premier League,12,1.711,1.169,0.542,Overperformer
+Manchester United,2024-2025,Premier League,5,1.105,1.646,-0.541,Underperformer
+1. FC Union Berlin,2021-2022,Bundesliga,13,1.676,1.138,0.538,Overperformer
+Brest,2023-2024,Ligue 1,15,1.605,1.075,0.53,Overperformer
+Leeds United,2020-2021,Premier League,16,1.553,1.024,0.529,Overperformer
+Brentford,2022-2023,Premier League,16,1.553,1.024,0.529,Overperformer
+Napoli,2024-2025,Serie A,5,2.158,1.646,0.512,Overperformer
+Espanyol,2019-2020,La Liga,12,0.658,1.169,-0.511,Underperformer
+1. FC Union Berlin,2020-2021,Bundesliga,17,1.471,0.964,0.506,Overperformer
+Burnley,2019-2020,Premier League,18,1.421,0.915,0.506,Overperformer
+Liverpool,2018-2019,Premier League,2,2.553,2.049,0.504,Overperformer
+VfB Stuttgart,2023-2024,Bundesliga,5,2.147,1.646,0.501,Overperformer
+West Ham United,2020-2021,Premier League,11,1.711,1.211,0.5,Overperformer
+Real Valladolid,2024-2025,La Liga,18,0.421,0.915,-0.494,Underperformer
+Angers,2022-2023,Ligue 1,17,0.474,0.964,-0.49,Underperformer
+Pescara,2016-2017,Serie A,17,0.474,0.964,-0.49,Underperformer
+Lazio,2019-2020,Serie A,6,2.053,1.565,0.488,Overperformer
+Nice,2019-2020,Ligue 1,6,1.079,1.565,-0.486,Underperformer
+Girona,2023-2024,La Liga,5,2.132,1.646,0.485,Overperformer
+Rayo Vallecano,2024-2025,La Liga,19,1.368,0.887,0.481,Overperformer
+Fulham,2022-2023,Premier League,19,1.368,0.887,0.481,Overperformer
+Southampton,2022-2023,Premier League,13,0.658,1.138,-0.481,Underperformer
+Marseille,2015-2016,Ligue 1,4,1.263,1.743,-0.48,Underperformer
+Napoli,2023-2024,Serie A,3,1.395,1.874,-0.479,Underperformer
+Schalke 04,2016-2017,Bundesliga,4,1.265,1.743,-0.478,Underperformer
+Saint-Étienne,2019-2020,Ligue 1,10,0.789,1.266,-0.476,Underperformer
+Liverpool,2024-2025,Premier League,4,2.211,1.743,0.468,Overperformer
+Huddersfield Town,2018-2019,Premier League,19,0.421,0.887,-0.466,Underperformer
+Sheffield United,2023-2024,Premier League,19,0.421,0.887,-0.466,Underperformer
+Paris Saint-Germain,2019-2020,Ligue 1,1,1.789,2.253,-0.464,Underperformer
+Lazio,2022-2023,Serie A,7,1.947,1.485,0.463,Overperformer
+Valencia,2022-2023,La Liga,6,1.105,1.565,-0.459,Underperformer
+Fulham,2024-2025,Premier League,17,1.421,0.964,0.457,Overperformer
+Osasuna,2019-2020,La Liga,18,1.368,0.915,0.454,Overperformer
+Lille,2019-2020,Ligue 1,4,1.289,1.743,-0.453,Underperformer
+AS Monaco,2016-2017,Ligue 1,2,2.5,2.049,0.451,Overperformer
+Strasbourg,2021-2022,Ligue 1,11,1.658,1.211,0.447,Overperformer
+Lyon,2021-2022,Ligue 1,2,1.605,2.049,-0.444,Underperformer
+AS Monaco,2024-2025,Ligue 1,2,1.605,2.049,-0.444,Underperformer
+Atlético Madrid,2015-2016,La Liga,3,2.316,1.874,0.442,Overperformer
+Lille,2020-2021,Ligue 1,4,2.184,1.743,0.441,Overperformer
+Troyes,2015-2016,Ligue 1,18,0.474,0.915,-0.441,Underperformer
+Monza,2024-2025,Serie A,18,0.474,0.915,-0.441,Underperformer
+Chievo Verona,2018-2019,Serie A,19,0.447,0.887,-0.44,Underperformer
+Salernitana,2023-2024,Serie A,19,0.447,0.887,-0.44,Underperformer
+Granada,2016-2017,La Liga,17,0.526,0.964,-0.438,Underperformer
+Valencia,2016-2017,La Liga,5,1.211,1.646,-0.436,Underperformer
+Real Sociedad,2024-2025,La Liga,5,1.211,1.646,-0.436,Underperformer
+Liverpool,2016-2017,Premier League,6,2,1.565,0.435,Overperformer
+VfL Wolfsburg,2017-2018,Bundesliga,8,0.971,1.406,-0.435,Underperformer
+Athletic Club,2017-2018,La Liga,6,1.132,1.565,-0.433,Underperformer
+Toulouse,2017-2018,Ligue 1,8,0.974,1.406,-0.432,Underperformer
+Bordeaux,2019-2020,Ligue 1,8,0.974,1.406,-0.432,Underperformer
+Borussia Dortmund,2017-2018,Bundesliga,2,1.618,2.049,-0.431,Underperformer
+Bastia,2015-2016,Ligue 1,19,1.316,0.887,0.429,Overperformer
+Fulham,2018-2019,Premier League,14,0.684,1.112,-0.427,Underperformer
+Eibar,2017-2018,La Liga,18,1.342,0.915,0.427,Overperformer
+Getafe,2017-2018,La Liga,16,1.447,1.024,0.424,Overperformer
+Nottingham Forest,2023-2024,Premier League,10,0.842,1.266,-0.424,Underperformer
+SC Amiens,2019-2020,Ligue 1,16,0.605,1.024,-0.418,Underperformer
+TSG Hoffenheim,2016-2017,Bundesliga,8,1.824,1.406,0.418,Overperformer
+FC Cologne,2021-2022,Bundesliga,14,1.529,1.112,0.418,Overperformer
+AS Roma,2016-2017,Serie A,3,2.289,1.874,0.415,Overperformer
+Liverpool,2023-2024,Premier League,4,2.158,1.743,0.415,Overperformer
+SV Darmstadt 98,2023-2024,Bundesliga,18,0.5,0.915,-0.415,Underperformer
+Almería,2023-2024,La Liga,17,0.553,0.964,-0.412,Underperformer
+Benevento,2017-2018,Serie A,17,0.553,0.964,-0.412,Underperformer
+VfL Wolfsburg,2021-2022,Bundesliga,5,1.235,1.646,-0.411,Underperformer
+Juventus,2021-2022,Serie A,1,1.842,2.253,-0.411,Underperformer
+Atalanta,2020-2021,Serie A,5,2.053,1.646,0.406,Overperformer
+Real Betis,2019-2020,La Liga,7,1.079,1.485,-0.406,Underperformer
+Bordeaux,2018-2019,Ligue 1,7,1.079,1.485,-0.406,Underperformer
+Stade Rennais,2024-2025,Ligue 1,7,1.079,1.485,-0.406,Underperformer
+Fiorentina,2018-2019,Serie A,7,1.079,1.485,-0.406,Underperformer
+RB Leipzig,2016-2017,Bundesliga,6,1.971,1.565,0.406,Overperformer
+Saint-Étienne,2018-2019,Ligue 1,9,1.737,1.331,0.405,Overperformer
+Chievo Verona,2015-2016,Serie A,18,1.316,0.915,0.401,Overperformer
+Espanyol,2016-2017,La Liga,15,1.474,1.075,0.398,Overperformer
+Eibar,2016-2017,La Liga,16,1.421,1.024,0.397,Overperformer
+Stade de Reims,2024-2025,Ligue 1,10,0.868,1.266,-0.397,Underperformer
+TSG Hoffenheim,2015-2016,Bundesliga,7,1.088,1.485,-0.397,Underperformer
+VfL Wolfsburg,2023-2024,Bundesliga,7,1.088,1.485,-0.397,Underperformer
+Torino,2018-2019,Serie A,10,1.658,1.266,0.392,Overperformer
+Troyes,2022-2023,Ligue 1,16,0.632,1.024,-0.392,Underperformer
+Sunderland,2016-2017,Premier League,16,0.632,1.024,-0.392,Underperformer
+TSG Hoffenheim,2024-2025,Bundesliga,9,0.941,1.331,-0.39,Underperformer
+Atlético Madrid,2020-2021,La Liga,3,2.263,1.874,0.389,Overperformer
+Tottenham Hotspur,2016-2017,Premier League,3,2.263,1.874,0.389,Overperformer
+AC Milan,2021-2022,Serie A,3,2.263,1.874,0.389,Overperformer
+Manchester United,2017-2018,Premier League,4,2.132,1.743,0.389,Overperformer
+Werder Bremen,2024-2025,Bundesliga,14,1.5,1.112,0.388,Overperformer
+Lens,2020-2021,Ligue 1,14,1.5,1.112,0.388,Overperformer
+SpVgg Greuther Fürth,2021-2022,Bundesliga,18,0.529,0.915,-0.385,Underperformer
+Manchester City,2024-2025,Premier League,1,1.868,2.253,-0.385,Underperformer
+Southampton,2017-2018,Premier League,9,0.947,1.331,-0.384,Underperformer
+Getafe,2018-2019,La Liga,12,1.553,1.169,0.384,Overperformer
+Montpellier,2018-2019,Ligue 1,12,1.553,1.169,0.384,Overperformer
+Newcastle United,2022-2023,Premier League,7,1.868,1.485,0.384,Overperformer
+Tottenham Hotspur,2017-2018,Premier League,5,2.026,1.646,0.38,Overperformer
+Lazio,2024-2025,Serie A,9,1.711,1.331,0.379,Overperformer
+Manchester City,2017-2018,Premier League,1,2.632,2.253,0.379,Overperformer
+Sampdoria,2022-2023,Serie A,20,0.5,0.877,-0.377,Underperformer
+Hertha Berlin,2020-2021,Bundesliga,8,1.029,1.406,-0.376,Underperformer
+Lorient,2023-2024,Ligue 1,13,0.763,1.138,-0.375,Underperformer
+RB Leipzig,2024-2025,Bundesliga,3,1.5,1.874,-0.374,Underperformer

@@ -1,0 +1,4 @@
+Model,Outcome,N,R2_or_Dev_Explained,AIC,EDF
+H: Quadratic (PPG) [reference],Points_Per_Game,976,0.6958,100.1,NA
+Linear (PPG),Points_Per_Game,976,0.6524,228.5,NA
+GAM (PPG),Points_Per_Game,976,0.7065,75.32,6.303
