@@ -212,7 +212,6 @@ pct_fr1    <- round(100 * fr1_champs / n_champ)
 fr_gt3_n   <- sum(champ_csv$Financial_Rank > 3)
 ```
 
----
 
 # Executive Summary
 
@@ -255,7 +254,6 @@ sporting success in these leagues, whichever way success is measured.
 Serie A), covering the 2015-16 to 2024-25 seasons.
 :::
 
----
 
 # Introduction
 
@@ -327,7 +325,6 @@ effect beyond what a single fixed curve could represent? Third, exceptions:
 which clubs defy the financial hierarchy, and how statistically unusual are
 they under this revised approach?
 
----
 
 # The Data We Used
 
@@ -401,7 +398,6 @@ first hint, well before the modelling begins, that financial strength is a
 powerful predictor of sporting outcomes in every one of the five leagues
 studied.
 
----
 
 # Methodology: From a Straight Line to a Learned Curve
 
@@ -463,7 +459,6 @@ intuition behind the quadratic term, that the effect of financial rank is
 not constant, while removing the requirement that the non-constant effect
 take one specific, predetermined shape.
 
----
 
 # Core Results
 
@@ -569,7 +564,6 @@ financial rank scale, and the wider band there is an honest reflection of
 that reduced sample size, not evidence that the model performs worse for
 those clubs.
 
----
 
 # Outlier Analysis
 
@@ -692,7 +686,6 @@ range of variation. Only Leicester City, at Financial Rank 11, is a
 genuine statistical outlier among the champions, confirming the finding
 above.
 
----
 
 # Robustness
 
@@ -808,7 +801,6 @@ forms (a fixed quadratic curve and a learned smooth curve), in addition
 to the time split and cross sport checks in this section.
 :::
 
----
 
 # Conclusions
 
@@ -936,7 +928,6 @@ tibble(
   column_spec(3,              width = if (knitr::is_latex_output()) "6cm"   else "40%")
 ```
 
----
 
 # Statement of Individual Contributions {-}
 
@@ -946,11 +937,10 @@ Mainka wrote the journalistic article and delivered the oral presentation.
 Both authors jointly developed the research question and revised the
 final materials.
 
----
 
 # Appendix
 
-## A. Full Coefficient Table (Models A and H)
+## Full Coefficient Table (Models A and H)
 
 ```{r full-coef-table}
 coef_all |>
@@ -969,14 +959,14 @@ coef_all |>
   select(-p.value) |>
   kbl(longtable = TRUE,
     col.names = c("Model", "Term", "Estimate", "Std. Error", "t / z", "p-value"),
-    caption   = "Table A1. Full regression coefficient table, Models A (linear) and H (quadratic)."
+    caption   = "Full regression coefficient table, Models A (linear) and H (quadratic)."
   ) |>
   kable_styling(latex_options = c("repeat_header", "striped"), full_width = FALSE) |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
   collapse_rows(columns = 1, valign = "top")
 ```
 
-## B. Model H Quadratic Coefficients, Position Outcome (Detailed)
+## Model H Quadratic Coefficients, Position Outcome (Detailed)
 
 ```{r appendix-modelh}
 coef_H_raw |>
@@ -992,38 +982,38 @@ coef_H_raw |>
   select(term, estimate, std.error, statistic, p.value, conf.low, conf.high) |>
   kbl(longtable = FALSE,
     col.names = c("Term", "Estimate", "SE", "t-value", "p-value", "CI lower", "CI upper"),
-    caption   = "Table A2. Model H (Position explained by Financial Rank plus Financial Rank squared) full coefficient table with 95 percent confidence intervals."
+    caption   = "Model H (Position explained by Financial Rank plus Financial Rank squared) full coefficient table with 95 percent confidence intervals."
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
 ```
 
-## C. Points-Per-Game Model Comparison Table (Full Precision)
+## Points-Per-Game Model Comparison Table (Full Precision)
 
 ```{r appendix-gam-table}
 gam_table |>
   kbl(longtable = FALSE,
     col.names = c("Model", "Outcome", "N", "R squared / deviance explained", "AIC", "Effective degrees of freedom"),
-    caption   = "Table A3. Linear, quadratic, and generalized additive model comparison for points per game, at full precision, from this report's underlying GAM revision output."
+    caption   = "Linear, quadratic, and generalized additive model comparison for points per game, at full precision, from this report's underlying GAM revision output."
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
 ```
 
-## D. Whole-Project Model Evolution Table
+## Whole-Project Model Evolution Table
 
 ```{r appendix-e1-table}
 e1_table |>
   select(Model, Outcome, N, R_squared, AIC) |>
   kbl(longtable = FALSE,
     col.names = c("Model", "Outcome", "N", "R squared", "AIC"),
-    caption   = "Table A4. Every position, points, and points-per-game specification fitted across the whole project, from this report's whole-project model evolution output."
+    caption   = "Every position, points, and points-per-game specification fitted across the whole project, from this report's whole-project model evolution output."
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
 ```
 
-## E. Analysis Script Inventory
+## Analysis Script Inventory
 
 The complete, runnable source code for this project is available at
 **https://github.com/ShawnMuktadir/Money-and-Success-in-Football**. Readers
@@ -1066,7 +1056,13 @@ tibble(
     "Linear and generalized additive model specifications for points per game, the primary models used in this report"
   )
 ) |>
-  kbl(longtable = FALSE, caption = "Analysis scripts and their outputs, in run order.") |>
+  mutate(Script = if (knitr::is_latex_output()) {
+    gsub("_", "\\\\_\\\\allowbreak{}", Script)
+  } else {
+    Script
+  }) |>
+  kbl(longtable = FALSE, caption = "Analysis scripts and their outputs, in run order.",
+      escape = !knitr::is_latex_output()) |>
   kable_styling(
     latex_options = c("striped", "scale_down", "hold_position"),
     bootstrap_options = c("striped", "hover", "condensed"),
@@ -1074,10 +1070,11 @@ tibble(
     font_size  = if (knitr::is_latex_output()) 8 else NULL
   ) |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
-  column_spec(1, width = if (knitr::is_latex_output()) "4.2cm" else "25%")
+  column_spec(1, width = if (knitr::is_latex_output()) "3.6cm" else "25%") |>
+  column_spec(2, width = if (knitr::is_latex_output()) "7.5cm" else "55%")
 ```
 
-## F. Session Information
+## Session Information
 
 ```{r session-info}
 si <- sessionInfo()
@@ -1102,7 +1099,6 @@ and *tidyr*, https://tidyverse.org. Robinson et al., *broom*,
 https://broom.tidymodels.org. Zhu, H., *kableExtra*,
 https://haozhu233.github.io/kableExtra/.
 
----
 
 *Report generated with R Markdown. Data sources: ESPN FC (league standings),
 Transfermarkt (squad market values). All analysis scripts are available in
