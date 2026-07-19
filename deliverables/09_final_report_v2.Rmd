@@ -205,6 +205,8 @@ champ_csv   <- read_csv("outputs/31_all_champions_with_residuals.csv", show_col_
 gam_table   <- read_csv("extensions/outputs/gam_revision/gam_revision_table.csv", show_col_types = FALSE)
 e1_table    <- read_csv("extensions/outputs/E1_model_evolution_table.csv", show_col_types = FALSE)
 nba_summary <- read_csv("outputs/40_nba_vs_football_summary.csv", show_col_types = FALSE)
+hsk_tests   <- read_csv("outputs/14_heteroskedasticity_autocorrelation_tests.csv", show_col_types = FALSE)
+robust_se   <- read_csv("outputs/15_modelD_robust_se.csv", show_col_types = FALSE)
 
 n_champ    <- nrow(champ_csv)
 fr1_champs <- sum(champ_csv$Financial_Rank == 1)
@@ -987,6 +989,71 @@ coef_H_raw |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
 ```
+
+## Position Model Diagnostics: Residual Plot and Heteroskedasticity Tests
+
+Because final league position is still reported alongside points per game in
+this report (as corroborating context, not as the primary outcome), the
+diagnostic checks recommended for any continued use of an ordinal outcome
+are reproduced here in full, rather than only referenced.
+
+```{r appendix-modelh-resid-fig, out.width="90%", fig.height=4.2, fig.pos="H", fig.cap="Residuals vs fitted values, Model H (League Position explained by Financial Rank plus Financial Rank squared). The shaded band marks ordinary variation; labelled points lie beyond 1.5 residual standard deviations."}
+knitr::include_graphics("outputs/28_residual_plot_modelH.png")
+```
+
+The residual plot shows no obvious funnel shape (residual spread does not
+visibly widen or narrow as fitted position increases), which is the
+qualitative check a residual plot is meant to provide. Formal tests confirm
+what the plot suggests only informally: both heteroskedasticity (unequal
+error spread) and autocorrelation (correlated errors across observations,
+expected here since the same clubs recur across multiple seasons) are
+statistically detectable.
+
+```{r appendix-hsk-table}
+hsk_tests |>
+  mutate(
+    Statistic = round(Statistic, 4),
+    p_value   = formatC(p_value, format = "e", digits = 3)
+  ) |>
+  kbl(longtable = FALSE,
+    col.names = c("Test", "Statistic", "Parameter", "p-value"),
+    caption   = "Breusch-Pagan test for heteroskedasticity and Durbin-Watson test for autocorrelation, Model D (League Position explained by log squad value, league, and season index)."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+Both tests reject their null hypothesis at p < 0.001: the constant-variance
+and independent-errors assumptions behind an ordinary least squares model do
+not strictly hold for a position-based specification. This is exactly the
+kind of limited interpretability the recommendation to critically analyze
+position-based results anticipates, and it is a second, independent reason
+(beyond position's ordinal, non-continuous scale) that this report treats
+points per game and the generalized additive model as primary, using
+position only as corroborating evidence. As a check on how much this
+distorts inference, Model D was refit with heteroskedasticity-robust (HC1)
+standard errors:
+
+```{r appendix-robust-se-table}
+robust_se |>
+  mutate(across(c(estimate, std.error, statistic, std.error_OLS), ~ round(., 4)),
+         p.value = formatC(p.value, format = "e", digits = 3)) |>
+  select(term, estimate, std.error_OLS, std.error, statistic, p.value) |>
+  kbl(longtable = FALSE,
+    col.names = c("Term", "Estimate", "SE (OLS)", "SE (HC1 robust)", "t-value", "p-value"),
+    caption   = "Model D coefficients with ordinary vs. heteroskedasticity-robust (HC1) standard errors. Conclusions about which terms are statistically significant are unchanged."
+  ) |>
+  kbs() |>
+  row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+```
+
+The robust standard errors are close to the ordinary ones for every term,
+and no term crosses the conventional 0.05 significance threshold in either
+direction as a result of the correction. The substantive conclusions drawn
+from the position-based specification are therefore not an artefact of the
+detected heteroskedasticity, even though, as a matter of statistical
+principle, points per game remains the more appropriate outcome variable
+for the reasons given in the Methodology section.
 
 ## Points-Per-Game Model Comparison Table (Full Precision)
 
