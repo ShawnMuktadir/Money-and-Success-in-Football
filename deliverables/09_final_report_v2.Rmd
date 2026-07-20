@@ -84,6 +84,14 @@ table.table thead tr th {
 /* Misc */
 h1, h2, h3 { color: #1A2A4A; }
 .caption    { color: #566573; font-style: italic; font-size: 0.88em; }
+.table-caption {
+  color: #566573;
+  font-style: italic;
+  font-size: 0.88em;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 18px;
+}
 ```
 
 ```{r knitr-setup, include=FALSE}
@@ -123,6 +131,19 @@ kbs <- function(tbl, fw = FALSE, pos = "center",
   } else {
     kable_styling(tbl, bootstrap_options = bo,
                   full_width = fw, position = pos, ...)
+  }
+}
+
+# Table captions are printed below their table (rather than kableExtra's
+# default of above) by omitting `caption =` from kbl() and instead calling
+# this after the table is printed, in a chunk with results='asis'.
+.tbl_n <- 0
+tbl_cap <- function(text) {
+  .tbl_n <<- .tbl_n + 1
+  if (knitr::is_latex_output()) {
+    cat(sprintf("\n\\begin{center}\\small Table %d: %s\\end{center}\n", .tbl_n, text))
+  } else {
+    cat(sprintf('\n<p class="table-caption">Table %d: %s</p>\n', .tbl_n, text))
   }
 }
 
@@ -215,47 +236,25 @@ fr_gt3_n   <- sum(champ_csv$Financial_Rank > 3)
 ```
 
 
-# Executive Summary
+# Abstract {-}
 
-::: {.callout-finding}
-**Headline finding.** Modelled with points per game as the outcome and a
-generalized additive model (a flexible statistical model that lets the shape
-of a relationship be learned from the data rather than fixed in advance,
-explained fully in the Methodology section), Financial Rank explains
-**`r round(100*gam_devexpl)`%** of the variation in how many points a club
-earns per match across a season (deviance explained = `r round(gam_devexpl,3)`).
-Deviance explained is the equivalent of R squared for this type of flexible
-model: it is the share of the variation in the outcome that the model
-successfully accounts for, on a scale from 0 (no explanatory power) to 1
-(perfect prediction).
-:::
-
-::: {.callout-alert}
-**The two clubs the model cannot explain away.** Leicester City's 2015-16
-Premier League title and Bayer Leverkusen's unbeaten 2023-24 Bundesliga
-title both remain the standout statistical overperformers under this
-model: both clubs earned far more points per game than their financial
-rank predicted, and both results survive every alternative specification
-tested in this report.
-:::
-
-::: {.callout-stat}
-**Corroborating context.** The same underlying relationship, measured the
-original way (Financial Rank against final league position, using a
-correlation coefficient, a standard statistic between -1 and 1 that
-measures how closely two variables move together), gives a Pearson
-correlation of r = `r r_pearson` and an R squared of `r r2_H_pos` (that is,
-`r round(100*r2_H_pos)`% of the variation in final position explained).
-The two outcome measures agree: money is a very strong predictor of
-sporting success in these leagues, whichever way success is measured.
-:::
-
-::: {.callout-stat}
-**Scale of the study.** `r format(n_obs, big.mark=",")` team-seasons across
-5 major European leagues (Bundesliga, La Liga, Ligue 1, Premier League,
-Serie A), covering the 2015-16 to 2024-25 seasons.
-:::
-
+This report investigates whether financial strength predicts on-field
+success in European football, using points per game as the outcome and a
+generalized additive model (GAM) to let the relationship with Financial
+Rank take a flexible, data-driven shape rather than a fixed linear or
+polynomial form. Drawing on `r format(n_obs, big.mark=",")` team-seasons
+across five major European leagues (Bundesliga, La Liga, Ligue 1, Premier
+League, Serie A) over the 2015-16 to 2024-25 seasons, the model finds that
+Financial Rank explains **`r round(100*gam_devexpl)`%** of the variation
+in points earned per match (deviance explained = `r round(gam_devexpl,3)`).
+The same relationship, measured against final league position using a
+Pearson correlation, yields r = `r r_pearson` (R squared =
+`r r2_H_pos`), confirming that money is a strong predictor of sporting
+success under either outcome measure. Two clubs remain the standout
+exceptions to this pattern across every specification tested in this
+report: Leicester City's 2015-16 Premier League title and Bayer
+Leverkusen's unbeaten 2023-24 Bundesliga title, both of which earned far
+more points per game than their financial rank predicted.
 
 # Introduction
 
@@ -376,19 +375,19 @@ making comparisons across league formats fair for the first time.
 
 ## Descriptive Statistics
 
-```{r desc-stats-combined}
+```{r desc-stats-combined, results='asis'}
 desc_raw |>
   mutate(League = ifelse(Group == "ALL LEAGUES (combined)", "All leagues (combined)", Group)) |>
   select(League, N, Mean_Position, Mean_MV_M_EUR, Mean_Points, Corr_FR_Pos) |>
   mutate(across(where(is.numeric), ~ round(., 2))) |>
   kbl(longtable = FALSE,
     col.names = c("League", "N", "Mean position", "Mean squad value (million euros)",
-                  "Mean points", "Pearson r (FR vs. position)"),
-    caption   = "Sample size, average outcomes, and the Financial Rank to position correlation, by league and combined."
+                  "Mean points", "Pearson r (FR vs. position)")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
   row_spec(1, bold = TRUE, background = "#EBF5FB")
+tbl_cap("Sample size, average outcomes, and the Financial Rank to position correlation, by league and combined.")
 ```
 
 The "All leagues (combined)" row covers the full sample. Squad values vary
@@ -486,7 +485,7 @@ outcome variable and data, which is the case for all three rows here. The
 third column, effective degrees of freedom, is reported only for the
 generalized additive model and is explained fully below the table.
 
-```{r core-results-table}
+```{r core-results-table, results='asis'}
 gam_table |>
   mutate(Model = recode(Model,
     "H: Quadratic (PPG) [reference]" = "Quadratic (Model H)",
@@ -496,12 +495,12 @@ gam_table |>
   select(Model, N, R2_or_Dev_Explained, AIC, EDF) |>
   kbl(longtable = FALSE,
     col.names = c("Model", "N", "R squared / deviance explained", "AIC",
-                  "Effective degrees of freedom"),
-    caption   = "Comparison of the linear, quadratic, and generalized additive specifications for points per game, from this report's underlying GAM revision output."
+                  "Effective degrees of freedom")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
   row_spec(3, bold = TRUE, background = "#FEF9E7")
+tbl_cap("Comparison of the linear, quadratic, and generalized additive specifications for points per game, from this report's underlying GAM revision output.")
 ```
 
 Moving from a straight line to the fixed quadratic curve already raises
@@ -614,30 +613,30 @@ top_over  <- outlier_tbl_full |> filter(Outlier_Flag == "Overperformer")  |> arr
 top_under <- outlier_tbl_full |> filter(Outlier_Flag == "Underperformer") |> arrange(desc(abs(Residual_PPG))) |> slice_head(n = 10)
 ```
 
-```{r outlier-table-over}
+```{r outlier-table-over, results='asis'}
 top_over |>
   select(-Outlier_Flag) |>
   kbl(longtable = FALSE,
     col.names = c("Team", "Season", "League", "FR", "Actual PPG",
-                  "Pred. PPG", "Residual"),
-    caption   = "Top 10 overperformers under the generalized additive model, sorted by residual size (largest positive first). FR is Financial Rank; PPG is points per game."
+                  "Pred. PPG", "Residual")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
   row_spec(1:nrow(top_over), background = "#EBF5FB")
+tbl_cap("Top 10 overperformers under the generalized additive model, sorted by residual size (largest positive first). FR is Financial Rank; PPG is points per game.")
 ```
 
-```{r outlier-table-under}
+```{r outlier-table-under, results='asis'}
 top_under |>
   select(-Outlier_Flag) |>
   kbl(longtable = FALSE,
     col.names = c("Team", "Season", "League", "FR", "Actual PPG",
-                  "Pred. PPG", "Residual"),
-    caption   = "Top 10 underperformers under the generalized additive model, sorted by absolute residual size (largest negative first). FR is Financial Rank; PPG is points per game."
+                  "Pred. PPG", "Residual")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
   row_spec(1:nrow(top_under), background = "#FDEDEC")
+tbl_cap("Top 10 underperformers under the generalized additive model, sorted by absolute residual size (largest negative first). FR is Financial Rank; PPG is points per game.")
 ```
 
 The two tables above show the ten largest overperformers and ten largest
@@ -884,7 +883,7 @@ winning.
 
 ## Limitations and Future Directions
 
-```{r limitations-table}
+```{r limitations-table, results='asis'}
 tibble(
   Limitation = c(
     "Market value as a quality proxy",
@@ -915,8 +914,7 @@ tibble(
   )
 ) |>
   kbl(longtable = TRUE,
-    col.names = c("Limitation", "Issue", "Potential Fix"),
-    caption   = "Study limitations and suggested future extensions."
+    col.names = c("Limitation", "Issue", "Potential Fix")
   ) |>
   kable_styling(
     latex_options     = c("striped", "repeat_header"),
@@ -928,23 +926,15 @@ tibble(
   column_spec(1, bold = TRUE, width = if (knitr::is_latex_output()) "2.6cm" else "20%") |>
   column_spec(2,              width = if (knitr::is_latex_output()) "6cm"   else "40%") |>
   column_spec(3,              width = if (knitr::is_latex_output()) "6cm"   else "40%")
+tbl_cap("Study limitations and suggested future extensions.")
 ```
-
-
-# Statement of Individual Contributions {-}
-
-Md. Muktadir performed the data collection, cleaning, statistical
-modelling, all figures and tables, and wrote this technical report. Linus
-Mainka wrote the journalistic article and delivered the oral presentation.
-Both authors jointly developed the research question and revised the
-final materials.
 
 
 # Appendix
 
 ## Full Coefficient Table (Models A and H)
 
-```{r full-coef-table}
+```{r full-coef-table, results='asis'}
 coef_all |>
   filter(grepl("^[AH]", model_label)) |>
   select(model_label, term, estimate, std.error, statistic, p.value) |>
@@ -960,17 +950,17 @@ coef_all |>
   ) |>
   select(-p.value) |>
   kbl(longtable = TRUE,
-    col.names = c("Model", "Term", "Estimate", "Std. Error", "t / z", "p-value"),
-    caption   = "Full regression coefficient table, Models A (linear) and H (quadratic)."
+    col.names = c("Model", "Term", "Estimate", "Std. Error", "t / z", "p-value")
   ) |>
   kable_styling(latex_options = c("repeat_header", "striped"), full_width = FALSE) |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
   collapse_rows(columns = 1, valign = "top")
+tbl_cap("Full regression coefficient table, Models A (linear) and H (quadratic).")
 ```
 
 ## Model H Quadratic Coefficients, Position Outcome (Detailed)
 
-```{r appendix-modelh}
+```{r appendix-modelh, results='asis'}
 coef_H_raw |>
   mutate(
     term  = recode(term,
@@ -983,11 +973,11 @@ coef_H_raw |>
   ) |>
   select(term, estimate, std.error, statistic, p.value, conf.low, conf.high) |>
   kbl(longtable = FALSE,
-    col.names = c("Term", "Estimate", "SE", "t-value", "p-value", "CI lower", "CI upper"),
-    caption   = "Model H (Position explained by Financial Rank plus Financial Rank squared) full coefficient table with 95 percent confidence intervals."
+    col.names = c("Term", "Estimate", "SE", "t-value", "p-value", "CI lower", "CI upper")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+tbl_cap("Model H (Position explained by Financial Rank plus Financial Rank squared) full coefficient table with 95 percent confidence intervals.")
 ```
 
 ## Position Model Diagnostics: Residual Plot and Heteroskedasticity Tests
@@ -1009,18 +999,18 @@ error spread) and autocorrelation (correlated errors across observations,
 expected here since the same clubs recur across multiple seasons) are
 statistically detectable.
 
-```{r appendix-hsk-table}
+```{r appendix-hsk-table, results='asis'}
 hsk_tests |>
   mutate(
     Statistic = round(Statistic, 4),
     p_value   = formatC(p_value, format = "e", digits = 3)
   ) |>
   kbl(longtable = FALSE,
-    col.names = c("Test", "Statistic", "Parameter", "p-value"),
-    caption   = "Breusch-Pagan test for heteroskedasticity and Durbin-Watson test for autocorrelation, Model D (League Position explained by log squad value, league, and season index)."
+    col.names = c("Test", "Statistic", "Parameter", "p-value")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+tbl_cap("Breusch-Pagan test for heteroskedasticity and Durbin-Watson test for autocorrelation, Model D (League Position explained by log squad value, league, and season index).")
 ```
 
 Both tests reject their null hypothesis at p < 0.001: the constant-variance
@@ -1034,17 +1024,17 @@ position only as corroborating evidence. As a check on how much this
 distorts inference, Model D was refit with heteroskedasticity-robust (HC1)
 standard errors:
 
-```{r appendix-robust-se-table}
+```{r appendix-robust-se-table, results='asis'}
 robust_se |>
   mutate(across(c(estimate, std.error, statistic, std.error_OLS), ~ round(., 4)),
          p.value = formatC(p.value, format = "e", digits = 3)) |>
   select(term, estimate, std.error_OLS, std.error, statistic, p.value) |>
   kbl(longtable = FALSE,
-    col.names = c("Term", "Estimate", "SE (OLS)", "SE (HC1 robust)", "t-value", "p-value"),
-    caption   = "Model D coefficients with ordinary vs. heteroskedasticity-robust (HC1) standard errors. Conclusions about which terms are statistically significant are unchanged."
+    col.names = c("Term", "Estimate", "SE (OLS)", "SE (HC1 robust)", "t-value", "p-value")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+tbl_cap("Model D coefficients with ordinary vs. heteroskedasticity-robust (HC1) standard errors. Conclusions about which terms are statistically significant are unchanged.")
 ```
 
 The robust standard errors are close to the ordinary ones for every term,
@@ -1057,27 +1047,27 @@ for the reasons given in the Methodology section.
 
 ## Points-Per-Game Model Comparison Table (Full Precision)
 
-```{r appendix-gam-table}
+```{r appendix-gam-table, results='asis'}
 gam_table |>
   kbl(longtable = FALSE,
-    col.names = c("Model", "Outcome", "N", "R squared / deviance explained", "AIC", "Effective degrees of freedom"),
-    caption   = "Linear, quadratic, and generalized additive model comparison for points per game, at full precision, from this report's underlying GAM revision output."
+    col.names = c("Model", "Outcome", "N", "R squared / deviance explained", "AIC", "Effective degrees of freedom")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+tbl_cap("Linear, quadratic, and generalized additive model comparison for points per game, at full precision, from this report's underlying GAM revision output.")
 ```
 
 ## Whole-Project Model Evolution Table
 
-```{r appendix-e1-table}
+```{r appendix-e1-table, results='asis'}
 e1_table |>
   select(Model, Outcome, N, R_squared, AIC) |>
   kbl(longtable = FALSE,
-    col.names = c("Model", "Outcome", "N", "R squared", "AIC"),
-    caption   = "Every position, points, and points-per-game specification fitted across the whole project, from this report's whole-project model evolution output."
+    col.names = c("Model", "Outcome", "N", "R squared", "AIC")
   ) |>
   kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white")
+tbl_cap("Every position, points, and points-per-game specification fitted across the whole project, from this report's whole-project model evolution output.")
 ```
 
 ## Analysis Script Inventory
@@ -1089,7 +1079,7 @@ table below lists every analysis script (scripts 01-12 are in `RScripts/`,
 scripts 13-16 are in `extensions/scripts/`), in run order, and what each
 one produces.
 
-```{r script-inventory}
+```{r script-inventory, results='asis'}
 tibble(
   Script = c(
     "01_scrape_ESPN_standings.R", "02_scrape_transfermarkt_market_values.R",
@@ -1128,8 +1118,7 @@ tibble(
   } else {
     Script
   }) |>
-  kbl(longtable = FALSE, caption = "Analysis scripts and their outputs, in run order.",
-      escape = !knitr::is_latex_output()) |>
+  kbl(longtable = FALSE, escape = !knitr::is_latex_output()) |>
   kable_styling(
     latex_options = c("striped", "scale_down", "hold_position"),
     bootstrap_options = c("striped", "hover", "condensed"),
@@ -1139,6 +1128,7 @@ tibble(
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
   column_spec(1, width = if (knitr::is_latex_output()) "3.6cm" else "25%") |>
   column_spec(2, width = if (knitr::is_latex_output()) "7.5cm" else "55%")
+tbl_cap("Analysis scripts and their outputs, in run order.")
 ```
 
 ## Session Information
