@@ -11,7 +11,7 @@
 
 <meta name="author" content="Md. Muktadir" />
 
-<meta name="date" content="2026-07-20" />
+<meta name="date" content="2026-07-21" />
 
 <title>Money and Success in Football</title>
 
@@ -2879,6 +2879,116 @@ ul.task-list{list-style: none;}
 
 
 
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
+.sourceCode .row {
+width: 100%;
+}
+.sourceCode {
+overflow-x: auto;
+}
+.code-folding-btn {
+margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -3062,7 +3172,7 @@ font-size: 0.95em;
 A Generalized Additive Model <em>Sports Economics Seminar, Summer
 Semester 2026</em></p></h3>
 <h4 class="author">Md. Muktadir</h4>
-<h4 class="date">July 20, 2026</h4>
+<h4 class="date">July 21, 2026</h4>
 
 </div>
 
@@ -3457,6 +3567,24 @@ to the fifteenth. There is no reason to expect that assumption to be
 true in general, but it is the natural starting point and a useful
 baseline against which to judge whether anything more complex is
 actually needed.</p>
+<p><strong>Model equation:</strong></p>
+<p><span class="math display">\[\text{PPG}_i = \beta_0 + \beta_1 \cdot
+\text{FR}_i + \varepsilon_i\]</span></p>
+<p>where <span class="math inline">\(\text{PPG}_i\)</span> is points per
+game for club-season <span class="math inline">\(i\)</span>, <span class="math inline">\(\text{FR}_i\)</span> is that club-season’s
+Financial Rank, <span class="math inline">\(\beta_0\)</span> is the
+intercept (the predicted points per game at Financial Rank zero, a
+reference point rather than an observed case), <span class="math inline">\(\beta_1\)</span> is the slope (the change in
+predicted points per game for every one-rank drop in Financial Rank,
+expected to be negative), and <span class="math inline">\(\varepsilon_i\)</span> is the residual, the gap
+between a club’s actual and predicted points per game left unexplained
+by the line.</p>
+<p><strong>R implementation:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>lin_ppg <span class="ot">&lt;-</span> <span class="fu">lm</span>(Points_Per_Game <span class="sc">~</span> Financial_Rank, <span class="at">data =</span> model_df_ppg)</span></code></pre></div>
+<p><code>lm()</code> fits the equation above by ordinary least squares,
+choosing <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> to minimise the sum of squared
+residuals; <code>Points_Per_Game ~ Financial_Rank</code> is R’s formula
+shorthand for “regress points per game on Financial Rank.”</p>
 </div>
 <div id="step-2-a-fixed-curve-quadratic-specification" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Step 2: A Fixed Curve
@@ -3476,6 +3604,22 @@ symmetric on either side. There is no substantive reason to expect that
 the true relationship between financial rank and performance takes
 exactly this shape, rather than, for instance, levelling off among mid
 table clubs before steepening again near the bottom of the table.</p>
+<p><strong>Model equation:</strong></p>
+<p><span class="math display">\[\text{PPG}_i = \beta_0 + \beta_1 \cdot
+\text{FR}_i + \beta_2 \cdot \text{FR}_i^2 + \varepsilon_i\]</span></p>
+<p>where <span class="math inline">\(\text{PPG}_i\)</span>, <span class="math inline">\(\text{FR}_i\)</span>, <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\varepsilon_i\)</span> carry the same meaning as
+in Step 1, and <span class="math inline">\(\beta_2\)</span> is the
+coefficient on Financial Rank squared, the new term that lets the fitted
+relationship bend into a parabola rather than stay straight. This is the
+specification referred to as Model H elsewhere in this report.</p>
+<p><strong>R implementation:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>quad_ppg <span class="ot">&lt;-</span> <span class="fu">lm</span>(Points_Per_Game <span class="sc">~</span> Financial_Rank <span class="sc">+</span> <span class="fu">I</span>(Financial_Rank<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>                <span class="at">data =</span> model_df_ppg)</span></code></pre></div>
+<p><code>I(Financial_Rank^2)</code> tells R to treat Financial Rank
+squared as its own predictor column (the <code>I()</code> wrapper
+prevents <code>^</code> from being read as formula shorthand);
+<code>lm()</code> then estimates <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\beta_2\)</span> jointly by ordinary least
+squares, exactly as in Step 1 but with one additional term.</p>
 </div>
 <div id="step-3-a-learned-curve-generalized-additive-model" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Step 3: A Learned
@@ -3499,6 +3643,27 @@ against overfitting). This preserves the core intuition behind the
 quadratic term, that the effect of financial rank is not constant, while
 removing the requirement that the non-constant effect take one specific,
 predetermined shape.</p>
+<p><strong>Model equation:</strong></p>
+<p><span class="math display">\[\text{PPG}_i = \beta_0 + f(\text{FR}_i)
++ \varepsilon_i, \qquad
+f(\text{FR}) = \sum_{k=1}^{K} b_k(\text{FR}) \, \gamma_k\]</span></p>
+<p>where <span class="math inline">\(\text{PPG}_i\)</span>, <span class="math inline">\(\text{FR}_i\)</span>, <span class="math inline">\(\beta_0\)</span>, and <span class="math inline">\(\varepsilon_i\)</span> carry the same meaning as
+in Steps 1 and 2, and <span class="math inline">\(f(\cdot)\)</span> is
+the smooth term: an unspecified curve built from <span class="math inline">\(K\)</span> spline basis functions <span class="math inline">\(b_k(\cdot)\)</span> with weights <span class="math inline">\(\gamma_k\)</span> estimated from the data, rather
+than a term whose shape (straight line, parabola) is fixed in advance. A
+penalty on how much <span class="math inline">\(f(\cdot)\)</span> is
+allowed to wiggle is controlled by a smoothing parameter, chosen
+automatically by restricted maximum likelihood (REML) so that the
+curve’s flexibility is set by the data rather than by the analyst.</p>
+<p><strong>R implementation:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>gam_ppg <span class="ot">&lt;-</span> mgcv<span class="sc">::</span><span class="fu">gam</span>(Points_Per_Game <span class="sc">~</span> <span class="fu">s</span>(Financial_Rank), <span class="at">data =</span> model_df_ppg,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                      <span class="at">method =</span> <span class="st">&quot;REML&quot;</span>)</span></code></pre></div>
+<p><code>s(Financial_Rank)</code> is the <code>mgcv</code> syntax for
+“fit a smooth term on Financial Rank” rather than a single linear or
+quadratic coefficient; <code>method = &quot;REML&quot;</code> selects the
+smoothing-parameter estimation method described above. Everything
+downstream in this report (fitted values, residuals, outlier flags) is
+computed from this fitted <code>gam_ppg</code> object.</p>
 </div>
 </div>
 <div id="core-results" class="section level1" number="4">
@@ -5505,7 +5670,7 @@ Windows 11 x64 (build 26200)
 Date knitted
 </td>
 <td style="text-align:left;">
-2026-07-20
+2026-07-21
 </td>
 </tr>
 <tr>

@@ -421,6 +421,29 @@ There is no reason to expect that assumption to be true in general, but it
 is the natural starting point and a useful baseline against which to judge
 whether anything more complex is actually needed.
 
+**Model equation:**
+
+$$\text{PPG}_i = \beta_0 + \beta_1 \cdot \text{FR}_i + \varepsilon_i$$
+
+where $\text{PPG}_i$ is points per game for club-season $i$, $\text{FR}_i$
+is that club-season's Financial Rank, $\beta_0$ is the intercept (the
+predicted points per game at Financial Rank zero, a reference point rather
+than an observed case), $\beta_1$ is the slope (the change in predicted
+points per game for every one-rank drop in Financial Rank, expected to be
+negative), and $\varepsilon_i$ is the residual, the gap between a club's
+actual and predicted points per game left unexplained by the line.
+
+**R implementation:**
+
+```r
+lin_ppg <- lm(Points_Per_Game ~ Financial_Rank, data = model_df_ppg)
+```
+
+`lm()` fits the equation above by ordinary least squares, choosing
+$\beta_0$ and $\beta_1$ to minimise the sum of squared residuals;
+`Points_Per_Game ~ Financial_Rank` is R's formula shorthand for "regress
+points per game on Financial Rank."
+
 ## Step 2: A Fixed Curve (Quadratic Specification)
 
 Earlier stages of this project (documented in full in the Appendix)
@@ -438,6 +461,29 @@ either side. There is no substantive reason to expect that the true
 relationship between financial rank and performance takes exactly this
 shape, rather than, for instance, levelling off among mid table clubs
 before steepening again near the bottom of the table.
+
+**Model equation:**
+
+$$\text{PPG}_i = \beta_0 + \beta_1 \cdot \text{FR}_i + \beta_2 \cdot \text{FR}_i^2 + \varepsilon_i$$
+
+where $\text{PPG}_i$, $\text{FR}_i$, $\beta_0$, $\beta_1$, and
+$\varepsilon_i$ carry the same meaning as in Step 1, and $\beta_2$ is the
+coefficient on Financial Rank squared, the new term that lets the fitted
+relationship bend into a parabola rather than stay straight. This is the
+specification referred to as Model H elsewhere in this report.
+
+**R implementation:**
+
+```r
+quad_ppg <- lm(Points_Per_Game ~ Financial_Rank + I(Financial_Rank^2),
+                data = model_df_ppg)
+```
+
+`I(Financial_Rank^2)` tells R to treat Financial Rank squared as its own
+predictor column (the `I()` wrapper prevents `^` from being read as
+formula shorthand); `lm()` then estimates $\beta_0$, $\beta_1$, and
+$\beta_2$ jointly by ordinary least squares, exactly as in Step 1 but with
+one additional term.
 
 ## Step 3: A Learned Curve (Generalized Additive Model)
 
@@ -459,6 +505,33 @@ allowed to be, balancing fit against overfitting). This preserves the core
 intuition behind the quadratic term, that the effect of financial rank is
 not constant, while removing the requirement that the non-constant effect
 take one specific, predetermined shape.
+
+**Model equation:**
+
+$$\text{PPG}_i = \beta_0 + f(\text{FR}_i) + \varepsilon_i, \qquad
+f(\text{FR}) = \sum_{k=1}^{K} b_k(\text{FR}) \, \gamma_k$$
+
+where $\text{PPG}_i$, $\text{FR}_i$, $\beta_0$, and $\varepsilon_i$ carry
+the same meaning as in Steps 1 and 2, and $f(\cdot)$ is the smooth term: an
+unspecified curve built from $K$ spline basis functions $b_k(\cdot)$ with
+weights $\gamma_k$ estimated from the data, rather than a term whose shape
+(straight line, parabola) is fixed in advance. A penalty on how much
+$f(\cdot)$ is allowed to wiggle is controlled by a smoothing parameter,
+chosen automatically by restricted maximum likelihood (REML) so that the
+curve's flexibility is set by the data rather than by the analyst.
+
+**R implementation:**
+
+```r
+gam_ppg <- mgcv::gam(Points_Per_Game ~ s(Financial_Rank), data = model_df_ppg,
+                      method = "REML")
+```
+
+`s(Financial_Rank)` is the `mgcv` syntax for "fit a smooth term on
+Financial Rank" rather than a single linear or quadratic coefficient;
+`method = "REML"` selects the smoothing-parameter estimation method
+described above. Everything downstream in this report (fitted values,
+residuals, outlier flags) is computed from this fitted `gam_ppg` object.
 
 
 # Core Results
@@ -1029,7 +1102,7 @@ robust_se |>
   mutate(across(c(estimate, std.error, statistic, std.error_OLS), ~ round(., 4)),
          p.value = formatC(p.value, format = "e", digits = 3)) |>
   select(term, estimate, std.error_OLS, std.error, statistic, p.value) |>
-  kbl(longtable = FALSE,
+  kbl(longtable = TRUE,
     col.names = c("Term", "Estimate", "SE (OLS)", "SE (HC1 robust)", "t-value", "p-value")
   ) |>
   kbs() |>
