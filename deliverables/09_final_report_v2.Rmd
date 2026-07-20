@@ -1153,7 +1153,7 @@ scripts 13-16 are in `extensions/scripts/`), in run order, and what each
 one produces.
 
 ```{r script-inventory, results='asis'}
-tibble(
+script_df <- tibble(
   Script = c(
     "01_scrape_ESPN_standings.R", "02_scrape_transfermarkt_market_values.R",
     "03_compute_financial_rank.R", "04_merge_standings_and_market_values.R",
@@ -1190,18 +1190,34 @@ tibble(
     gsub("_", "\\\\_\\\\allowbreak{}", Script)
   } else {
     Script
-  }) |>
-  kbl(longtable = FALSE, escape = !knitr::is_latex_output()) |>
-  kable_styling(
-    latex_options = c("striped", "scale_down", "hold_position"),
-    bootstrap_options = c("striped", "hover", "condensed"),
-    full_width = FALSE,
-    font_size  = if (knitr::is_latex_output()) 8 else NULL
-  ) |>
+  })
+
+# Split into two half-length blocks of Script/Produces columns, placed
+# side by side within a single table, so the content uses the full page
+# width instead of leaving most of it blank, and the table is half as
+# tall as the one-column version. Kept as one table (rather than two
+# separate floats) so the longtable mechanism that keeps the caption
+# attached to the table still applies cleanly.
+half   <- ceiling(nrow(script_df) / 2)
+half_1 <- script_df[seq_len(half), ]
+half_2 <- script_df[(half + 1):nrow(script_df), ] |>
+  rename(Script2 = Script, Produces2 = Produces)
+# Pad the shorter half with blank rows if the script count is odd.
+if (nrow(half_2) < nrow(half_1)) {
+  half_2 <- bind_rows(half_2, tibble(Script2 = NA_character_, Produces2 = NA_character_))
+}
+
+bind_cols(half_1, half_2) |>
+  kbl(longtable = TRUE, escape = !knitr::is_latex_output(),
+      col.names = c("Script", "Produces", "Script", "Produces")) |>
+  kbs() |>
   row_spec(0, bold = TRUE, background = "#1A2A4A", color = "white") |>
-  column_spec(1, width = if (knitr::is_latex_output()) "3.6cm" else "25%") |>
-  column_spec(2, width = if (knitr::is_latex_output()) "7.5cm" else "55%")
-tbl_cap("Analysis scripts and their outputs, in run order.")
+  column_spec(1, width = if (knitr::is_latex_output()) "2.5cm" else "18%") |>
+  column_spec(2, width = if (knitr::is_latex_output()) "5.3cm" else "32%",
+              border_right = if (knitr::is_latex_output()) TRUE else FALSE) |>
+  column_spec(3, width = if (knitr::is_latex_output()) "2.5cm" else "18%") |>
+  column_spec(4, width = if (knitr::is_latex_output()) "5.3cm" else "32%")
+tbl_cap("Analysis scripts and their outputs, in run order, shown as two side-by-side Script/Produces columns for width.")
 ```
 
 ## Session Information
